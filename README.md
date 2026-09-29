@@ -1,16 +1,33 @@
-# React + Vite
+Nombre del grupo: TDA
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## Integrantes
+- Andres Marin   andr.marin@duocuc.cl
+- Thomas Araya   thom.araya@duocuc.cl
+- Diego Bergeret di.bergeret@duocuc.cl
 
-Currently, two official plugins are available:
+## Caso
+Veterinaria San Marcos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Descripción del caso
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Estructura del proyecto
+src/
+├── components/
+│   ├── atoms/
+│   ├── molecules/
+│   ├── organisms/
+│   └── templates/
+└── pages/
 
-## Expanding the Oxlint configuration
+## Tecnologías
+- React + Vite
+- React Bootstrap
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Cómo ejecutar el proyecto
+npm install
+npm run dev
+
+## Material complementario
+Carpeta de Drive con documentos del semestre (ERS y otros):
+[https://drive.google.com/drive/folders/XXXXXXXXXX](https://drive.google.com/drive/folders/1I1ChF_IqJwgaGxx6EkDyAtpXKsXHXyQX?usp=sharing)
