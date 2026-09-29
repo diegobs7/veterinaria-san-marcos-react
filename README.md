@@ -9,7 +9,8 @@ Nombre del grupo: TDA
 Veterinaria San Marcos
 
 ## Descripción del caso
-
+Pagina web de Veterinaria San Marcos con oferta de servicios (consulta general, vacunacion, desparacitacion, etc) 
+para perros, gatos, conejos y aves. 
 
 ## Estructura del proyecto
 src/
