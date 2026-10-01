@@ -1,11 +1,13 @@
 
 import './App.css'
-import Boton from './components/atoms/boton'
+import IniciarSesion from './components/organisms/IniciarSesion';
+
 
 
 function App() {
   return (
-    <Boton />
+    <IniciarSesion />
+    
   );
 }
 
