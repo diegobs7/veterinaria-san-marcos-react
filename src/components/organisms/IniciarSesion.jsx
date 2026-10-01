@@ -1,6 +1,12 @@
+import CampoFormulario from '../molecules/CampoFormulario';
+import Boton from '../atoms/Boton';
+import Titulo from '../atoms/Titulo'
+
 function IniciarSesion(props) {
     return (
         <form >
+
+            <Titulo texto = "Inicio de sesion"/>
             <CampoFormulario 
                 id = "email"
                 textoLabel = "Ingrese su correo electronico"

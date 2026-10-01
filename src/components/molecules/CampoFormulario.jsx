@@ -1,4 +1,6 @@
 
+import Label from '../atoms/Label';
+import Input from '../atoms/Input';
 
 function CampoFormulario(props){
     return (
