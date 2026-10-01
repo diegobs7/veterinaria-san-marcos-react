@@ -1,9 +1,12 @@
 
 import './App.css'
-import boton from './components/atoms/boton'
+import Boton from './components/atoms/boton'
+
 
 function App() {
-  <boton/>
+  return (
+    <Boton />
+  );
 }
 
 export default App
