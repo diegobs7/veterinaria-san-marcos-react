@@ -25,7 +25,6 @@ function IniciarSesion(props) {
                         <div className="d-grid mt-4">
                             <Boton tipoBoton="submit" texto="Entrar" variante="primary" />
                         </div>
-
                         <MensajeRegistro href="#" textoEnlace="Registrate aqui" textoPregunta="¿Aún no tienes una cuenta?"/>
                     </form>
                 </div>
