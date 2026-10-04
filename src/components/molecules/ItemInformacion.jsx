@@ -3,9 +3,11 @@ import Parrafo from '../atoms/Parrafo';
 
 function ItemInformacion(props) {
     return(
-        <div className="d-flex align-items-center mb-2">
-            <Icono simbolo = {props.icono}/>
-            <Parrafo clasesExtra="mb-0 text-muted">
+        <div className="mb-2">
+            <Parrafo clasesExtra="mb-0">
+                <span className="d-inline-block me-2">
+                    <Icono simbolo = {props.icono}/>
+                </span>
                 {props.texto}
             </Parrafo>
         </div>

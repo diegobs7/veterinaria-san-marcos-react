@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 function Enlace(props) {
     return (
-        <a href={props.href} className="text-decoration-none text-primary fw-bold">
+        <Link to={props.to} className={`text-decoration-none text-primary fw-bold ${props.clasesExtras || ""}`}>
             {props.texto}
-        </a>
+        </Link>
     );
 }
 
