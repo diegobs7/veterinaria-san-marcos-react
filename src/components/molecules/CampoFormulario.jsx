@@ -6,7 +6,14 @@ function CampoFormulario(props){
     return (
         <div className="mb-3 text-start">
             <Label htmlFor= {props.id} texto = {props.textoLabel}/>
-            <Input id = {props.id} tipo = {props.tipo} placeholder = {props.placeholder}/>
+            <Input 
+            id={props.id}
+            tipo={props.tipo}
+            placeholder = {props.placeholder}
+            value={props.value}
+            onChange ={props.onChange}
+            className={`form-control ${props.error ? 'is-invalid' : ''}`}
+            />
         </div>
     );
 }
