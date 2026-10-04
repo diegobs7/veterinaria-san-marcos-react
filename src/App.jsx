@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <Navbar/>
       <Routes>
-        <Route path="/" element={<Login/>}/> {/*Esta ruta sera para el login*/}
+        <Route path="/" element={<Login/>}/> {/*Esta ruta sera para el login, la puse de momento por que es la unica pagina que tenemos, la primera deberia ser Inicio*/}
         {/* <Route path="/inicio" element={<Inicio />} /> */} {/*Esta ruta sera para la pagina principal, de momento estara el de login pero luego debemos cambiarlo */}
         {/* <Route path="/registro" element={<RegistroUsuario />} /> */} {/*Esta ruta sera para el regisrto de usuario*/}
       </Routes>
