@@ -1,7 +1,7 @@
 
 function Imagen(props) {
     return(
-        <img src={props.imagen} alt={props.textoAlter} className={`img-fluid ${props.clasesExtras || ""}`} />
+        <img src={props.src} alt={props.alt} className={`img-fluid ${props.clasesExtras || ""}`} />
     );
 }
 
