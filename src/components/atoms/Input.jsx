@@ -2,7 +2,7 @@ function Input(props) {
     return(
         <input
         type={props.tipo || "text"}
-        className={props.className}
+        className={`form-control ${props.className || ''}`}
         placeholder={props.placeholder}
         id={props.id}
         value={props.value}

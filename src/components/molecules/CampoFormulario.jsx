@@ -12,7 +12,7 @@ function CampoFormulario(props){
             placeholder = {props.placeholder}
             value={props.value}
             onChange ={props.onChange}
-            className={`form-control ${props.error ? 'is-invalid' : ''}`}
+            className={props.className}
             />
         </div>
     );
