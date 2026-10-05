@@ -3,13 +3,12 @@ import Parrafo from '../atoms/Parrafo'
 
 function MensajeRegistro(props) {
     return (
-        <Parrafo clasesExtra="text-center mt-3">
+        <Parrafo clasesExtras="text-center mt-3">
             
             {props.textoPregunta}{" "}
 
             <Enlace href={props.href} texto = {props.textoEnlace}/>
         </Parrafo>
-
     );
 }
 

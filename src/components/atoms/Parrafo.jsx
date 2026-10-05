@@ -3,7 +3,6 @@ function Parrafo(props) {
         <p className={`mb-0 ${props.clasesExtras || ""}`}>
             {props.children}
         </p>
-
     );
 }
 
