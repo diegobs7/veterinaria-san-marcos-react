@@ -4,7 +4,7 @@ function MensajeRegistro(props) {
     return (
         <div className="mt-3 text-center">
             <span>{props.textoPregunta}</span>
-            <Link to={props.ruta} className='text-decoration-none bold'>
+            <Link to={props.ruta} className='text-decoration-none'>
                 {props.textoEnlace}
             </Link>
         </div>
