@@ -16,6 +16,7 @@ function IniciarSesion(props) {
                     value={props.correo}
                     onChange={props.onChangeCorreo}
                     error={props.errorCorreo}
+                    mensajeError = "Por favor ingresa un correo valido."
                 />
                 <CampoFormulario
                     id="password"
@@ -25,6 +26,7 @@ function IniciarSesion(props) {
                     value={props.contra}
                     onChange={props.onChangeContra}
                     error={props.errorContra}
+                    mensajeError = "La contraseña debe tener entre 4 a 10 caracteres."
                 />
 
                 <div className={`mt-3 text-center fw-bold ${props.claseMensaje}`}>
@@ -34,7 +36,7 @@ function IniciarSesion(props) {
                 <div className="d-grid mt-4">
                     <Boton tipoBoton="submit" texto="Entrar" variante="primary" />
                 </div>
-                <MensajeRegistro href="#" textoEnlace="Registrate aqui" textoPregunta="¿Aún no tienes una cuenta?" />
+                <MensajeRegistro ruta = "/registro" textoEnlace="Registrate aqui" textoPregunta="¿Aún no tienes una cuenta?" />
             </form>
         </>
     );

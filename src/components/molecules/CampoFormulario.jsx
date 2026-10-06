@@ -13,7 +13,11 @@ function CampoFormulario(props){
             value={props.value}
             onChange ={props.onChange}
             className={props.className}
+            error = {props.error}
             />
+            <div className="invalid-feedback">
+                {props.mensajeError}
+            </div>
         </div>
     );
 }

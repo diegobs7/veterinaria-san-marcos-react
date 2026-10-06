@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import TemplateLogin from '../components/templates/TemplateLogin';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
-    
+    const navigate = useNavigate();
+
     const [correo, setCorreo] = useState('');
     const [contra, setContra] = useState('');
     const [mensajeLogin, setMensajeLogin] = useState('');
@@ -22,9 +24,12 @@ function Login() {
         setErrorContra(false);
 
         const valorCorreo = correo.trim();
+
         if (valorCorreo === "" || valorCorreo.length > 100 || !patronCorreoLogin.test(valorCorreo)) {
             formularioLogin = false;
             setErrorCorreo(true);
+        } else {
+            setErrorCorreo(false);
         }
 
         const valorContra = contra.trim();
@@ -34,32 +39,23 @@ function Login() {
         }
 
         if (formularioLogin) {
-            if (valorCorreo === "admin@gmail.com" && valorContra === "1234") {
-                setMensajeLogin("Accediendo como administrador....");
-                setClaseMensaje("text-success");
-                window.location.href = "/admin-home"; 
-            } else {
-                setMensajeLogin("Verificacion exitosa");
-                setClaseMensaje("text-success");
-            }
+            setMensajeLogin("Verificacion exitosa...")
+            setClaseMensaje("text-success")
+            navigate("/")
         } else {
-            setMensajeLogin("Por favor, ingresa un correo valido y tu contrasena.");
-            setClaseMensaje("text-danger");
+            setMensajeLogin("");
         }
     };
 
     return(
         <TemplateLogin
-        
             correo = {correo}
             onChangeCorreo = {(e) => setCorreo(e.target.value)}
             errorCorreo = {errorCorreo}
 
-
             contra = {contra}
             onChangeContra = {(e) => setContra(e.target.value)}
             errorContra = {errorContra}
-
 
             mensajeLogin = {mensajeLogin}
             claseMensaje = {claseMensaje}
