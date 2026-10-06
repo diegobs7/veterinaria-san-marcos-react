@@ -13,11 +13,11 @@ function App() {
   return (
 
     <BrowserRouter>
-      <div className="d-flex flex-column min-vh-100">
+      <div className="d-flex flex-column min-vh-100 w-100">
         <Navbar/>
         <LogoTitulo/>
 
-        <main className="flex-grow-1">
+        <main className="flex-grow-1 w-100">
           <Routes>
             <Route path="/" element={<Inicio/>}/>
             <Route path="/login" element={<Login/>}/>

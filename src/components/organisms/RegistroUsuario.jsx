@@ -121,8 +121,8 @@ function RegistrarUsuario() {
                         </div>
 
                         <MensajeRegistro 
-                            href="/login" 
-                            textoEnlace="Iniciar sesión aquí" 
+                            ruta="/login" 
+                            textoEnlace=" Iniciar sesión aquí" 
                             textoPregunta="¿Ya tienes una cuenta?"
                         />
                     </form>
