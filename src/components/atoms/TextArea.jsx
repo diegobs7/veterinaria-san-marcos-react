@@ -1,7 +1,6 @@
-import { Placeholder } from "react-bootstrap";
 
 function TextArea(props) {
-    const claseValidacion = props.error ? 'is-valid' : '';
+    const claseValidacion = props.error ? 'is-invalid' : '';
     return (
         <textarea 
             id = {props.id}

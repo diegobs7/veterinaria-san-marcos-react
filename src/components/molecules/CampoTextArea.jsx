@@ -4,7 +4,7 @@ import Label from '../atoms/Label';
 function CampoTextArea(props) {
     return (
         <div className="mb-3 text-start">
-            <Label htmlfor={props.id} texto={props.textoLabel} />
+            <Label htmlFor={props.id} texto={props.textoLabel} />
             <TextArea
                 id={props.id}
                 rows={props.rows}

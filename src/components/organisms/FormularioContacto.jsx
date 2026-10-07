@@ -1,7 +1,7 @@
 import Subtitulo from '../atoms/Subtitulo';
 import CampoFormulario from '../molecules/CampoFormulario';
-import CampoTextarea from '../molecules/CampoTextarea';
 import Boton from '../atoms/Boton';
+import CampoTextArea from '../molecules/CampoTextArea';
 
 function FormularioContacto(props) {
     return (
@@ -15,18 +15,28 @@ function FormularioContacto(props) {
                     placeholder="Nombre completo"
                     value={props.nombre}
                     onChange={props.onChangeNombre}
-                    error={props.ErrorNombre}
+                    error={props.errorNombre}
                     mensajeError="Por favor ingresa tu nombre completo."
                 />
                 <CampoFormulario
                     id="correo"
                     textoLabel="Correo electronico:"
+                    tipo = "email"
+                    placeholder="ejemplo@gmail.com"
+                    value={props.correo}
+                    onChange={props.onChangeCorreo}
+                    error={props.errorCorreo}
+                    mensajeError="Por favor ingresa un correo valido."
+                />
+                <CampoTextArea
+                    id="textarea"
+                    textoLabel="Mensaje:"
                     rows="3"
-                    placeholder="Escribe tu consulta aqui..."
+                    placeholder="Escribe tu consulta aquí..."
                     value={props.mensaje}
                     onChange={props.onChangeMensaje}
-                    error={props.ErrorMensaje}
-                    mensajeError="El mensaje no puede estar vacio."
+                    error={props.errorMensaje}
+                    mensajeError="El mensaje no puede estar vacío."
                 />
 
                 <div className={`mt-3 text-center fw-bold ${props.claseMensaje}`}>
