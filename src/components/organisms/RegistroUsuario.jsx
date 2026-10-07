@@ -123,7 +123,7 @@ function RegistrarUsuario() {
                         <MensajeRegistro 
                             ruta="/login" 
                             textoEnlace=" Iniciar sesión aquí" 
-                            textoPregunta="¿Ya tienes una cuenta?"
+                            textoPregunta="¿Ya tienes una cuenta? "
                         />
                     </form>
                 </div>
