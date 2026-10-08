@@ -13,6 +13,7 @@ function NavBar() {
         { to: "/registro", texto: "Registrar" },
         { to: "/login", texto: "Inicio sesion", clasesExtras: "fw-bold text-primary" }
     ];
+    
     return (
         <nav className="navbar bg-light w-100 border-bottom shadow-sm py-3">
             <div className="container-fluid px-4">

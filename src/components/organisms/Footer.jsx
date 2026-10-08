@@ -4,7 +4,7 @@ import ItemInformacion from '../molecules/ItemInformacion';
 import ImagenFooter from '../../assets/perro-gato.png'
 
 
-function Footer(props) {
+function Footer() {
     return(
         <footer id= "contacto" className="footer-sitio mt-5 py-2">
             <div className="container">

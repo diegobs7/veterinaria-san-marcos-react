@@ -1,13 +1,15 @@
-import { Placeholder } from "react-bootstrap";
 
 function TextArea(props) {
+    const claseValidacion = props.error ? 'is-invalid' : '';
     return (
         <textarea 
-            className={`form-control ${props.clase || ""}`}
-            id={props.id}
-            rows = {props.filas || "3"}
-            placeholder = {props.Placeholder}
-        ></textarea>
+            id = {props.id}
+            rows = {props.rows || "3"}
+            className={`form-control ${claseValidacion} ${props.className || ''}`}
+            placeholder={props.placeholder}
+            value={props.value}
+            onChange={props.onChange}
+        />
     );
 }
 export default TextArea;
