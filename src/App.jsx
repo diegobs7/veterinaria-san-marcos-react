@@ -1,14 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import './App.css'
-import Login from './pages/Login';
-import Inicio from './pages/Inicio';
+import './index.css'
+import Login from './pages/Login'
+import Inicio from './pages/Inicio'
 import Contacto from './pages/Contacto';
+import RegistrarUsuario from "./components/organisms/RegistroUsuario"
 
 import Footer from './components/organisms/Footer'
 import Navbar from './components/organisms/NavBar'
-import './index.css'
 import LogoTitulo from "./components/molecules/LogoTitulo";
-import RegistrarUsuario from "./components/organisms/RegistroUsuario";
+
 
 function App() {
   return (
