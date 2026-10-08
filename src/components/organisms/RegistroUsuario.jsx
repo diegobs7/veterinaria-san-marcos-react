@@ -5,7 +5,7 @@ import MensajeRegistro from '../molecules/MensajeRegistro';
 import Subtitulo from '../atoms/Subtitulo';
 import Parrafo from '../atoms/Parrafo';
 
-function RegistrarUsuario() {
+function RegistrarUsuario(props) {
     
     const [nombre, setNombre] = useState('');
     const [correo, setCorreo] = useState('');
@@ -65,6 +65,7 @@ function RegistrarUsuario() {
     };
 
     return (
+
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-12 col-md-6 col-lg-5">
@@ -77,9 +78,10 @@ function RegistrarUsuario() {
                             textoLabel="Nombre completo"
                             tipo="text"
                             placeholder="Tu nombre"
-                            value={nombre}
-                            onChange={(e) => setNombre(e.target.value)}
-                            error={errorNombre}
+                            value={props.nombre}
+                            onChange={props.onChangeNombre}
+                            error={props.errorNombre}
+                            mensajeError="Ingrese un nombre válido"
                         />
 
                         <CampoFormulario 
@@ -87,9 +89,10 @@ function RegistrarUsuario() {
                             textoLabel="Correo electrónico"
                             tipo="email"
                             placeholder="ejemplo@duocuc.cl"
-                            value={correo}
-                            onChange={(e) => setCorreo(e.target.value)}
-                            error={errorCorreo}
+                            value={props.correo}
+                            onChange={props.onChangeCorreo}
+                            error={props.errorCorreo}
+                            mensajeError="Por favor ingresa un correo válido"
                         />
 
                         <CampoFormulario 
@@ -97,19 +100,21 @@ function RegistrarUsuario() {
                             textoLabel="Contraseña"
                             tipo="password"
                             placeholder="4 a 10 caracteres"
-                            value={contra}
-                            onChange={(e) => setContra(e.target.value)}
-                            error={errorContra}
+                            value={props.contra}
+                            onChange={props.onChangeContra}
+                            error={props.errorContra}
+                            mensajeError="La contraseña debe tener entre 4 a 10 caracteres."
                         />
 
                         <CampoFormulario 
-                            id="repetirPassword"
+                            id="repetirContra"
                             textoLabel="Confirmar contraseña"
                             tipo="password"
                             placeholder="Repite tu contraseña"
-                            value={repetirContra}
-                            onChange={(e) => setRepetirContra(e.target.value)}
-                            error={errorRepetirContra}
+                            value={props.repetirContra}
+                            onChange={props.onChangeRepetirContra}
+                            error={props.errorRepetirContra}
+                            mensajeError="La contraseña no es igual a la anterior"
                         />
 
                         <div className={`mt-3 text-center fw-bold ${claseMensaje}`}>
