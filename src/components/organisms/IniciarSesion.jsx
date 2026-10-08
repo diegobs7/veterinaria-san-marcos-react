@@ -16,7 +16,7 @@ function IniciarSesion(props) {
                     value={props.correo}
                     onChange={props.onChangeCorreo}
                     error={props.errorCorreo}
-                    mensajeError = "Por favor ingresa un correo valido."
+                    mensajeError = "Por favor ingresa un correo válido."
                 />
                 <CampoFormulario
                     id="password"
