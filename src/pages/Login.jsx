@@ -33,7 +33,7 @@ function Login() {
         }
 
         const valorContra = contra.trim();
-        if (valorContra === "" || valorContra.length < 4 || valorContra.length > 10) {
+        if (valorContra === "" || valorContra.length < 6 || valorContra.length > 10) {
             formularioLogin = false;
             setErrorContra(true);
         }

@@ -26,7 +26,7 @@ function IniciarSesion(props) {
                     value={props.contra}
                     onChange={props.onChangeContra}
                     error={props.errorContra}
-                    mensajeError = "La contraseña debe tener entre 4 a 10 caracteres."
+                    mensajeError = "La contraseña debe tener entre 6 a 10 caracteres."
                 />
 
                 <div className={`mt-3 text-center fw-bold ${props.claseMensaje}`}>

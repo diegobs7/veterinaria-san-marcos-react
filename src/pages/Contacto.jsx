@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import TemplateContacto from '../components/templates/TemplateContacto';
+import { useTituloPagina } from '../Hooks/useTituloPagina';
 
 function Contacto() {
 
@@ -14,8 +15,9 @@ function Contacto() {
     const [errorCorreo, setErrorCorreo] = useState(false);
     const [errorMensaje, setErrorMensaje] = useState(false);
 
+    useTituloPagina('Contacto')
+    
     const manejarSubmit = (e) => {
-        e.preventDefault();
 
         const patronCorreo = /^[^\s@]+@(duocuc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
         let formularioValido = true;
