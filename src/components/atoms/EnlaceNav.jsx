@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 function EnlaceNav(props) {
     return(
         <li className="nav-item">
