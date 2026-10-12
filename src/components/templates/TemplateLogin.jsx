@@ -1,4 +1,3 @@
-import Subtitulo from '../atoms/Subtitulo'
 import IniciarSesion from '../organisms/IniciarSesion'
 
 function TemplateLogin(props) {

@@ -32,24 +32,32 @@ function Registro() {
         if (valorNombre === "" || valorNombre.length < 3) {
             formularioRegistro = false;
             setErrorNombre(true);
+        } else {
+            setErrorNombre(false);
         }
 
         const valorCorreo = correo.trim();
         if (valorCorreo === "" || valorCorreo.length > 100 || !patronCorreoRegistro.test(valorCorreo)) {
             formularioRegistro = false;
             setErrorCorreo(true);
+        } else {
+            setErrorCorreo(false);
         }
 
         const valorContra = contra.trim();
         if (valorContra === "" || valorContra.length < 4 || valorContra.length > 10) {
             formularioRegistro = false;
             setErrorContra(true);
+        } else {
+            setErrorContra(false);
         }
 
         const valorRepetir = repetirContra.trim();
         if (valorRepetir === "" || valorRepetir !== valorContra) {
             formularioRegistro = false;
             setErrorRepetirContra(true);
+        } else {
+            setErrorRepetirContra(false);
         }
 
         if (formularioRegistro) {
