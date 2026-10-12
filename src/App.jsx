@@ -4,7 +4,7 @@ import './index.css'
 import Login from './pages/Login'
 import Inicio from './pages/Inicio'
 import Contacto from './pages/Contacto';
-import RegistrarUsuario from "./components/organisms/RegistroUsuario"
+import Registro from './pages/Registro'
 
 import Footer from './components/organisms/Footer'
 import Navbar from './components/organisms/NavBar'
@@ -23,7 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Inicio/>}/>
             <Route path="/login" element={<Login/>}/>
-            <Route path="/registro" element={<RegistrarUsuario/>}/>
+            <Route path="/registro" element={<Registro/>}/>
             <Route path="/contacto" element ={<Contacto/>}/>
           </Routes>
         </main>
