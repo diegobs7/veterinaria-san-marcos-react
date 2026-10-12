@@ -1,140 +1,74 @@
-import { useState } from 'react';
 import CampoFormulario from '../molecules/CampoFormulario';
 import Boton from '../atoms/Boton';
 import MensajeRegistro from '../molecules/MensajeRegistro';
 import Subtitulo from '../atoms/Subtitulo';
-import Parrafo from '../atoms/Parrafo';
 
-function RegistrarUsuario(props) {
-    
-    const [nombre, setNombre] = useState('');
-    const [correo, setCorreo] = useState('');
-    const [contra, setContra] = useState('');
-    const [repetirContra, setRepetirContra] = useState('');
-
-    const [mensajeRegistro, setMensajeRegistro] = useState('');
-    const [claseMensaje, setClaseMensaje] = useState('');
-
-    const [errorNombre, setErrorNombre] = useState(false);
-    const [errorCorreo, setErrorCorreo] = useState(false);
-    const [errorContra, setErrorContra] = useState(false);
-    const [errorRepetirContra, setErrorRepetirContra] = useState(false);
-
-    const manejarSubmit = (e) => {
-        e.preventDefault();
-
-        const patronCorreoRegistro = /^[^\s@]+@(duocuc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
-        let formularioRegistro = true;
-
-        setErrorNombre(false);
-        setErrorCorreo(false);
-        setErrorContra(false);
-        setErrorRepetirContra(false);
-
-        const valorNombre = nombre.trim();
-        if (valorNombre === "" || valorNombre.length < 3) {
-            formularioRegistro = false;
-            setErrorNombre(true);
-        }
-
-        const valorCorreo = correo.trim();
-        if (valorCorreo === "" || valorCorreo.length > 100 || !patronCorreoRegistro.test(valorCorreo)) {
-            formularioRegistro = false;
-            setErrorCorreo(true);
-        }
-
-        const valorContra = contra.trim();
-        if (valorContra === "" || valorContra.length < 4 || valorContra.length > 10) {
-            formularioRegistro = false;
-            setErrorContra(true);
-        }
-
-        const valorRepetir = repetirContra.trim();
-        if (valorRepetir === "" || valorRepetir !== valorContra) {
-            formularioRegistro = false;
-            setErrorRepetirContra(true);
-        }
-
-        if (formularioRegistro) {
-            setMensajeRegistro("¡Registro exitoso! Ya puedes iniciar sesión.");
-            setClaseMensaje("text-success");
-        } else {
-            setMensajeRegistro("Por favor, completa correctamente todos los campos.");
-            setClaseMensaje("text-danger");
-        }
-    };
-
+function RegistroUsuario(props) {
     return (
+        <>
+            <Subtitulo texto="Registro de usuario" clasesExtras="text-center text-primary mb-4" />
+            <form className="p-4 border rounded shadow-sm bg-light" onSubmit={props.manejarSubmit} noValidate>
+                
+                <CampoFormulario 
+                    id="nombre"
+                    textoLabel="Nombre completo"
+                    tipo="text"
+                    placeholder="Tu nombre"
+                    value={props.nombre}
+                    onChange={props.onChangeNombre}
+                    error={props.errorNombre}
+                    mensajeError="Ingrese un nombre válido (mínimo 3 caracteres)."
+                />
 
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-12 col-md-6 col-lg-5">
-                    <Subtitulo texto="Registro de usuario" clasesExtras="text-center text-primary mb-4"/>
-                    
-                    <form className="p-4 border rounded shadow-sm bg-light" onSubmit={manejarSubmit} noValidate>
-                        
-                        <CampoFormulario 
-                            id="nombre"
-                            textoLabel="Nombre completo"
-                            tipo="text"
-                            placeholder="Tu nombre"
-                            value={props.nombre}
-                            onChange={props.onChangeNombre}
-                            error={props.errorNombre}
-                            mensajeError="Ingrese un nombre válido"
-                        />
+                <CampoFormulario 
+                    id="email"
+                    textoLabel="Correo electrónico"
+                    tipo="email"
+                    placeholder="ejemplo@gmail.com"
+                    value={props.correo}
+                    onChange={props.onChangeCorreo}
+                    error={props.errorCorreo}
+                    mensajeError="Por favor ingresa un correo válido."
+                />
 
-                        <CampoFormulario 
-                            id="email"
-                            textoLabel="Correo electrónico"
-                            tipo="email"
-                            placeholder="ejemplo@duocuc.cl"
-                            value={props.correo}
-                            onChange={props.onChangeCorreo}
-                            error={props.errorCorreo}
-                            mensajeError="Por favor ingresa un correo válido"
-                        />
+                <CampoFormulario 
+                    id="password"
+                    textoLabel="Contraseña"
+                    tipo="password"
+                    placeholder="4 a 10 caracteres"
+                    value={props.contra}
+                    onChange={props.onChangeContra}
+                    error={props.errorContra}
+                    mensajeError="La contraseña debe tener entre 4 a 10 caracteres."
+                />
 
-                        <CampoFormulario 
-                            id="password"
-                            textoLabel="Contraseña"
-                            tipo="password"
-                            placeholder="4 a 10 caracteres"
-                            value={props.contra}
-                            onChange={props.onChangeContra}
-                            error={props.errorContra}
-                            mensajeError="La contraseña debe tener entre 4 a 10 caracteres."
-                        />
+                <CampoFormulario 
+                    id="repetirContra"
+                    textoLabel="Confirmar contraseña"
+                    tipo="password"
+                    placeholder="Repite tu contraseña"
+                    value={props.repetirContra}
+                    onChange={props.onChangeRepetirContra}
+                    error={props.errorRepetirContra}
+                    mensajeError="Las contraseñas no coinciden."
+                />
 
-                        <CampoFormulario 
-                            id="repetirContra"
-                            textoLabel="Confirmar contraseña"
-                            tipo="password"
-                            placeholder="Repite tu contraseña"
-                            value={props.repetirContra}
-                            onChange={props.onChangeRepetirContra}
-                            error={props.errorRepetirContra}
-                            mensajeError="La contraseña no es igual a la anterior"
-                        />
-
-                        <div className={`mt-3 text-center fw-bold ${claseMensaje}`}>
-                            {mensajeRegistro}
-                        </div>
-
-                        <div className="d-grid mt-4">
-                            <Boton tipoBoton="submit" texto="Registrarse" variante="primary" />
-                        </div>
-
-                        <MensajeRegistro 
-                            ruta="/login" 
-                            textoEnlace=" Iniciar sesión aquí" 
-                            textoPregunta="¿Ya tienes una cuenta? "
-                        />
-                    </form>
+                <div className={`mt-3 text-center fw-bold ${props.claseMensaje}`}>
+                    {props.mensajeRegistro}
                 </div>
-            </div>
-        </div>
+
+                <div className="d-grid mt-4">
+                    <Boton tipoBoton="submit" texto="Registrarse" variante="primary" />
+                </div>
+
+                <MensajeRegistro 
+                    ruta="/login" 
+                    textoEnlace="Iniciar sesión aquí" 
+                    textoPregunta="¿Ya tienes una cuenta? "
+                />
+            </form>
+        </>
     );
 }
 
-export default RegistrarUsuario;
+export default RegistroUsuario;
