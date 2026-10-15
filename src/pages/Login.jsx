@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import TemplateLogin from '../components/templates/TemplateLogin';
 import { useNavigate } from 'react-router-dom';
+import { useTituloPagina } from '../Hooks/useTituloPagina';
 
 
 function Login() {
+    useTituloPagina('Iniciar sesion')
     const navigate = useNavigate();
 
     const [correo, setCorreo] = useState('');
