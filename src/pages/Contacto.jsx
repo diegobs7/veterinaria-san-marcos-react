@@ -18,6 +18,7 @@ function Contacto() {
     useTituloPagina('Contacto')
     
     const manejarSubmit = (e) => {
+        e.preventDefault();
 
         const patronCorreo = /^[^\s@]+@(duocuc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
         let formularioValido = true;

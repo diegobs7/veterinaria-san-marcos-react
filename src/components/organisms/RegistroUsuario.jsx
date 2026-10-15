@@ -7,7 +7,7 @@ function RegistroUsuario(props) {
     return (
         <>
             <Subtitulo texto="Registro de usuario" clasesExtras="text-center text-primary mb-4" />
-            <form className="p-4 border rounded shadow-sm bg-light" onSubmit={props.manejarSubmit} noValidate>
+            <form className="p-4 border rounded shadow-sm bg-light" noValidate onSubmit={props.manejarSubmit}>
                 
                 <CampoFormulario 
                     id="nombre"
