@@ -1,0 +1,521 @@
+[
+    {
+        "id": "sv001",
+        "codigo": "SV001",
+        "categoria": "Consultas",
+        "titulo": "Consulta general",
+        "especie": "Perro / Gato",
+        "duracion": "30 min",
+        "precio": 15000,
+        "observaciones": null,
+        "descripcion": "Evaluación médica completa de tu mascota para revisar su estado general de salud, resolver dudas y detectar a tiempo cualquier problema. Ideal para controles de rutina o cuando notas cambios en su apetito o comportamiento.",
+        "incluye": [
+            "Revisión física completa (peso, temperatura, piel, ojos, oídos y boca).",
+            "Evaluación del estado general, la alimentación y el comportamiento.",
+            "Receta, indicaciones o derivación si se requiere.",
+            "Registro de la atención en la ficha clínica."
+        ]
+    },
+    {
+        "id": "sv002",
+        "codigo": "SV002",
+        "categoria": "Consultas",
+        "titulo": "Consulta urgencia",
+        "especie": "Perro / Gato",
+        "duracion": "30 min",
+        "precio": 25000,
+        "observaciones": "Fuera de horario +$10.000",
+        "descripcion": "Atención médica inmediata para pacientes en estado crítico, que han sufrido accidentes o presentan síntomas agudos. Nuestro equipo está preparado para estabilizar a tu mascota y aplicar los tratamientos de primera línea necesarios.",
+        "incluye": [
+            "Triaje y evaluación rápida de signos vitales.",
+            "Estabilización inicial (vía venosa, oxigenoterapia si se requiere).",
+            "Evaluación para derivación a cirugía u hospitalización."
+        ]
+    },
+    {
+        "id": "sv003",
+        "codigo": "SV003",
+        "categoria": "Consultas",
+        "titulo": "Control postoperatorio",
+        "especie": "Perro / Gato",
+        "duracion": "20 min",
+        "precio": 10000,
+        "observaciones": null,
+        "descripcion": "Revisión posterior a una cirugía para confirmar que tu mascota se está recuperando bien: estado de la herida, dolor, apetito y ánimo.",
+        "incluye": [
+            "Revisión de la herida quirúrgica.",
+            "Evaluación del dolor, el apetito y el estado general.",
+            "Ajuste de la medicación o de los cuidados si corresponde.",
+            "Indicaciones para continuar la recuperación en casa."
+        ]
+    },
+    {
+        "id": "sv004",
+        "codigo": "SV004",
+        "categoria": "Consultas",
+        "titulo": "Consulta ave / conejo",
+        "especie": "Ave / Conejo",
+        "duracion": "30 min",
+        "precio": 18000,
+        "observaciones": null,
+        "descripcion": "Atención veterinaria especializada para animales exóticos menores. Evaluamos plumaje, pelaje, desgaste dental, dieta, comportamiento y signos vitales específicos de aves y lagomorfos (conejos).",
+        "incluye": [
+            "Revisión específica según la anatomía de la especie.",
+            "Evaluación de dieta y ambiente en el hogar.",
+            "Revisión dental (vital en conejos).",
+            "Receta médica o indicaciones de manejo especializado."
+        ]
+    },
+    {
+        "id": "sv005",
+        "codigo": "SV005",
+        "categoria": "Consultas",
+        "titulo": "Segunda opinión médica",
+        "especie": "Todas",
+        "duracion": "40 min",
+        "precio": 20000,
+        "observaciones": "Requiere ficha previa",
+        "descripcion": "Revisión de un caso clínico por un segundo médico veterinario, para confirmar un diagnóstico o evaluar alternativas de tratamiento. Requiere ficha previa de la mascota.",
+        "incluye": [
+            "Revisión del historial clínico y de los exámenes disponibles.",
+            "Examen físico del paciente.",
+            "Evaluación del diagnóstico y del tratamiento actual.",
+            "Recomendaciones y posibles alternativas."
+        ]
+    },
+    {
+        "id": "va001",
+        "codigo": "VA001",
+        "categoria": "Vacunación",
+        "titulo": "Vacuna antirrábica canina",
+        "especie": "Perro",
+        "duracion": "10 min",
+        "precio": 12000,
+        "observaciones": "Obligatoria por ley",
+        "descripcion": "Vacuna que protege a tu perro contra la rabia, una enfermedad grave que también puede transmitirse a las personas. Su aplicación es obligatoria por ley.",
+        "incluye": [
+            "Revisión rápida del estado de salud antes de vacunar.",
+            "Aplicación de la vacuna.",
+            "Registro de la dosis en la ficha de vacunación.",
+            "Indicaciones sobre la próxima dosis."
+        ]
+    },
+    {
+        "id": "va002",
+        "codigo": "VA002",
+        "categoria": "Vacunación",
+        "titulo": "Vacuna sextuple canina",
+        "especie": "Perro",
+        "duracion": "10 min",
+        "precio": 18000,
+        "observaciones": "Refuerzo anual",
+        "descripcion": "Vacuna polivalente que protege a tu perro contra varias enfermedades infecciosas frecuentes, como el distemper y el parvovirus. Se aplica como refuerzo anual.",
+        "incluye": [
+            "Revisión rápida del estado de salud antes de vacunar.",
+            "Aplicación de la vacuna.",
+            "Registro de la dosis en la ficha de vacunación.",
+            "Indicaciones sobre la próxima dosis."
+        ]
+    },
+    {
+        "id": "va003",
+        "codigo": "VA003",
+        "categoria": "Vacunación",
+        "titulo": "Vacuna bivalente felina",
+        "especie": "Gato",
+        "duracion": "10 min",
+        "precio": 15000,
+        "observaciones": "Refuerzo anual",
+        "descripcion": "Vacuna que protege a tu gato contra enfermedades virales frecuentes en felinos. Se aplica como refuerzo anual.",
+        "incluye": [
+            "Revisión rápida del estado de salud antes de vacunar.",
+            "Aplicación de la vacuna.",
+            "Registro de la dosis en la ficha de vacunación.",
+            "Indicaciones sobre la próxima dosis."
+        ]
+    },
+    {
+        "id": "va004",
+        "codigo": "VA004",
+        "categoria": "Vacunación",
+        "titulo": "Vacuna triple felina",
+        "especie": "Gato",
+        "duracion": "10 min",
+        "precio": 17000,
+        "observaciones": "Refuerzo anual",
+        "descripcion": "Vacuna que protege a tu gato contra tres enfermedades virales comunes en felinos: rinotraqueítis, calicivirus y panleucopenia. Se aplica como refuerzo anual.",
+        "incluye": [
+            "Revisión rápida del estado de salud antes de vacunar.",
+            "Aplicación de la vacuna.",
+            "Registro de la dosis en la ficha de vacunación.",
+            "Indicaciones sobre la próxima dosis."
+        ]
+    },
+    {
+        "id": "va005",
+        "codigo": "VA005",
+        "categoria": "Vacunación",
+        "titulo": "Vacuna Bordetella canina",
+        "especie": "Perro",
+        "duracion": "10 min",
+        "precio": 14000,
+        "observaciones": "Tos de las perreras",
+        "descripcion": "Vacuna que ayuda a prevenir la tos de las perreras, una infección respiratoria contagiosa que se propaga fácilmente donde conviven muchos perros, como guarderías, hoteles caninos y peluquerías.",
+        "incluye": [
+            "Revisión rápida del estado de salud antes de vacunar.",
+            "Aplicación de la vacuna.",
+            "Registro de la dosis en la ficha de vacunación.",
+            "Indicaciones sobre la próxima dosis."
+        ]
+    },
+    {
+        "id": "va006",
+        "codigo": "VA006",
+        "categoria": "Vacunación",
+        "titulo": "Vacuna antirrábica felina",
+        "especie": "Gato",
+        "duracion": "10 min",
+        "precio": 12000,
+        "observaciones": null,
+        "descripcion": "Vacuna que protege a tu gato contra la rabia, una enfermedad grave que también puede transmitirse a las personas.",
+        "incluye": [
+            "Revisión rápida del estado de salud antes de vacunar.",
+            "Aplicación de la vacuna.",
+            "Registro de la dosis en la ficha de vacunación.",
+            "Indicaciones sobre la próxima dosis."
+        ]
+    },
+    {
+        "id": "ci001",
+        "codigo": "CI001",
+        "categoria": "Cirugía",
+        "titulo": "Esterilización hembra canina",
+        "especie": "Perra",
+        "duracion": "90 min",
+        "precio": 80000,
+        "observaciones": "Incluye anestesia y hospitalización 24h",
+        "descripcion": "Cirugía para esterilizar a tu perra, que previene embarazos no deseados y ayuda a evitar algunas enfermedades del sistema reproductivo. Incluye anestesia y hospitalización de 24 horas.",
+        "incluye": [
+            "Evaluación previa del paciente antes de la cirugía.",
+            "Anestesia y monitoreo durante el procedimiento.",
+            "Cirugía de esterilización.",
+            "Hospitalización de 24 horas con cuidados postoperatorios.",
+            "Indicaciones de cuidado en casa y control posterior."
+        ]
+    },
+    {
+        "id": "ci002",
+        "codigo": "CI002",
+        "categoria": "Cirugía",
+        "titulo": "Esterilización macho canino",
+        "especie": "Perro",
+        "duracion": "60 min",
+        "precio": 60000,
+        "observaciones": "Incluye anestesia",
+        "descripcion": "Cirugía para esterilizar a tu perro (castración), que ayuda a controlar la reproducción y algunos problemas de comportamiento y de salud. Incluye anestesia.",
+        "incluye": [
+            "Evaluación previa del paciente antes de la cirugía.",
+            "Anestesia y monitoreo durante el procedimiento.",
+            "Cirugía de esterilización.",
+            "Indicaciones de cuidado en casa y control posterior."
+        ]
+    },
+    {
+        "id": "ci003",
+        "codigo": "CI003",
+        "categoria": "Cirugía",
+        "titulo": "Esterilización hembra felina",
+        "especie": "Gata",
+        "duracion": "60 min",
+        "precio": 65000,
+        "observaciones": "Incluye anestesia y hospitalización 12h",
+        "descripcion": "Cirugía para esterilizar a tu gata, que previene embarazos no deseados y ayuda a evitar algunas enfermedades del sistema reproductivo. Incluye anestesia y hospitalización de 12 horas.",
+        "incluye": [
+            "Evaluación previa del paciente antes de la cirugía.",
+            "Anestesia y monitoreo durante el procedimiento.",
+            "Cirugía de esterilización.",
+            "Hospitalización de 12 horas con cuidados postoperatorios.",
+            "Indicaciones de cuidado en casa y control posterior."
+        ]
+    },
+    {
+        "id": "ci004",
+        "codigo": "CI004",
+        "categoria": "Cirugía",
+        "titulo": "Esterilización macho felino",
+        "especie": "Gato",
+        "duracion": "45 min",
+        "precio": 50000,
+        "observaciones": "Incluye anestesia",
+        "descripcion": "Cirugía para esterilizar a tu gato (castración), que ayuda a controlar la reproducción y algunos problemas de comportamiento, como el marcaje con orina. Incluye anestesia.",
+        "incluye": [
+            "Evaluación previa del paciente antes de la cirugía.",
+            "Anestesia y monitoreo durante el procedimiento.",
+            "Cirugía de esterilización.",
+            "Indicaciones de cuidado en casa y control posterior."
+        ]
+    },
+    {
+        "id": "ci005",
+        "codigo": "CI005",
+        "categoria": "Cirugía",
+        "titulo": "Extirpación de tumor cutáneo",
+        "especie": "Perro / Gato",
+        "duracion": "60 min",
+        "precio": 120000,
+        "observaciones": "Precio referencial; varía según tamaño",
+        "descripcion": "Cirugía para retirar masas o tumores de la piel de tu mascota. El valor es referencial y puede variar según el tamaño de la masa.",
+        "incluye": [
+            "Evaluación de la masa y del estado general del paciente.",
+            "Anestesia y retiro quirúrgico de la masa.",
+            "Indicaciones de cuidado postoperatorio.",
+            "Recomendación de análisis de la muestra si el médico lo considera necesario."
+        ]
+    },
+    {
+        "id": "ci006",
+        "codigo": "CI006",
+        "categoria": "Cirugía",
+        "titulo": "Cesárea de urgencia",
+        "especie": "Perra / Gata",
+        "duracion": "120 min",
+        "precio": 180000,
+        "observaciones": null,
+        "descripcion": "Cirugía de emergencia para asistir el parto de perras y gatas cuando no puede ocurrir de forma natural, cuidando la vida de la madre y de las crías.",
+        "incluye": [
+            "Evaluación de urgencia de la madre y de las crías.",
+            "Anestesia y monitoreo durante la cirugía.",
+            "Extracción de las crías y cuidados iniciales.",
+            "Control postoperatorio de la madre e indicaciones de cuidado en casa."
+        ]
+    },
+    {
+        "id": "de001",
+        "codigo": "DE001",
+        "categoria": "Desparasitación",
+        "titulo": "Desparasitación interna pequeños (<10 kg)",
+        "especie": "Perro",
+        "duracion": "5 min",
+        "precio": 8000,
+        "observaciones": null,
+        "descripcion": "Tratamiento antiparasitario interno para perros de menos de 10 kg, que elimina lombrices y otros parásitos intestinales.",
+        "incluye": [
+            "Pesaje del paciente para definir la dosis.",
+            "Administración del antiparasitario interno.",
+            "Indicaciones sobre la próxima desparasitación."
+        ]
+    },
+    {
+        "id": "de002",
+        "codigo": "DE002",
+        "categoria": "Desparasitación",
+        "titulo": "Desparasitación interna medianos (10-25 kg)",
+        "especie": "Perro",
+        "duracion": "5 min",
+        "precio": 9500,
+        "observaciones": null,
+        "descripcion": "Tratamiento antiparasitario interno para perros de entre 10 y 25 kg, que elimina lombrices y otros parásitos intestinales.",
+        "incluye": [
+            "Pesaje del paciente para definir la dosis.",
+            "Administración del antiparasitario interno.",
+            "Indicaciones sobre la próxima desparasitación."
+        ]
+    },
+    {
+        "id": "de003",
+        "codigo": "DE003",
+        "categoria": "Desparasitación",
+        "titulo": "Desparasitación interna grandes (>25 kg)",
+        "especie": "Perro",
+        "duracion": "5 min",
+        "precio": 11000,
+        "observaciones": null,
+        "descripcion": "Tratamiento antiparasitario interno para perros de más de 25 kg, que elimina lombrices y otros parásitos intestinales.",
+        "incluye": [
+            "Pesaje del paciente para definir la dosis.",
+            "Administración del antiparasitario interno.",
+            "Indicaciones sobre la próxima desparasitación."
+        ]
+    },
+    {
+        "id": "de004",
+        "codigo": "DE004",
+        "categoria": "Desparasitación",
+        "titulo": "Desparasitación interna felina",
+        "especie": "Gato",
+        "duracion": "5 min",
+        "precio": 8000,
+        "observaciones": null,
+        "descripcion": "Tratamiento antiparasitario interno para gatos, que elimina lombrices y otros parásitos intestinales.",
+        "incluye": [
+            "Pesaje del paciente para definir la dosis.",
+            "Administración del antiparasitario interno.",
+            "Indicaciones sobre la próxima desparasitación."
+        ]
+    },
+    {
+        "id": "de005",
+        "codigo": "DE005",
+        "categoria": "Desparasitación",
+        "titulo": "Antiparasitario externo (pipeta)",
+        "especie": "Perro / Gato",
+        "duracion": "5 min",
+        "precio": 7500,
+        "observaciones": "Incluye aplicación",
+        "descripcion": "Aplicación de una pipeta antiparasitaria para prevenir y controlar pulgas y garrapatas en tu perro o gato. Incluye la aplicación por parte de nuestro equipo.",
+        "incluye": [
+            "Revisión rápida de la piel y el pelaje.",
+            "Aplicación de la pipeta antiparasitaria.",
+            "Indicaciones sobre los baños y la próxima aplicación."
+        ]
+    },
+    {
+        "id": "ex001",
+        "codigo": "EX001",
+        "categoria": "Exámenes",
+        "titulo": "Hemograma completo",
+        "especie": "Perro / Gato",
+        "duracion": "30 min",
+        "precio": 22000,
+        "observaciones": "Resultado en 24-48 h",
+        "descripcion": "Análisis de sangre que entrega información sobre glóbulos rojos, glóbulos blancos y plaquetas. Es útil para detectar infecciones, anemia y otros problemas de salud.",
+        "incluye": [
+            "Toma de muestra de sangre.",
+            "Análisis de laboratorio.",
+            "Informe con los resultados, disponible en 24 a 48 horas.",
+            "Interpretación del resultado por el médico veterinario."
+        ]
+    },
+    {
+        "id": "ex002",
+        "codigo": "EX002",
+        "categoria": "Exámenes",
+        "titulo": "Perfil bioquímico completo",
+        "especie": "Perro / Gato",
+        "duracion": "30 min",
+        "precio": 35000,
+        "observaciones": "Resultado en 24-48 h",
+        "descripcion": "Análisis de sangre que evalúa el funcionamiento de órganos como el hígado y los riñones, además de la glucosa y otros indicadores. Es útil en controles de salud y para estudiar síntomas.",
+        "incluye": [
+            "Toma de muestra de sangre.",
+            "Análisis de laboratorio.",
+            "Informe con los resultados, disponible en 24 a 48 horas.",
+            "Interpretación del resultado por el médico veterinario."
+        ]
+    },
+    {
+        "id": "ex003",
+        "codigo": "EX003",
+        "categoria": "Exámenes",
+        "titulo": "Radiografía (1 proyección)",
+        "especie": "Perro / Gato",
+        "duracion": "20 min",
+        "precio": 28000,
+        "observaciones": null,
+        "descripcion": "Imagen radiográfica que permite evaluar huesos, tórax y otras estructuras internas de tu mascota.",
+        "incluye": [
+            "Posicionamiento del paciente para la toma de la imagen.",
+            "Una proyección radiográfica.",
+            "Revisión de la imagen por el médico veterinario."
+        ]
+    },
+    {
+        "id": "ex004",
+        "codigo": "EX004",
+        "categoria": "Exámenes",
+        "titulo": "Ecografía abdominal",
+        "especie": "Perro / Gato",
+        "duracion": "30 min",
+        "precio": 45000,
+        "observaciones": null,
+        "descripcion": "Estudio por imágenes que permite observar órganos del abdomen, como hígado, riñones, vejiga y útero, sin necesidad de cirugía.",
+        "incluye": [
+            "Preparación de la zona a examinar, rasurándola si es necesario.",
+            "Ecografía del abdomen.",
+            "Revisión de los hallazgos por el médico veterinario."
+        ]
+    },
+    {
+        "id": "ex005",
+        "codigo": "EX005",
+        "categoria": "Exámenes",
+        "titulo": "Test de leishmaniasis",
+        "especie": "Perro",
+        "duracion": "20 min",
+        "precio": 18000,
+        "observaciones": null,
+        "descripcion": "Examen para detectar la leishmaniasis, una enfermedad parasitaria transmitida por insectos que puede afectar a los perros.",
+        "incluye": [
+            "Toma de muestra.",
+            "Realización del test.",
+            "Entrega e interpretación del resultado por el médico veterinario."
+        ]
+    },
+    {
+        "id": "ot001",
+        "codigo": "OT001",
+        "categoria": "Otros",
+        "titulo": "Corte de uñas",
+        "especie": "Perro / Gato",
+        "duracion": "15 min",
+        "precio": 5000,
+        "observaciones": null,
+        "descripcion": "Corte de uñas realizado por nuestro equipo para evitar molestias, problemas al caminar y lesiones.",
+        "incluye": [
+            "Revisión del estado de las uñas y las almohadillas.",
+            "Corte de uñas.",
+            "Recomendaciones para mantenerlas en buen estado."
+        ]
+    },
+    {
+        "id": "ot002",
+        "codigo": "OT002",
+        "categoria": "Otros",
+        "titulo": "Limpieza dental",
+        "especie": "Perro / Gato",
+        "duracion": "45 min",
+        "precio": 55000,
+        "observaciones": "Requiere anestesia",
+        "descripcion": "Limpieza profesional para retirar sarro y placa bacteriana, que previene el mal aliento, las infecciones y los problemas en encías y dientes. Se realiza bajo anestesia.",
+        "incluye": [
+            "Evaluación previa del paciente para la anestesia.",
+            "Anestesia y monitoreo durante el procedimiento.",
+            "Retiro de sarro y placa, y pulido dental.",
+            "Indicaciones de cuidado e higiene dental en casa."
+        ]
+    },
+    {
+        "id": "ot003",
+        "codigo": "OT003",
+        "categoria": "Otros",
+        "titulo": "Microchip identificación",
+        "especie": "Perro / Gato",
+        "duracion": "10 min",
+        "precio": 15000,
+        "observaciones": "Incluye registro",
+        "descripcion": "Implante de un microchip que identifica a tu mascota con un número único y ayuda a encontrarla si se pierde. Incluye el registro.",
+        "incluye": [
+            "Verificación de que la mascota no tenga un microchip previo.",
+            "Implante del microchip.",
+            "Registro de los datos de la mascota y de su dueño.",
+            "Entrega de la información con el número de identificación."
+        ]
+    },
+    {
+        "id": "ot004",
+        "codigo": "OT004",
+        "categoria": "Otros",
+        "titulo": "Hospitalización (por día)",
+        "especie": "Perro / Gato",
+        "duracion": "24 h",
+        "precio": 30000,
+        "observaciones": "Incluye monitoreo y alimentación básica",
+        "descripcion": "Internación de tu mascota en la clínica para mantenerla en observación y recibir tratamiento bajo supervisión médica. El valor corresponde a un día de hospitalización.",
+        "incluye": [
+            "Monitoreo del estado de salud.",
+            "Alimentación básica.",
+            "Administración de los tratamientos indicados.",
+            "Información al dueño sobre la evolución del paciente."
+        ]
+    }
+]

@@ -9,7 +9,6 @@ import servicios from '../data/servicios.json'
 import { ICONOS_CATEGORIA, obtenerCategorias } from '../utils/categorias'
 import { normalizar } from '../utils/texto'
 
-/
 function Servicios() {
     const [texto, setTexto] = useState('');
     const [categoria, setCategoria] = useState('');
