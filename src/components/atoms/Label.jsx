@@ -7,4 +7,4 @@ function Label(props) {
     );
 }
 
-export default Label;
+export default Label;   

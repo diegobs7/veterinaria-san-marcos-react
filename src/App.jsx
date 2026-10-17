@@ -6,6 +6,7 @@ import Inicio from './pages/Inicio'
 import Contacto from './pages/Contacto';
 import Registro from './pages/Registro'
 import Blog from "./pages/Blog"
+import DetalleServicio from './pages/DetalleServicio';
 
 import Footer from './components/organisms/Footer'
 import Navbar from './components/organisms/NavBar'
@@ -28,6 +29,7 @@ function App() {
             <Route path="/registro" element={<Registro />} />
             <Route path="/contacto" element={<Contacto />} />
             <Route path="/blogs" element={<Blog />} />
+            <Route path="/servicios/:id" element={<DetalleServicio />} />
           </Routes>
         </main>
         <Footer />

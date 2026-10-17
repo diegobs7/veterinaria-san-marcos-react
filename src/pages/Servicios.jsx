@@ -9,15 +9,13 @@ import servicios from '../data/servicios.json'
 import { ICONOS_CATEGORIA, obtenerCategorias } from '../utils/categorias'
 import { normalizar } from '../utils/texto'
 
-// Página: el catálogo completo, agrupado por categoría y con buscador.
-// El estado vive aquí; el buscador solo lo muestra y avisa cambios.
 function Servicios() {
     const [texto, setTexto] = useState('');
     const [categoria, setCategoria] = useState('');
 
     const categorias = obtenerCategorias(servicios);
 
-    // Deben cumplirse AMBOS filtros. El texto puede estar en el nombre o en la categoría.
+
     const buscado = normalizar(texto);
     const filtrados = servicios.filter(
         (s) =>
