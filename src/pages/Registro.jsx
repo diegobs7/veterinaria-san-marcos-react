@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 import TemplateRegistro from '../components/templates/TemplateRegistro';
-import { validarFormularioRegistro } from '../utils/validaciones';
+import { validarFormularioRegistro } from '../utils/Validaciones/validaciones';
 import { useTituloPagina } from '../Hooks/useTituloPagina';
 
 function Registro() {
