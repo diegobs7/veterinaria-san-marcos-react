@@ -1,16 +1,17 @@
 import EnlaceNav from '../atoms/Enlace';
 
 function ListaEnlaces(props) {
-    return(
-        <ul className= {`navbar-nav ${props.clasesExtras || ""}`}>
-                {props.enlaces.map((enlace, index) => (
-                <EnlaceNav
-                    key = {index}
-                    to = {enlace.to}
-                    texto = {enlace.texto}
-                    clasesExtras = {enlace.clasesExtras}
-                />
-                ))}
+    return (
+        <ul className={`nav nav-underline ${props.clasesExtras || ""}`.trim()}>
+            {props.enlaces.map((enlace) => (
+                <li className="nav-item" key={enlace.to}>
+                    <EnlaceNav
+                        to={enlace.to}
+                        texto={enlace.texto}
+                        clasesExtras={`nav-link ${enlace.clasesExtras || ""}`.trim()}
+                    />
+                </li>
+            ))}
         </ul>
     );
 }

@@ -1,0 +1,16 @@
+.navbar-clinica {
+  background-color: #1a2f2b;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-clinica__menu {
+    --bs-offcanvas-width: 280px;
+    --bs-offcanvas-bg: #1a2f2b;
+  }
+}
+
+.navbar-clinica .nav {
+  --bs-nav-link-color: #fff;
+  --bs-nav-link-hover-color: #fff;
+  --bs-nav-underline-link-active-color: #fff;
+}
