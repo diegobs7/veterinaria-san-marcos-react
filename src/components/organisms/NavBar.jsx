@@ -6,7 +6,8 @@ function NavBar() {
         { to: "/servicios", texto: "Servicios" },
         { to: "/nosotros", texto: "Nosotros" },
         { to: "/blogs", texto: "Blogs" },
-        { to: "/contacto", texto: "Contacto" }
+        { to: "/contacto", texto: "Contacto" },
+        { to: "/evaluacion", texto: "Calificanos"}
     ];
 
     const enlacesSesion = [
