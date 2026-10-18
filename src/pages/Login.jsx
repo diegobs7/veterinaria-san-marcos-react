@@ -1,69 +1,51 @@
-import { useState } from 'react';
-import TemplateLogin from '../components/templates/TemplateLogin';
-import { useNavigate } from 'react-router-dom';
-import { useTituloPagina } from '../Hooks/useTituloPagina';
-
+import { useState } from "react";
+import TemplateLogin from "../components/templates/TemplateLogin";
+import { useNavigate } from "react-router-dom";
+import { useTituloPagina } from "../Hooks/useTituloPagina";
+import ValidarLogin from "../utils/ValidarLogin";
 
 function Login() {
-    useTituloPagina('Iniciar sesion')
+    useTituloPagina("Iniciar sesion");
     const navigate = useNavigate();
 
-    const [correo, setCorreo] = useState('');
-    const [contra, setContra] = useState('');
-    const [mensajeLogin, setMensajeLogin] = useState('');
-    const [claseMensaje, setClaseMensaje] = useState('');
+    const [correo, setCorreo] = useState("");
+    const [contra, setContra] = useState("");
+    const [mensajeLogin, setMensajeLogin] = useState("");
+    const [claseMensaje, setClaseMensaje] = useState("");
 
-    const [errorCorreo, setErrorCorreo] = useState(false);
-    const [errorContra, setErrorContra] = useState(false);
+    const [errorCorreo, setErrorCorreo] = useState("");
+    const [errorContra, setErrorContra] = useState("");
 
-    const manejarSubmit = (e) => {
-        e.preventDefault();
+const manejarSubmit = (e) => {
+    e.preventDefault();
 
-        const patronCorreoLogin = /^[^\s@]+@(duocuc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
-        let formularioLogin = true;
+    const errores = ValidarLogin({ correo, contra });
 
-        setErrorCorreo(false);
-        setErrorContra(false);
+    setErrorCorreo(errores.correo || "");
+    setErrorContra(errores.contra || "");
 
-        const valorCorreo = correo.trim();
+    if (Object.keys(errores).length === 0) {
+        setMensajeLogin("Verificacion exitosa...");
+        setClaseMensaje("text-success");
+        navigate("/");
+    } else {
+        setMensajeLogin("");
+    }
+};
 
-        if (valorCorreo === "" || valorCorreo.length > 100 || !patronCorreoLogin.test(valorCorreo)) {
-            formularioLogin = false;
-            setErrorCorreo(true);
-        } else {
-            setErrorCorreo(false);
-        }
-
-        const valorContra = contra.trim();
-        if (valorContra === "" || valorContra.length < 6 || valorContra.length > 10) {
-            formularioLogin = false;
-            setErrorContra(true);
-        }
-
-        if (formularioLogin) {
-            setMensajeLogin("Verificacion exitosa...")
-            setClaseMensaje("text-success")
-            navigate("/")
-        } else {
-            setMensajeLogin("");
-        }
-    };
-
-    return(
+    return (
         <TemplateLogin
-            correo = {correo}
-            onChangeCorreo = {(e) => setCorreo(e.target.value)}
-            errorCorreo = {errorCorreo}
-
-            contra = {contra}
-            onChangeContra = {(e) => setContra(e.target.value)}
-            errorContra = {errorContra}
-
-            mensajeLogin = {mensajeLogin}
-            claseMensaje = {claseMensaje}
-            manejarSubmit = {manejarSubmit}
+        correo={correo}
+        onChangeCorreo={(e) => setCorreo(e.target.value)}
+        errorCorreo={errorCorreo}
+        contra={contra}
+        onChangeContra={(e) => setContra(e.target.value)}
+        errorContra={errorContra}
+        mensajeLogin={mensajeLogin}
+        claseMensaje={claseMensaje}
+        manejarSubmit={manejarSubmit}
         />
     );
-}
+    }
 
 export default Login;

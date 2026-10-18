@@ -1,13 +1,11 @@
 import { ESPECIES } from '../data/OpcionesReserva';
 
-const PALABRAS_POR_ESPECIE = {
-    perro: ["perro", "perra"],
-    gato: ["gato", "gata"],
-    conejo: ["conejo"],
-    ave: ["ave"]
+const HEMBRAS = {
+    perra: { valor: "perro", texto: "Perra" },
+    gata: { valor: "gato", texto: "Gata" }
 };
 
-function ObtenerEspeciesServicio(textoEspecie) {
+function obtenerEspeciesServicio(textoEspecie) {
     const palabras = textoEspecie
         .toLowerCase()
         .split('/')
@@ -17,13 +15,13 @@ function ObtenerEspeciesServicio(textoEspecie) {
         return ESPECIES;
     }
 
-    const coincidencias = ESPECIES.filter((especie) =>
-        (PALABRAS_POR_ESPECIE[especie.valor] || []).some((palabra) =>
-            palabras.includes(palabra)
+    const opciones = palabras
+        .map((palabra) =>
+            HEMBRAS[palabra] || ESPECIES.find((especie) => especie.valor === palabra)
         )
-    );
+        .filter(Boolean);
 
-    return coincidencias.length > 0 ? coincidencias : ESPECIES;
+    return opciones.length > 0 ? opciones : ESPECIES;
 }
 
-export default ObtenerEspeciesServicio;
+export default obtenerEspeciesServicio;
