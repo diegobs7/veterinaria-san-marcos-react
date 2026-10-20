@@ -1,15 +1,20 @@
 function Selector(props) {
-    return(
-        <select className="form-select" id={props.id} required = {props.required}>
+    const claseValidacion = props.error ? 'is-invalid' : '';
 
-            <option value="">Seleccione una opcion</option>
+    return (
+        <select
+            className={`form-select ${claseValidacion} ${props.className || ''}`}
+            id={props.id}
+            value={props.value}
+            onChange={props.onChange}
+        >
+            <option value="">{props.textoDefecto || "Seleccione una opcion"}</option>
 
             {props.opciones.map((opcion, index) => (
                 <option key={index} value={opcion.valor}>
                     {opcion.texto}
                 </option>
-            ))}            
-
+            ))}
         </select>
     );
 }

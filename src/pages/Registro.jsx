@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+
 import TemplateRegistro from '../components/templates/TemplateRegistro';
 import { validarFormularioRegistro } from '../utils/validaciones';
+import { useTituloPagina } from '../Hooks/useTituloPagina';
 
 function Registro() {
+  useTituloPagina('Registro')
   const navigate = useNavigate();
+
 
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');

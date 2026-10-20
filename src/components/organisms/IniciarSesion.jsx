@@ -16,7 +16,7 @@ function IniciarSesion(props) {
                     value={props.correo}
                     onChange={props.onChangeCorreo}
                     error={props.errorCorreo}
-                    mensajeError = "Por favor ingresa un correo válido."
+                    mensajeError = {props.errorCorreo}
                 />
                 <CampoFormulario
                     id="password"
@@ -26,7 +26,7 @@ function IniciarSesion(props) {
                     value={props.contra}
                     onChange={props.onChangeContra}
                     error={props.errorContra}
-                    mensajeError = "La contraseña debe tener entre 6 a 10 caracteres."
+                    mensajeError = {props.errorContra}
                 />
 
                 <div className={`mt-3 text-center fw-bold ${props.claseMensaje}`}>

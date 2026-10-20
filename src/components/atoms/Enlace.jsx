@@ -1,9 +1,18 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
 function Enlace(props) {
+    const esNavLink = props.clasesExtras?.includes('nav-link');
+    const clasesBase = esNavLink ? '' : 'text-decoration-none text-primary fw-bold';
+
     return (
-        <Link to={props.to} className={`text-decoration-none text-primary fw-bold ${props.clasesExtras || ""}`}>
+        <NavLink
+            to={props.to}
+            className={({ isActive }) =>
+                `${clasesBase} ${props.clasesExtras || ""} ${esNavLink && isActive ? "active" : ""}`.trim()
+            }
+        >
             {props.texto}
-        </Link>
+        </NavLink>
     );
 }
 

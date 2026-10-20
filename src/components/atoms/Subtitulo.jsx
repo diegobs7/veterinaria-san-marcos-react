@@ -1,8 +1,10 @@
 function Subtitulo(props) {
+    const Etiqueta = props.nivel || 'h2';
+
     return (
-        <h2 className={props.clasesExtras}>
+        <Etiqueta className={props.clasesExtras}>
             {props.texto}
-        </h2>
+        </Etiqueta>
     );
 }
 
