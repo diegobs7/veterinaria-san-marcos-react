@@ -5,12 +5,13 @@ import Parrafo from '../components/atoms/Parrafo';
 import InfoServicio from '../components/organisms/InfoServicio';
 import TarjetaAgendarCita from '../components/organisms/TarjetaAgendarCita';
 import formatearPrecio from '../utils/FormatearPrecio';
-import SERVICIOS from '../data/Servicios.json';
+import { useServicios } from '../context/ServiciosContext';
 import ObtenerEspeciesServicio from '../utils/ObtenerEspeciesServicio';
 
 function DetalleServicio() {
     const { id } = useParams();
-    const servicio = SERVICIOS.find((s) => s.id === id);
+    const { obtener } = useServicios();
+    const servicio = obtener(id);
 
     if (!servicio) {
         return (
