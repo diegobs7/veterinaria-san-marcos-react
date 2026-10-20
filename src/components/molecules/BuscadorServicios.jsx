@@ -10,20 +10,26 @@ function BuscadorServicios(props) {
     return (
         <Row className="g-2 mb-4">
             <Col xs={12} md={7}>
+                <label className="visually-hidden" htmlFor="buscador-texto">
+                    Buscar servicio por nombre
+                </label>
                 <Input
+                    id="buscador-texto"
                     value={props.texto}
                     onChange={(evento) => props.onTexto(evento.target.value)}
                     placeholder="Buscar un servicio (ej: vacuna, cirugía)"
-                    ariaLabel="Buscar servicio por nombre"
                 />
             </Col>
             <Col xs={12} md={5}>
+                <label className="visually-hidden" htmlFor="buscador-categoria">
+                    Filtrar por categoría
+                </label>
                 <Selector
-                    valor={props.categoria}
-                    onCambio={props.onCategoria}
+                    id="buscador-categoria"
+                    value={props.categoria}
+                    onChange={(evento) => props.onCategoria(evento.target.value)}
                     opciones={opciones}
-                    textoVacio="Todas las categorías"
-                    ariaLabel="Filtrar por categoría"
+                    textoDefecto="Todas las categorías"
                 />
             </Col>
         </Row>

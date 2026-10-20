@@ -5,21 +5,24 @@ import Parrafo from '../components/atoms/Parrafo'
 import Icono from '../components/atoms/Icono'
 import BuscadorServicios from '../components/molecules/BuscadorServicios'
 import ListaServicios from '../components/organisms/ListaServicios'
-import servicios from '../data/servicios.json'
+import { useServicios } from '../context/ServiciosContext'
+import { useTituloPagina } from '../Hooks/useTituloPagina'
 import { ICONOS_CATEGORIA, obtenerCategorias } from '../utils/categorias'
 import { normalizar } from '../utils/texto'
 
 function Servicios() {
+    useTituloPagina('Servicios');
+
+    const { servicios } = useServicios();
     const [texto, setTexto] = useState('');
     const [categoria, setCategoria] = useState('');
 
     const categorias = obtenerCategorias(servicios);
 
-
     const buscado = normalizar(texto);
     const filtrados = servicios.filter(
         (s) =>
-            (normalizar(s.nombre).includes(buscado) || normalizar(s.categoria).includes(buscado)) &&
+            (normalizar(s.titulo).includes(buscado) || normalizar(s.categoria).includes(buscado)) &&
             (categoria === '' || s.categoria === categoria),
     );
 
