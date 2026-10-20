@@ -15,10 +15,6 @@ function Servicios() {
 
     const categorias = obtenerCategorias(servicios);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f87b6613a475fcf79fc063d6ad8ba46191ba3db7
     const buscado = normalizar(texto);
     const filtrados = servicios.filter(
         (s) =>
