@@ -1,10 +1,10 @@
 import Card from 'react-bootstrap/Card'
+import { Link } from 'react-router-dom'
 import Icono from '../atoms/Icono'
 import EtiquetaEspecie from '../atoms/EtiquetaEspecie'
 import { ICONOS_CATEGORIA } from '../../utils/categorias'
 import { formatearPrecio } from '../../utils/precios'
 
-// Molécula: presenta UN servicio del catálogo.
 function TarjetaServicio(props) {
     const servicio = props.servicio;
 
@@ -31,6 +31,14 @@ function TarjetaServicio(props) {
                     <span className="text-muted small">{servicio.duracion}</span>
                     <span className="fw-bold text-primary">{formatearPrecio(servicio.precio)}</span>
                 </div>
+
+                <Link
+                    to={`/servicios/${servicio.id}`}
+                    className="btn btn-outline-primary btn-sm mt-3"
+                    aria-label={`Ver detalle de ${servicio.titulo}`}
+                >
+                    Ver detalle
+                </Link>
             </Card.Body>
         </Card>
     );
