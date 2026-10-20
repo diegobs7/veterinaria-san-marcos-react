@@ -22,7 +22,7 @@ function Servicios() {
     const buscado = normalizar(texto);
     const filtrados = servicios.filter(
         (s) =>
-            (normalizar(s.nombre).includes(buscado) || normalizar(s.categoria).includes(buscado)) &&
+            (normalizar(s.titulo).includes(buscado) || normalizar(s.categoria).includes(buscado)) &&
             (categoria === '' || s.categoria === categoria),
     );
 

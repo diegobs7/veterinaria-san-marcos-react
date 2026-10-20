@@ -19,7 +19,7 @@ function TarjetaServicio(props) {
                 </div>
 
                 <Card.Title as="h4" className="h6">
-                    {servicio.nombre}
+                    {servicio.titulo}
                 </Card.Title>
 
                 {/* Solo se dibuja si el servicio trae observaciones */}
