@@ -89,3 +89,76 @@ body {
   background-color: #205c5a;
   color: #ffffff;
 }
+
+/* PANEL ADMIN */
+.admin-header {
+  background-color: #1b2738;
+}
+
+.logo-admin {
+  height: 80px;
+  width: 80px;
+  object-fit: contain;
+}
+
+.admin-menu {
+  background-color: #e2e8f0;
+}
+
+@media (min-width: 768px) {
+  .admin-menu {
+    width: 218px;
+    flex-shrink: 0;
+  }
+}
+
+.admin-menu .nav-link {
+  color: #1b2738;
+  border-bottom: 0;
+  border-radius: 0;
+  padding: 0.75rem 1.5rem;
+}
+
+.admin-menu .nav-link.active {
+  background-color: #1b2738;
+  color: #fff;
+  font-weight: bold;
+}
+
+.admin-cerrar {
+  display: block;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  color: #1b2738;
+  border-radius: 0;
+  padding: 0.75rem 1.5rem;
+}
+
+.admin-cerrar:hover {
+  color: #1b2738;
+  background-color: #d5dde8;
+}
+
+.admin-contenido {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.admin-tarjeta {
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.admin-boton {
+  background-color: #1b2738;
+  color: #fff;
+  border: 0;
+}
+
+.admin-boton:hover {
+  background-color: #2c3e57;
+  color: #fff;
+}
+/* FIN PANEL ADMIN */
