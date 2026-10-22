@@ -7,6 +7,7 @@ import { formatearPrecio } from '../../utils/precios'
 
 function TarjetaServicio(props) {
     const servicio = props.servicio;
+    const enOferta = servicio.descuento !== undefined;
 
     return (
         <Card className="h-100">
@@ -15,7 +16,10 @@ function TarjetaServicio(props) {
                     <span className="fs-4">
                         <Icono simbolo={ICONOS_CATEGORIA[servicio.categoria] ?? '🐾'} />
                     </span>
-                    <EtiquetaEspecie especie={servicio.especie} />
+                    <div className="d-flex gap-1">
+                        {enOferta && <span className="badge text-bg-danger">-{servicio.descuento}%</span>}
+                        <EtiquetaEspecie especie={servicio.especie} />
+                    </div>
                 </div>
 
                 <Card.Title as="h4" className="h6">
@@ -29,7 +33,20 @@ function TarjetaServicio(props) {
 
                 <div className="mt-auto d-flex justify-content-between align-items-end pt-2">
                     <span className="text-muted small">{servicio.duracion}</span>
-                    <span className="fw-bold text-primary">{formatearPrecio(servicio.precio)}</span>
+                    {enOferta ? (
+                        <span className="text-end">
+                            <s className="text-muted small d-block">
+                                <span className="visually-hidden">Precio normal </span>
+                                {formatearPrecio(servicio.precio)}
+                            </s>
+                            <span className="fw-bold text-primary">
+                                <span className="visually-hidden">Precio en oferta </span>
+                                {formatearPrecio(servicio.precioOferta)}
+                            </span>
+                        </span>
+                    ) : (
+                        <span className="fw-bold text-primary">{formatearPrecio(servicio.precio)}</span>
+                    )}
                 </div>
 
                 <Link
