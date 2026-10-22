@@ -14,19 +14,19 @@ function SeccionBlog(props) {
                         titulo="El eje intestino-riñón y la enfermedad renal crónica (ERC)"
                         fuente="Fuente: ACVS (Colegio Americano de Cirujanos Veterinarios)"
                         resumen="Estudios demuestran que la microbiota intestinal felina juega un rol crucial en la progresión de la ERC. El uso de prebióticos y probióticos ayuda a reducir toxinas."
-                        ruta="/detalle-blog-1"
+                        ruta="/blogs/1"
                     />
                 </div>
 
                 <div className="col-12 col-md-6 col-lg-4">
                     <ArticuloBlog
                         imagen={perrito}
-                        altImagen="perro recibiendo vacuna"
-                        categoria="Prevención"
-                        titulo="Calendario de vacunación canina 2026: Lo que debes saber"
-                        fuente="Fuente: Ministerio de Salud"
-                        resumen="Mantener las vacunas de tu perro al día no solo previene enfermedades mortales como el parvovirus, sino que también protege a tu familia."
-                        ruta="/detalle-blog-2"
+                        altImagen="Tratamiento de cáncer en perros"
+                        categoria="Oncología Canina"
+                        titulo="Uso de Toceranib en el tratamiento de mastocitomas caninos"
+                        fuente="Fuente: AVMA (Asociación Americana de Medicina Veterinaria)"
+                        resumen="El fosfato de toceranib (comercializado como Palladia) fue el primer fármaco aprobado por la FDA específicamente para el cáncer en perros. Es una terapia dirigida que bloquea el crecimiento de los vasos sanguíneos que alimentan a los tumores."
+                        ruta="/blogs/2"
                     />
                 </div>                       
             </div>
