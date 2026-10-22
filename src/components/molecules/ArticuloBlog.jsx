@@ -28,14 +28,16 @@ function ArticuloBlog(props) {
                 />
 
                 <Parrafo
-                    texto={props.fuente}
                     clasesExtras="card-subtitle text-muted small mb-3"
-                />
+                >
+                    {props.fuente}
+                </Parrafo>
 
                 <Parrafo
-                    texto={props.resumen}
                     clasesExtras="card-text text-secondary mb-4"
-                />
+                >
+                    {props.resumen}
+                </Parrafo>
 
                 <div className="mt-auto align-self-start">
                     <Boton

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "categoria": "Salud Felina",
+    "titulo": "El eje intestino-riñón y la enfermedad renal crónica (ERC)",
+    "fuente": "Fuente: ACVS (Colegio Americano de Cirujanos Veterinarios)",
+    "imagen": "images.jpg",
+    "altImagen": "Salud renal en gatos",
+    "parrafos": [
+      "La enfermedad renal crónica (ERC) es una de las condiciones más frecuentes en gatos mayores, y suele avanzar de forma silenciosa: los primeros síntomas (más sed, más orina, pérdida de peso gradual) muchas veces se confunden con el paso normal de la edad. Por eso el control veterinario periódico es clave para detectarla a tiempo.",
+      "Estudios recientes muestran que la microbiota intestinal — el conjunto de bacterias que vive naturalmente en el intestino del gato — tiene un rol activo en cómo progresa la ERC. Cuando el riñón filtra menos, algunas toxinas que normalmente se eliminan por orina terminan acumulándose en la sangre, y una microbiota desequilibrada puede empeorar ese proceso.",
+      "Ahí es donde entran los prebióticos y probióticos específicos: ayudan a mantener un equilibrio intestinal más sano, lo que en la práctica se traduce en menos toxinas urémicas circulando y una mejor calidad de vida para el gato. No reemplazan el tratamiento médico habitual, pero sí son un complemento que cada vez se usa con más frecuencia.",
+      "Si tu gato es mayor de 7 años, o ya fue diagnosticado con ERC, te recomendamos agendar un control renal con nuestro equipo para evaluar su caso puntual antes de agregar cualquier suplemento a su dieta."
+    ],
+    "enlace": {
+      "texto": "Visitar centro de estudios",
+      "url": "https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center"
+    }
+  },
+  {
+    "id": "2",
+    "categoria": "Oncología Canina",
+    "titulo": "Uso de Toceranib en el tratamiento de mastocitomas caninos",
+    "fuente": "Fuente: AVMA (Asociación Americana de Medicina Veterinaria)",
+    "imagen": "perrito-scaled.jpg",
+    "altImagen": "Tratamiento de cáncer en perros",
+    "parrafos": [
+      "El fosfato de toceranib (comercializado como Palladia) fue el primer fármaco aprobado por la FDA específicamente para el cáncer en perros. A diferencia de la quimioterapia tradicional, es una terapia dirigida: en vez de atacar de forma general a las células que se dividen rápido, bloquea puntualmente el crecimiento de los vasos sanguíneos que alimentan al tumor, un proceso conocido como angiogénesis.",
+      "Los mastocitomas son uno de los tumores de piel más frecuentes en perros, y su comportamiento puede variar mucho de un caso a otro: algunos crecen lento y se controlan con cirugía, mientras que otros son más agresivos y requieren un tratamiento sistémico como este. Por eso el diagnóstico temprano y una biopsia adecuada siguen siendo el primer paso antes de decidir cualquier terapia.",
+      "Como con cualquier tratamiento oncológico, el seguimiento veterinario es fundamental: se debe monitorear la función hepática y renal del paciente durante el tratamiento, y ajustar la dosis según cómo responda cada perro en particular. Si tienes dudas sobre el caso de tu mascota, la recomendación siempre es agendar una consulta con nuestro equipo antes de iniciar cualquier terapia por tu cuenta."
+    ],
+    "enlace": {
+      "texto": "Visitar fuente oficial",
+      "url": "https://www.avma.org/"
+    }
+  }
+]
