@@ -2,7 +2,8 @@ import { useState } from "react";
 import TemplateLogin from "../components/templates/TemplateLogin";
 import { useNavigate } from "react-router-dom";
 import { useTituloPagina } from "../Hooks/useTituloPagina";
-import ValidarLogin from "../utils/ValidarLogin";
+import  validarLogin  from "../utils/validaciones/ValidarLogin_Registro";
+import { iniciarSesion } from "../utils/sesionAdmin";
 
 function Login() {
     useTituloPagina("Iniciar sesion");
@@ -19,7 +20,7 @@ function Login() {
 const manejarSubmit = (e) => {
     e.preventDefault();
 
-    const errores = ValidarLogin({ correo, contra });
+    const errores = validarLogin({ correo, contra });
 
     setErrorCorreo(errores.correo || "");
     setErrorContra(errores.contra || "");
@@ -27,7 +28,8 @@ const manejarSubmit = (e) => {
     if (Object.keys(errores).length === 0) {
         setMensajeLogin("Verificacion exitosa...");
         setClaseMensaje("text-success");
-        navigate("/");
+        const sesion = iniciarSesion(correo.trim());
+        navigate(sesion.rol === "Administrador" ? "/admin" : "/");
     } else {
         setMensajeLogin("");
     }

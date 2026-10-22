@@ -4,7 +4,7 @@ import Boton from '../atoms/Boton';
 import Parrafo from '../atoms/Parrafo';
 import CampoCalificacion from '../molecules/CampoCalificacion';
 import CampoTextArea from '../molecules/CampoTextArea';
-import ValidarEvaluacion from '../../utils/ValidarEvaluacion';
+import ValidarEvaluacion from '../../utils/validaciones/ValidarEvaluacion';
 import { ETIQUETAS_CALIFICACION } from '../../data/OpcionesEvaluacion';
 
 const VALORES_INICIALES = {
