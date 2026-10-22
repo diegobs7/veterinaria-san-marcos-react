@@ -9,6 +9,7 @@ import { useServicios } from '../context/ServiciosContext'
 import { useTituloPagina } from '../Hooks/useTituloPagina'
 import { ICONOS_CATEGORIA, obtenerCategorias } from '../utils/categorias'
 import { normalizar } from '../utils/texto'
+import Enlace from '../components/atoms/Enlace'
 
 function Servicios() {
     useTituloPagina('Servicios');
@@ -29,9 +30,13 @@ function Servicios() {
     return (
         <Container className="mt-5">
             <Subtitulo texto="Servicios y precios" clasesExtras="h3 mb-1" />
-            <Parrafo clasesExtras="text-muted mb-4">
+            <Parrafo clasesExtras="text-muted mb-2">
                 Los precios son referenciales y se confirman al agendar tu hora.
             </Parrafo>
+             <div className="d-flex gap-3 mb-4">
+                <Enlace to="/categorias" texto="Ver por categorías" />
+                <Enlace to="/ofertas" texto="Ver ofertas" />
+            </div>
 
             <BuscadorServicios
                 texto={texto}
