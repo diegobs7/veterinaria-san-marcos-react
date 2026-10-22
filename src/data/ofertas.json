@@ -1,0 +1,8 @@
+[
+  { "servicioId": "va001", "descuento": 10 },
+  { "servicioId": "va002", "descuento": 15 },
+  { "servicioId": "de001", "descuento": 10 },
+  { "servicioId": "ci002", "descuento": 10 },
+  { "servicioId": "ci004", "descuento": 10 },
+  { "servicioId": "ot003", "descuento": 20 }
+]
