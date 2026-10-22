@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 import TemplateRegistro from '../components/templates/TemplateRegistro';
-import { validarFormularioRegistro } from '../utils/validaciones';
+import {validarNombre, validarCorreo, validarContra,validarRepetirContra} from '../utils/validaciones/ValidarLogin_Registro';
 import { useTituloPagina } from '../Hooks/useTituloPagina';
 
 function Registro() {
   useTituloPagina('Registro')
   const navigate = useNavigate();
-
 
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
@@ -19,26 +17,26 @@ function Registro() {
   const [mensajeRegistro, setMensajeRegistro] = useState('');
   const [claseMensaje, setClaseMensaje] = useState('');
 
-  
   const [errores, setErrores] = useState({
-    errorNombre: false,
-    errorCorreo: false,
-    errorContra: false,
-    errorRepetirContra: false,
+    errorNombre: '',
+    errorCorreo: '',
+    errorContra: '',
+    errorRepetirContra: '',
   });
 
   const manejarSubmit = (e) => {
     e.preventDefault();
 
-   
-    const { esValido, errores: nuevosErrores } = validarFormularioRegistro({
-      nombre,
-      correo,
-      contra,
-      repetirContra,
-    });
+    const nuevosErrores = {
+      errorNombre: validarNombre(nombre),
+      errorCorreo: validarCorreo(correo),
+      errorContra: validarContra(contra),
+      errorRepetirContra: validarRepetirContra(contra, repetirContra),
+    };
 
     setErrores(nuevosErrores);
+
+    const esValido = Object.values(nuevosErrores).every((mensaje) => mensaje === '');
 
     if (esValido) {
       setMensajeRegistro("¡Registro exitoso!");

@@ -17,7 +17,7 @@ function RegistroUsuario(props) {
                     value={props.nombre}
                     onChange={props.onChangeNombre}
                     error={props.errorNombre}
-                    mensajeError="Ingrese un nombre válido (mínimo 3 caracteres)."
+                    mensajeError={props.errorNombre}
                 />
 
                 <CampoFormulario 
@@ -28,18 +28,18 @@ function RegistroUsuario(props) {
                     value={props.correo}
                     onChange={props.onChangeCorreo}
                     error={props.errorCorreo}
-                    mensajeError="Por favor ingresa un correo válido."
+                    mensajeError={props.errorCorreo}
                 />
 
                 <CampoFormulario 
                     id="password"
                     textoLabel="Contraseña"
                     tipo="password"
-                    placeholder="4 a 10 caracteres"
+                    placeholder="6 a 10 caracteres"
                     value={props.contra}
                     onChange={props.onChangeContra}
                     error={props.errorContra}
-                    mensajeError="La contraseña debe tener entre 4 a 10 caracteres."
+                    mensajeError={props.errorContra}
                 />
 
                 <CampoFormulario 
@@ -50,7 +50,7 @@ function RegistroUsuario(props) {
                     value={props.repetirContra}
                     onChange={props.onChangeRepetirContra}
                     error={props.errorRepetirContra}
-                    mensajeError="Las contraseñas no coinciden."
+                    mensajeError={props.errorRepetirContra}
                 />
 
                 <div className={`mt-3 text-center fw-bold ${props.claseMensaje}`}>

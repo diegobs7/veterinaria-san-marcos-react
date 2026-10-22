@@ -3,7 +3,7 @@ import Subtitulo from "../atoms/Subtitulo";
 import Boton from "../atoms/Boton";
 import CampoFormulario from "../molecules/CampoFormulario";
 import CampoSelector from "../molecules/CampoSelector";
-import validarReserva from "../../utils/ValidarReserva";
+import validarReserva from "../../utils/validaciones/ValidarReserva";
 import { HORARIOS } from "../../data/OpcionesReserva";
 import Parrafo from '../atoms/Parrafo';
 
