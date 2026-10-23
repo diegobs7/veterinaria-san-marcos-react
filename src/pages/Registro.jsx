@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import TemplateRegistro from '../components/templates/TemplateRegistro';
-import {validarNombre, validarCorreo, validarContra,validarRepetirContra} from '../utils/validaciones/ValidarLogin_Registro';
 import { useTituloPagina } from '../Hooks/useTituloPagina';
+import {validarNombre, validarCorreo, validarContra, validarRepetirContra, validarCorreoDisponible} from '../utils/validaciones/ValidarLogin_Registro';
+import { buscarUsuarioPorCorreo, registrarUsuario } from '../services/usuarioService';
 
 function Registro() {
   useTituloPagina('Registro')
@@ -24,7 +25,7 @@ function Registro() {
     errorRepetirContra: '',
   });
 
-  const manejarSubmit = (e) => {
+const manejarSubmit = (e) => {
     e.preventDefault();
 
     const nuevosErrores = {
@@ -34,18 +35,23 @@ function Registro() {
       errorRepetirContra: validarRepetirContra(contra, repetirContra),
     };
 
+    if (nuevosErrores.errorCorreo === '') {
+      nuevosErrores.errorCorreo = validarCorreoDisponible(buscarUsuarioPorCorreo(correo));
+    }
+
     setErrores(nuevosErrores);
 
     const esValido = Object.values(nuevosErrores).every((mensaje) => mensaje === '');
 
     if (esValido) {
+      registrarUsuario({ nombre, correo, contra });
       setMensajeRegistro("¡Registro exitoso!");
       setClaseMensaje("text-success");
       navigate("/login");
     } else {
       setMensajeRegistro("");
     }
-  };
+};
 
   return (
     <TemplateRegistro
