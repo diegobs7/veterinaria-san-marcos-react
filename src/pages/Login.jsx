@@ -2,7 +2,8 @@ import { useState } from "react";
 import TemplateLogin from "../components/templates/TemplateLogin";
 import { useNavigate } from "react-router-dom";
 import { useTituloPagina } from "../Hooks/useTituloPagina";
-import  validarLogin  from "../utils/validaciones/ValidarLogin_Registro";
+import validarLogin, { validarCredenciales } from "../utils/validaciones/ValidarLogin_Registro";
+import { buscarUsuarioPorCorreo } from "../services/usuarioService";
 import { iniciarSesion } from "../utils/sesionAdmin";
 
 function Login() {
@@ -21,6 +22,17 @@ const manejarSubmit = (e) => {
     e.preventDefault();
 
     const errores = validarLogin({ correo, contra });
+
+    if (!errores.correo) {
+        const usuario = buscarUsuarioPorCorreo(correo);
+        const erroresCredenciales = validarCredenciales(usuario, contra);
+
+        if (erroresCredenciales.correo) {
+            errores.correo = erroresCredenciales.correo;
+        } else if (!errores.contra && erroresCredenciales.contra) {
+            errores.contra = erroresCredenciales.contra;
+        }
+    }
 
     setErrorCorreo(errores.correo || "");
     setErrorContra(errores.contra || "");

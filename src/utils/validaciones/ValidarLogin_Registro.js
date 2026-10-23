@@ -54,6 +54,21 @@ export function validarRepetirContra(contra, repetida) {
     return "";
 }
 
+export function validarCredenciales(usuario, contra) {
+    const errores = {};
+
+    if (!usuario) {
+        errores.correo = "No existe una cuenta con ese correo. Regístrate para ingresar.";
+    } else if (usuario.contra !== contra.trim()) {
+        errores.contra = "La contraseña es incorrecta.";
+    }
+
+    return errores;
+}
+
+export function validarCorreoDisponible(usuarioExistente) {
+    return usuarioExistente ? "Ya existe una cuenta con este correo." : "";
+}
 
 
 function validarLogin(valores) {

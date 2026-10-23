@@ -1,25 +1,26 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import './App.css';
-import './index.css';
-import Login from './pages/Login';
-import Inicio from './pages/Inicio';
-import Contacto from './pages/Contacto';
-import Registro from './pages/Registro'
+import "./App.css";
+import "./index.css";
+import Login from "./pages/Login";
+import Inicio from "./pages/Inicio";
+import Contacto from "./pages/Contacto";
+import Registro from "./pages/Registro";
 import Blog from "./pages/Blog";
-import DetalleBlog from './pages/DetalleBlog';
-import Servicios from './pages/Servicios';
-import DetalleServicio from './pages/DetalleServicio';
-import Evaluacion from './pages/Evaluacion';
-import Admin from './pages/Admin';
-import Categorias from './pages/Categorias';
-import Categoria from './pages/Categoria';
-import Ofertas from './pages/Ofertas';
-import Nosotros from './pages/Nosotros';
+import DetalleBlog from "./pages/DetalleBlog";
+import Servicios from "./pages/Servicios";
+import DetalleServicio from "./pages/DetalleServicio";
+import Evaluacion from "./pages/Evaluacion";
+import Admin from "./pages/Admin";
+import Categorias from "./pages/Categorias";
+import Categoria from "./pages/Categoria";
+import Ofertas from "./pages/Ofertas";
+import Nosotros from "./pages/Nosotros";
+import Citas from "./pages/Citas";
 
-import Footer from './components/organisms/Footer';
-import Navbar from './components/organisms/NavBar';
+import Footer from "./components/organisms/Footer";
+import Navbar from "./components/organisms/NavBar";
 import LogoTitulo from "./components/molecules/LogoTitulo";
-import { obtenerSesion } from './utils/sesionAdmin';
+import { obtenerSesion } from "./utils/sesionAdmin";
 
 function SitioPublico() {
   return (
@@ -42,6 +43,14 @@ function SitioPublico() {
           <Route path="/categorias/:slug" element={<Categoria />} />
           <Route path="/ofertas" element={<Ofertas />} />
           <Route path="/nosotros" element={<Nosotros />} />
+          <Route
+            path="/citas"
+            element={
+              <SoloCliente>
+                <Citas />
+              </SoloCliente>
+            }
+          />
         </Routes>
       </main>
       <Footer />
@@ -52,7 +61,13 @@ function SitioPublico() {
 function SoloAdmin(props) {
   const usuario = obtenerSesion();
   if (!usuario) return <Navigate to="/login" replace />;
-  if (usuario.rol !== 'Administrador') return <Navigate to="/" replace />;
+  if (usuario.rol !== "Administrador") return <Navigate to="/" replace />;
+  return props.children;
+}
+function SoloCliente(props) {
+  const usuario = obtenerSesion();
+  if (!usuario) return <Navigate to="/login" replace />;
+  if (usuario.rol === "Administrador") return <Navigate to="/admin" replace />;
   return props.children;
 }
 
@@ -60,11 +75,18 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/admin" element={<SoloAdmin><Admin /></SoloAdmin>} />
+        <Route
+          path="/admin"
+          element={
+            <SoloAdmin>
+              <Admin />
+            </SoloAdmin>
+          }
+        />
         <Route path="/*" element={<SitioPublico />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
-export default App
+export default App;
