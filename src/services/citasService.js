@@ -1,22 +1,36 @@
+const CLAVE = 'solicitudes';
+
+function leer() {
+    try {
+        return JSON.parse(localStorage.getItem(CLAVE)) ?? [];
+    } catch {
+        return [];
+    }
+}
+
+function guardar(lista) {
+    localStorage.setItem(CLAVE, JSON.stringify(lista));
+}
+
 export const guardarCita = (nuevaCita) => {
-    const citas = JSON.parse(localStorage.getItem('citas_clinica')) || [];
-    
-    nuevaCita.id = Date.now().toString(); 
-    
-    citas.push(nuevaCita);
-    localStorage.setItem('citas_clinica', JSON.stringify(citas));
-    return { success: true, message: 'Cita agendada con éxito.' };
+    const cita = {
+        ...nuevaCita,
+        id: Date.now().toString(),
+        estado: 'Pendiente',
+        creadaEn: new Date().toISOString(),
+    };
+
+    guardar([...leer(), cita]);
+    return { success: true, message: 'Solicitud de cita enviada.' };
 };
 
 export const obtenerCitasUsuario = (correoUsuario) => {
-    const citas = JSON.parse(localStorage.getItem('citas_clinica')) || [];
-    return citas.filter(cita => cita.correo === correoUsuario);
+    return leer().filter((cita) => cita.correo === correoUsuario);
 };
 
-
-export const cancelarCita = (idCita) => {
-    let citas = JSON.parse(localStorage.getItem('citas_clinica')) || [];
-    citas = citas.filter(cita => cita.id !== idCita);
-    localStorage.setItem('citas_clinica', JSON.stringify(citas));
+export const cambiarEstadoCita = (idCita, estado) => {
+    guardar(leer().map((cita) => (cita.id === idCita ? { ...cita, estado } : cita)));
     return { success: true };
 };
+
+export const cancelarCita = (idCita) => cambiarEstadoCita(idCita, 'Cancelada');

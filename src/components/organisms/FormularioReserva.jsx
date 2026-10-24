@@ -1,21 +1,21 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import Subtitulo from "../atoms/Subtitulo";
 import Boton from "../atoms/Boton";
+import Enlace from "../atoms/Enlace";
+import Parrafo from "../atoms/Parrafo";
 import CampoFormulario from "../molecules/CampoFormulario";
 import CampoSelector from "../molecules/CampoSelector";
-
 import ModalConfirmacion from "../molecules/ModalConfirmacion";
 import validarReserva from "../../utils/validaciones/ValidarReserva";
 import { HORARIOS } from "../../data/OpcionesReserva";
-import Parrafo from '../atoms/Parrafo';
-
+import { filtrarMascotasCompatibles, crearOpcionesMascotas } from "../../utils/MascotasReserva";
 import { obtenerSesion } from "../../utils/sesionAdmin";
 import { guardarCita } from "../../services/citasService";
+import { listarMascotasDeUsuario } from "../../services/mascotaService";
 
 const VALORES_INICIALES = {
-    nombreMascota: '',
-    especie: '',
+    mascotaId: '',
     fecha: '',
     horario: ''
 };
@@ -24,10 +24,14 @@ function FormularioReserva(props) {
     const [valores, setValores] = useState(VALORES_INICIALES);
     const [errores, setErrores] = useState({});
     const [mensajeReserva, setMensajeReserva] = useState("");
-    
     const [modalLoginAbierto, setModalLoginAbierto] = useState(false);
-    
+
     const navigate = useNavigate();
+
+    const sesion = obtenerSesion();
+    const mascotasCompatibles = sesion
+        ? filtrarMascotasCompatibles(listarMascotasDeUsuario(sesion.correo), props.especies)
+        : [];
 
     const manejarCambio = (campo) => (e) => {
         setValores({ ...valores, [campo]: e.target.value });
@@ -38,22 +42,23 @@ function FormularioReserva(props) {
     const manejarSubmit = (e) => {
         e.preventDefault();
 
+        if (!sesion) {
+            setModalLoginAbierto(true);
+            return;
+        }
+
         const erroresValidacion = validarReserva(valores);
         setErrores(erroresValidacion);
 
         if (Object.keys(erroresValidacion).length === 0) {
-            const sesion = obtenerSesion();
-            
-            if (!sesion) {
-                setModalLoginAbierto(true);
-                return;
-            }
+            const mascota = mascotasCompatibles.find((m) => m.id === valores.mascotaId);
 
             const nuevaCita = {
                 correo: sesion.correo,
-                servicio: props.nombreServicio || "Consulta Veterinaria", 
-                mascota: valores.nombreMascota,
-                especie: valores.especie,
+                servicio: props.nombreServicio || "Consulta Veterinaria",
+                mascotaId: mascota.id,
+                mascota: mascota.nombre,
+                especie: mascota.especie,
                 fecha: valores.fecha,
                 hora: valores.horario
             };
@@ -61,7 +66,7 @@ function FormularioReserva(props) {
             const resultado = guardarCita(nuevaCita);
 
             if (resultado.success) {
-                setMensajeReserva("¡Reserva confirmada! Visita la pestaña 'Mis citas' para verla.");
+                setMensajeReserva("Solicitud enviada. La clínica confirmará tu hora; revisa el estado en 'Mis citas'.");
                 setValores(VALORES_INICIALES);
             }
         } else {
@@ -83,26 +88,23 @@ function FormularioReserva(props) {
             <form onSubmit={manejarSubmit} noValidate>
                 <Subtitulo nivel="h2" texto="Agendar una cita" clasesExtras="h4 mb-3" />
 
-                <CampoFormulario
-                    id="nombre-mascota"
-                    textoLabel="Nombre de la mascota"
-                    placeholder="Ej: Fido"
-                    value={valores.nombreMascota}
-                    onChange={manejarCambio("nombreMascota")}
-                    error={errores.nombreMascota}
-                    mensajeError={errores.nombreMascota}
+                <CampoSelector
+                    id="mascota-cita"
+                    textoLabel="Mascota"
+                    textoDefecto="Selecciona una mascota"
+                    opciones={crearOpcionesMascotas(mascotasCompatibles)}
+                    value={valores.mascotaId}
+                    onChange={manejarCambio("mascotaId")}
+                    error={errores.mascotaId}
+                    mensajeError={errores.mascotaId}
                 />
 
-                <CampoSelector
-                    id="tipo-especie"
-                    textoLabel="Especie"
-                    textoDefecto="Selecciona una especie"
-                    opciones={props.especies}
-                    value={valores.especie}
-                    onChange={manejarCambio('especie')}
-                    error={errores.especie}
-                    mensajeError={errores.especie}
-                />
+                {sesion && mascotasCompatibles.length === 0 && (
+                    <Parrafo clasesExtras="text-muted small mb-3">
+                        No tienes mascotas registradas compatibles con este servicio.{" "}
+                        <Enlace to="/perfil" texto="Agrega una desde tu perfil" />
+                    </Parrafo>
+                )}
 
                 <CampoFormulario
                     id="fecha-cita"
@@ -132,7 +134,7 @@ function FormularioReserva(props) {
                 )}
             </form>
 
-            <ModalConfirmacion 
+            <ModalConfirmacion
                 abierto={modalLoginAbierto}
                 titulo="Inicio de sesión requerido"
                 mensaje="Para agendar una cita médica para tu mascota, necesitas iniciar sesión en tu cuenta de cliente."

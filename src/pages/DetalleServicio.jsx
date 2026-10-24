@@ -43,6 +43,7 @@ function DetalleServicio() {
                     monto={formatearPrecio(servicio.precio)}
                     duracion={servicio.duracion}
                     especies={ObtenerEspeciesServicio(servicio.especie)}
+                    nombreServicio={servicio.titulo}
                 />
             }
         />
