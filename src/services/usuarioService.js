@@ -1,6 +1,12 @@
 import usuariosIniciales from "../data/usuarios.json";
 
 const CLAVE = "usuarios";
+const oyentes = new Set();
+
+export function suscribirCambiosUsuario(callback) {
+    oyentes.add(callback);
+    return () => oyentes.delete(callback);
+}
 
 function leer() {
     const guardado = localStorage.getItem(CLAVE);
@@ -20,6 +26,7 @@ function leer() {
 
 function guardar(lista) {
     localStorage.setItem(CLAVE, JSON.stringify(lista));
+    oyentes.forEach((notificar) => notificar());
 }
 
 export function buscarUsuarioPorCorreo(correo) {
