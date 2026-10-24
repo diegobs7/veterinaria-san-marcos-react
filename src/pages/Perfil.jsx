@@ -5,8 +5,23 @@ import TemplatePerfil from '../components/templates/TemplatePerfil';
 import { useTituloPagina } from '../Hooks/useTituloPagina';
 import { obtenerSesion } from '../utils/sesionAdmin';
 import { buscarUsuarioPorCorreo, actualizarUsuario } from '../services/usuarioService';
-import { actualizarDatosDueno } from '../services/mascotaService';
+import {
+    actualizarDatosDueno,
+    listarMascotasDeUsuario,
+    registrarMascota
+} from '../services/mascotaService';
 import validarPerfil, { validarFoto } from '../utils/validaciones/ValidarPerfil';
+import { validarMascota } from '../utils/validaciones/ValidarLogin_Registro';
+
+const VALORES_INICIALES_MASCOTA = {
+    nombreMascota: '',
+    especie: '',
+    raza: '',
+    sexo: '',
+    fechaNacimiento: '',
+    comentario: '',
+    esterilizada: 'no',
+};
 
 function Perfil() {
     useTituloPagina('Mi perfil');
@@ -23,6 +38,14 @@ function Perfil() {
     const [errores, setErrores] = useState({});
     const [mensajePerfil, setMensajePerfil] = useState('');
 
+    const [mascotas, setMascotas] = useState(() =>
+        sesion ? listarMascotasDeUsuario(sesion.correo) : []
+    );
+    const [mostrarFormularioMascota, setMostrarFormularioMascota] = useState(false);
+    const [valoresMascota, setValoresMascota] = useState(VALORES_INICIALES_MASCOTA);
+    const [erroresMascota, setErroresMascota] = useState({});
+    const [mensajeMascota, setMensajeMascota] = useState('');
+
     if (!usuario) {
         return <Navigate to="/login" replace />;
     }
@@ -34,24 +57,24 @@ function Perfil() {
     };
 
     const manejarFoto = (e) => {
-    const archivo = e.target.files[0];
-    if (!archivo) {
-        return;
-    }
+        const archivo = e.target.files[0];
+        if (!archivo) {
+            return;
+        }
 
-    const mensaje = validarFoto(archivo);
-    if (mensaje) {
-        setErrores({ ...errores, foto: mensaje });
-        return;
-    }
+        const mensaje = validarFoto(archivo);
+        if (mensaje) {
+            setErrores({ ...errores, foto: mensaje });
+            return;
+        }
 
-    const lector = new FileReader();
-    lector.onload = () => {
-        setValores((actuales) => ({ ...actuales, foto: lector.result }));
-        setErrores((actuales) => ({ ...actuales, foto: '' }));
-        setMensajePerfil('');
-    };
-    lector.readAsDataURL(archivo);
+        const lector = new FileReader();
+        lector.onload = () => {
+            setValores((actuales) => ({ ...actuales, foto: lector.result }));
+            setErrores((actuales) => ({ ...actuales, foto: '' }));
+            setMensajePerfil('');
+        };
+        lector.readAsDataURL(archivo);
     };
 
     const manejarSubmit = (e) => {
@@ -70,23 +93,74 @@ function Perfil() {
                 telefono: valores.telefono.trim(),
                 direccion: valores.direccion.trim(),
                 foto: valores.foto,
-        });
-        actualizarDatosDueno(usuario.correo, { telefonoDueno: valores.telefono.trim() });
-        setMensajePerfil('Tus datos se guardaron correctamente.');
+            });
+            actualizarDatosDueno(usuario.correo, { telefonoDueno: valores.telefono.trim() });
+            setMascotas(listarMascotasDeUsuario(usuario.correo));
+            setMensajePerfil('Tus datos se guardaron correctamente.');
         } else {
-        setMensajePerfil('');
+            setMensajePerfil('');
+        }
+    };
+
+    const alternarFormularioMascota = () => {
+        setMostrarFormularioMascota((actual) => !actual);
+        setValoresMascota(VALORES_INICIALES_MASCOTA);
+        setErroresMascota({});
+        setMensajeMascota('');
+    };
+
+    const manejarCambioMascota = (campo) => (e) => {
+        setValoresMascota({ ...valoresMascota, [campo]: e.target.value });
+        setErroresMascota({ ...erroresMascota, [campo]: '' });
+        setMensajeMascota('');
+    };
+
+    const manejarSubmitMascota = (e) => {
+        e.preventDefault();
+
+        const nuevosErrores = validarMascota(valoresMascota);
+        setErroresMascota(nuevosErrores);
+
+        if (Object.keys(nuevosErrores).length === 0) {
+            registrarMascota({
+                correoDueno: usuario.correo.trim(),
+                rutDueno: (usuario.rut ?? '').trim(),
+                telefonoDueno: valores.telefono.trim(),
+                nombre: valoresMascota.nombreMascota.trim(),
+                especie: valoresMascota.especie,
+                raza: valoresMascota.raza.trim(),
+                sexo: valoresMascota.sexo,
+                fechaNacimiento: valoresMascota.fechaNacimiento,
+                comentario: valoresMascota.comentario.trim(),
+                esterilizada: valoresMascota.esterilizada,
+            });
+
+            setMascotas(listarMascotasDeUsuario(usuario.correo));
+            setValoresMascota(VALORES_INICIALES_MASCOTA);
+            setMostrarFormularioMascota(false);
+            setMensajeMascota('Mascota registrada correctamente.');
+        } else {
+            setMensajeMascota('');
         }
     };
 
     return (
         <TemplatePerfil
-        usuario={usuario}
-        valores={valores}
-        errores={errores}
-        onCambio={manejarCambio}
-        onCambioFoto={manejarFoto}
-        mensajePerfil={mensajePerfil}
-        manejarSubmit={manejarSubmit}
+            usuario={usuario}
+            valores={valores}
+            errores={errores}
+            onCambio={manejarCambio}
+            onCambioFoto={manejarFoto}
+            mensajePerfil={mensajePerfil}
+            manejarSubmit={manejarSubmit}
+            mascotas={mascotas}
+            mostrarFormularioMascota={mostrarFormularioMascota}
+            onAlternarFormularioMascota={alternarFormularioMascota}
+            valoresMascota={valoresMascota}
+            erroresMascota={erroresMascota}
+            onCambioMascota={manejarCambioMascota}
+            manejarSubmitMascota={manejarSubmitMascota}
+            mensajeMascota={mensajeMascota}
         />
     );
 }

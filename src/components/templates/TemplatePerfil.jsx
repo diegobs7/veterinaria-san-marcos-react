@@ -1,5 +1,6 @@
 import Titulo from '../atoms/Titulo';
 import FormularioPerfil from '../organisms/FormularioPerfil';
+import ListaMascotasPerfil from '../organisms/ListaMascotasPerfil';
 
 function TemplatePerfil(props) {
     return (
@@ -15,6 +16,16 @@ function TemplatePerfil(props) {
                         onCambioFoto={props.onCambioFoto}
                         mensajePerfil={props.mensajePerfil}
                         manejarSubmit={props.manejarSubmit}
+                    />
+                    <ListaMascotasPerfil
+                        mascotas={props.mascotas}
+                        mostrarFormulario={props.mostrarFormularioMascota}
+                        onAlternarFormulario={props.onAlternarFormularioMascota}
+                        valoresMascota={props.valoresMascota}
+                        erroresMascota={props.erroresMascota}
+                        onCambioMascota={props.onCambioMascota}
+                        manejarSubmitMascota={props.manejarSubmitMascota}
+                        mensajeMascota={props.mensajeMascota}
                     />
                 </div>
             </div>
