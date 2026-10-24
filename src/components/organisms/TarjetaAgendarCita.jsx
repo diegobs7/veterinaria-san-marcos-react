@@ -11,7 +11,7 @@ function TarjetaAgendarCita(props) {
                     ⏱ Duración aprox. {props.duracion}
                 </Parrafo>
 
-                <FormularioReserva especies={props.especies} />
+                <FormularioReserva especies={props.especies} nombreServicio={props.nombreServicio} />
             </div>
         </aside>
     );
