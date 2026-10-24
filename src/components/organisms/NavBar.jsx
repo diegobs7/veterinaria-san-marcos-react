@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Subtitulo from '../atoms/Subtitulo';
 import Boton from '../atoms/Boton';
+import Enlace from '../atoms/Enlace';
+import Icono from '../atoms/Icono';
 import BotonHamburguesa from '../molecules/BotonHamburguesa';
 import ListaEnlaces from '../molecules/ListaEnlaces';
 import { obtenerSesion, cerrarSesion } from '../../utils/sesionAdmin';
@@ -91,9 +93,10 @@ function NavBar() {
                             <div className="col-12 col-lg-4 d-flex justify-content-lg-end align-items-center gap-3">
                                 {usuarioActivo ? (
                                     <>
-                                        <span className="text-white fw-bold d-none d-lg-inline">
-                                            Hola, {usuarioActivo.correo.split('@')[0]}
-                                        </span>
+                                        <Enlace
+                                            to="/perfil"
+                                            texto={<><Icono simbolo="👤" />{usuarioActivo.correo.split('@')[0]}</>}
+                                        />
                                         <Boton 
                                             tipoBoton="button"
                                             texto="Cerrar sesión"
