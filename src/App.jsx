@@ -16,6 +16,7 @@ import Categoria from "./pages/Categoria";
 import Ofertas from "./pages/Ofertas";
 import Nosotros from "./pages/Nosotros";
 import Citas from "./pages/Citas";
+import Perfil from './pages/Perfil';
 
 import Footer from "./components/organisms/Footer";
 import Navbar from "./components/organisms/NavBar";
@@ -43,14 +44,8 @@ function SitioPublico() {
           <Route path="/categorias/:slug" element={<Categoria />} />
           <Route path="/ofertas" element={<Ofertas />} />
           <Route path="/nosotros" element={<Nosotros />} />
-          <Route
-            path="/citas"
-            element={
-              <SoloCliente>
-                <Citas />
-              </SoloCliente>
-            }
-          />
+          <Route path="/citas" element={<SoloCliente><Citas /></SoloCliente>}/>
+          <Route path="/perfil" element={<Perfil />} />
         </Routes>
       </main>
       <Footer />
