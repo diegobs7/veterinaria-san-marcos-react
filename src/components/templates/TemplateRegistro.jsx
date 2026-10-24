@@ -1,27 +1,16 @@
+import Titulo from '../atoms/Titulo';
 import RegistroUsuario from '../organisms/RegistroUsuario';
 
 function TemplateRegistro(props) {
     return (
         <div className="container mt-5">
+            <Titulo texto="Registro" />
             <div className="row justify-content-center">
-                <div className="col-12 col-md-6 col-lg-5">
+                <div className="col-12 col-lg-10">
                     <RegistroUsuario
-                        nombre={props.nombre}
-                        onChangeNombre={props.onChangeNombre}
-                        errorNombre={props.errorNombre}
-
-                        correo={props.correo}
-                        onChangeCorreo={props.onChangeCorreo}
-                        errorCorreo={props.errorCorreo}
-
-                        contra={props.contra}
-                        onChangeContra={props.onChangeContra}
-                        errorContra={props.errorContra}
-
-                        repetirContra={props.repetirContra}
-                        onChangeRepetirContra={props.onChangeRepetirContra}
-                        errorRepetirContra={props.errorRepetirContra}
-
+                        valores={props.valores}
+                        errores={props.errores}
+                        onCambio={props.onCambio}
                         mensajeRegistro={props.mensajeRegistro}
                         claseMensaje={props.claseMensaje}
                         manejarSubmit={props.manejarSubmit}

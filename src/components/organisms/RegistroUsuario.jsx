@@ -1,73 +1,185 @@
-import CampoFormulario from '../molecules/CampoFormulario';
-import Boton from '../atoms/Boton';
-import MensajeRegistro from '../molecules/MensajeRegistro';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Subtitulo from '../atoms/Subtitulo';
+import Boton from '../atoms/Boton';
+import CampoFormulario from '../molecules/CampoFormulario';
+import CampoSelector from '../molecules/CampoSelector';
+import CampoTextArea from '../molecules/CampoTextArea';
+import CampoRadio from '../molecules/CampoRadio';
+import MensajeRegistro from '../molecules/MensajeRegistro';
+import { ESPECIES } from '../../data/OpcionesReserva';
+
+const SEXOS = [
+    { valor: 'macho', texto: 'Macho' },
+    { valor: 'hembra', texto: 'Hembra' },
+];
+
+const ESTERILIZADA = [
+    { valor: 'si', texto: 'Sí' },
+    { valor: 'no', texto: 'No' },
+];
 
 function RegistroUsuario(props) {
+    const { valores, errores, onCambio } = props;
+
     return (
-        <>
-            <Subtitulo texto="Registro de usuario" clasesExtras="text-center text-primary mb-4" />
-            <form className="p-4 border rounded shadow-sm bg-light" noValidate onSubmit={props.manejarSubmit}>
-                
-                <CampoFormulario 
-                    id="nombre"
-                    textoLabel="Nombre completo"
-                    tipo="text"
-                    placeholder="Tu nombre"
-                    value={props.nombre}
-                    onChange={props.onChangeNombre}
-                    error={props.errorNombre}
-                    mensajeError={props.errorNombre}
-                />
+        <form noValidate onSubmit={props.manejarSubmit}>
+            <Row className="g-4">
+                <Col xs={12} md={6}>
+                    <section className="p-4 border rounded shadow-sm bg-light h-100">
+                        <Subtitulo nivel="h2" texto="Datos Mascota" clasesExtras="h4 text-primary mb-3" />
 
-                <CampoFormulario 
-                    id="email"
-                    textoLabel="Correo electrónico"
-                    tipo="email"
-                    placeholder="ejemplo@gmail.com"
-                    value={props.correo}
-                    onChange={props.onChangeCorreo}
-                    error={props.errorCorreo}
-                    mensajeError={props.errorCorreo}
-                />
+                        <CampoFormulario
+                            id="nombre-mascota"
+                            textoLabel="Nombre Mascota:"
+                            placeholder="Nombre Mascota"
+                            value={valores.nombreMascota}
+                            onChange={onCambio('nombreMascota')}
+                            error={errores.nombreMascota}
+                            mensajeError={errores.nombreMascota}
+                        />
 
-                <CampoFormulario 
-                    id="password"
-                    textoLabel="Contraseña"
-                    tipo="password"
-                    placeholder="6 a 10 caracteres"
-                    value={props.contra}
-                    onChange={props.onChangeContra}
-                    error={props.errorContra}
-                    mensajeError={props.errorContra}
-                />
+                        <CampoSelector
+                            id="especie"
+                            textoLabel="Especie:"
+                            textoDefecto="Selecciona una especie"
+                            opciones={ESPECIES}
+                            value={valores.especie}
+                            onChange={onCambio('especie')}
+                            error={errores.especie}
+                            mensajeError={errores.especie}
+                        />
 
-                <CampoFormulario 
-                    id="repetirContra"
-                    textoLabel="Confirmar contraseña"
-                    tipo="password"
-                    placeholder="Repite tu contraseña"
-                    value={props.repetirContra}
-                    onChange={props.onChangeRepetirContra}
-                    error={props.errorRepetirContra}
-                    mensajeError={props.errorRepetirContra}
-                />
+                        <CampoFormulario
+                            id="raza"
+                            textoLabel="Raza:"
+                            placeholder="Raza"
+                            value={valores.raza}
+                            onChange={onCambio('raza')}
+                        />
 
-                <div className={`mt-3 text-center fw-bold ${props.claseMensaje}`}>
-                    {props.mensajeRegistro}
-                </div>
+                        <CampoSelector
+                            id="sexo"
+                            textoLabel="Sexo:"
+                            textoDefecto="Seleccionar una opción"
+                            opciones={SEXOS}
+                            value={valores.sexo}
+                            onChange={onCambio('sexo')}
+                            error={errores.sexo}
+                            mensajeError={errores.sexo}
+                        />
 
-                <div className="d-grid mt-4">
-                    <Boton tipoBoton="submit" texto="Registrarse" variante="primary" />
-                </div>
+                        <CampoFormulario
+                            id="fecha-nacimiento"
+                            textoLabel="Fecha de nacimiento:"
+                            tipo="date"
+                            value={valores.fechaNacimiento}
+                            onChange={onCambio('fechaNacimiento')}
+                            error={errores.fechaNacimiento}
+                            mensajeError={errores.fechaNacimiento}
+                        />
 
-                <MensajeRegistro 
-                    ruta="/login" 
-                    textoEnlace="Iniciar sesión aquí" 
-                    textoPregunta="¿Ya tienes una cuenta? "
-                />
-            </form>
-        </>
+                        <CampoTextArea
+                            id="comentario"
+                            textoLabel="Comentario (Opcional):"
+                            rows={2}
+                            value={valores.comentario}
+                            onChange={onCambio('comentario')}
+                        />
+
+                        <CampoRadio
+                            name="esterilizada"
+                            textoLabel="¿La mascota está esterilizada?"
+                            opciones={ESTERILIZADA}
+                            value={valores.esterilizada}
+                            onChange={onCambio('esterilizada')}
+                        />
+                    </section>
+                </Col>
+
+                <Col xs={12} md={6}>
+                    <section className="p-4 border rounded shadow-sm bg-light h-100">
+                        <Subtitulo nivel="h2" texto="Datos Dueño" clasesExtras="h4 text-primary mb-3" />
+
+                        <CampoFormulario
+                            id="nombre-completo"
+                            textoLabel="Nombre Completo:"
+                            placeholder="Nombre completo"
+                            value={valores.nombreCompleto}
+                            onChange={onCambio('nombreCompleto')}
+                            error={errores.nombreCompleto}
+                            mensajeError={errores.nombreCompleto}
+                        />
+
+                        <CampoFormulario
+                            id="rut"
+                            textoLabel="RUT:"
+                            placeholder="xx.xxx.xxx-x"
+                            value={valores.rut}
+                            onChange={onCambio('rut')}
+                            error={errores.rut}
+                            mensajeError={errores.rut}
+                        />
+
+                        <CampoFormulario
+                            id="telefono"
+                            textoLabel="Teléfono:"
+                            placeholder="+569xxxxxxxx"
+                            value={valores.telefono}
+                            onChange={onCambio('telefono')}
+                            error={errores.telefono}
+                            mensajeError={errores.telefono}
+                        />
+
+                        <CampoFormulario
+                            id="correo"
+                            textoLabel="Correo electrónico:"
+                            tipo="email"
+                            placeholder="correo@ejemplo.cl"
+                            value={valores.correo}
+                            onChange={onCambio('correo')}
+                            error={errores.correo}
+                            mensajeError={errores.correo}
+                        />
+
+                        <CampoFormulario
+                            id="direccion"
+                            textoLabel="Dirección:"
+                            placeholder="Dirección"
+                            value={valores.direccion}
+                            onChange={onCambio('direccion')}
+                            error={errores.direccion}
+                            mensajeError={errores.direccion}
+                        />
+
+                        <CampoFormulario
+                            id="contra"
+                            textoLabel="Contraseña:"
+                            tipo="password"
+                            placeholder="6 a 10 caracteres"
+                            value={valores.contra}
+                            onChange={onCambio('contra')}
+                            error={errores.contra}
+                            mensajeError={errores.contra}
+                        />
+                    </section>
+                </Col>
+            </Row>
+
+            <div className={`mt-3 text-center fw-bold ${props.claseMensaje}`}>
+                {props.mensajeRegistro}
+            </div>
+
+            <div className="d-grid col-12 col-md-4 mx-auto mt-3">
+                <Boton tipoBoton="submit" texto="Registrar" variante="primary" />
+            </div>
+
+            <MensajeRegistro
+                ruta="/login"
+                textoEnlace="Iniciar sesión aquí"
+                textoPregunta="¿Ya tienes una cuenta? "
+            />
+        </form>
     );
 }
 
