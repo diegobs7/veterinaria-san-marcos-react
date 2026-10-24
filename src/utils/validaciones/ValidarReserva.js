@@ -1,16 +1,9 @@
 function validarReserva(valores) {
     const errores = {};
 
-    if (!valores.nombreMascota.trim()) {
-        errores.nombreMascota = "Ingresa el nombre de la mascota.";
-    } else if (valores.nombreMascota.trim().length < 2) {
-        errores.nombreMascota = "El nombre debe tener al menos 2 caracteres.";
+    if (!valores.mascotaId) {
+        errores.mascotaId = "Selecciona una mascota.";
     }
-
-    if (!valores.especie) {
-        errores.especie = "Selecciona una especie.";
-    }
-    
 
     if (!valores.fecha) {
         errores.fecha = "Selecciona una fecha.";
