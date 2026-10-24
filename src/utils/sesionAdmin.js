@@ -1,9 +1,12 @@
+import { buscarUsuarioPorCorreo, tipoDeUsuario } from '../services/usuarioService'
+
 const CLAVE = 'sesion'
 
 export function iniciarSesion(correo) {
+  const usuario = buscarUsuarioPorCorreo(correo)
   const sesion = {
     correo,
-    rol: correo.toLowerCase() === 'admin@duocuc.cl' ? 'Administrador' : 'Cliente',
+    rol: usuario ? tipoDeUsuario(usuario) : 'Cliente',
   }
   sessionStorage.setItem(CLAVE, JSON.stringify(sesion))
   return sesion

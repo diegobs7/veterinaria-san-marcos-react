@@ -7,6 +7,7 @@ function ListaEnlaces(props) {
                 <li className="nav-item" key={enlace.to}>
                     <EnlaceNav
                         to={enlace.to}
+                        end={enlace.end}
                         texto={enlace.texto}
                         clasesExtras={`nav-link ${enlace.clasesExtras || ""}`.trim()}
                     />

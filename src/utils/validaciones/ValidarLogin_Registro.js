@@ -158,7 +158,6 @@ export function validarRegistro(valores) {
         contra: validarContra(valores.contra),
     };
 
-    // Deja solo los campos que tienen error
     return Object.fromEntries(Object.entries(revisiones).filter(([, mensaje]) => mensaje !== ""));
 }
 

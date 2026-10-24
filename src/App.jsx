@@ -10,12 +10,21 @@ import DetalleBlog from "./pages/DetalleBlog";
 import Servicios from "./pages/Servicios";
 import DetalleServicio from "./pages/DetalleServicio";
 import Evaluacion from "./pages/Evaluacion";
-import Admin from "./pages/Admin";
 import Categorias from "./pages/Categorias";
 import Categoria from "./pages/Categoria";
 import Ofertas from "./pages/Ofertas";
 import Nosotros from "./pages/Nosotros";
 import Citas from "./pages/Citas";
+
+// Páginas de administración
+import Admin from "./pages/Admin";
+import AdminProducto from "./pages/AdminProducto";
+import AdminProductoListado from "./pages/AdminProductoListado";
+import AdminProductoForm from "./pages/AdminProductoForm";
+import AdminUsuario from "./pages/AdminUsuario";
+import AdminUsuarioListado from "./pages/AdminUsuarioListado";
+import AdminUsuarioForm from "./pages/AdminUsuarioForm";
+
 
 import Footer from "./components/organisms/Footer";
 import Navbar from "./components/organisms/NavBar";
@@ -64,6 +73,7 @@ function SoloAdmin(props) {
   if (usuario.rol !== "Administrador") return <Navigate to="/" replace />;
   return props.children;
 }
+
 function SoloCliente(props) {
   const usuario = obtenerSesion();
   if (!usuario) return <Navigate to="/login" replace />;
@@ -71,18 +81,34 @@ function SoloCliente(props) {
   return props.children;
 }
 
+// Submódulo de administración protegido
+function RutasAdmin() {
+  return (
+    <SoloAdmin>
+      <Routes>
+        <Route path="/" element={<Admin />} />
+        <Route path="/productos" element={<AdminProducto />} />
+        <Route path="/productos/listado" element={<AdminProductoListado />} />
+        <Route path="/productos/nuevo" element={<AdminProductoForm />} />
+        <Route path="/productos/:id/editar" element={<AdminProductoForm />} />
+        <Route path="/usuarios" element={<AdminUsuario />} />
+        <Route path="/usuarios/listado" element={<AdminUsuarioListado />} />
+        <Route path="/usuarios/nuevo" element={<AdminUsuarioForm />} />
+        <Route path="/usuarios/:id/editar" element={<AdminUsuarioForm />} />
+      </Routes>
+    </SoloAdmin>
+  );
+}
+
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/admin"
-          element={
-            <SoloAdmin>
-              <Admin />
-            </SoloAdmin>
-          }
-        />
+        
+        <Route path="/admin/*" element={<RutasAdmin />} />
+        
+        
         <Route path="/*" element={<SitioPublico />} />
       </Routes>
     </BrowserRouter>
