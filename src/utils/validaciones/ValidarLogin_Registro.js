@@ -135,8 +135,8 @@ export function validarDireccion(valor) {
 
 
 export function validarFechaNacimiento(valor) {
-    if (valor === "") {
-        return "";
+    if (valor.trim() === "") {
+        return "Ingresa la fecha de nacimiento.";
     }
 
     const hoy = new Date().toLocaleDateString("en-CA");
@@ -148,6 +148,7 @@ export function validarRegistro(valores) {
     const revisiones = {
         nombreMascota: validarNombreMascota(valores.nombreMascota),
         especie: valores.especie ? "" : "Selecciona una especie.",
+        raza: validarRaza(valores.raza),
         sexo: valores.sexo ? "" : "Selecciona el sexo.",
         fechaNacimiento: validarFechaNacimiento(valores.fechaNacimiento),
         nombreCompleto: validarNombre(valores.nombreCompleto),
@@ -183,3 +184,29 @@ function validarLogin(valores) {
 }
 
 export default validarLogin;
+
+export function validarMascota(valores) {
+    const revisiones = {
+        nombreMascota: validarNombreMascota(valores.nombreMascota),
+        especie: valores.especie ? "" : "Selecciona una especie.",
+        raza: validarRaza(valores.raza),
+        sexo: valores.sexo ? "" : "Selecciona el sexo.",
+        fechaNacimiento: validarFechaNacimiento(valores.fechaNacimiento),
+    };
+
+    return Object.fromEntries(Object.entries(revisiones).filter(([, mensaje]) => mensaje !== ""));
+}
+
+export function validarRaza(valor) {
+    const raza = valor.trim();
+
+    if (raza === "") {
+        return "Ingresa la raza de la mascota.";
+    }
+
+    if (raza.length < 2) {
+        return "La raza debe tener al menos 2 caracteres.";
+    }
+
+    return "";
+}

@@ -56,6 +56,8 @@ function RegistroUsuario(props) {
                             placeholder="Raza"
                             value={valores.raza}
                             onChange={onCambio('raza')}
+                            error={errores.raza}
+                            mensajeError={errores.raza}
                         />
 
                         <CampoSelector

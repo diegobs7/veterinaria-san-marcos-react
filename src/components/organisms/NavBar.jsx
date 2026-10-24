@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Subtitulo from '../atoms/Subtitulo';
 import Boton from '../atoms/Boton';
+import Enlace from '../atoms/Enlace';
+import AvatarPerfil from '../molecules/AvatarPerfil';
 import BotonHamburguesa from '../molecules/BotonHamburguesa';
 import ListaEnlaces from '../molecules/ListaEnlaces';
 import { obtenerSesion, cerrarSesion } from '../../utils/sesionAdmin';
+import { buscarUsuarioPorCorreo, suscribirCambiosUsuario } from '../../services/usuarioService';
 import './Navbar.css';
 
 function NavBar() {
@@ -14,11 +17,25 @@ function NavBar() {
     const location = useLocation();
     const navigate = useNavigate();
 
-
     useEffect(() => {
-        const sesion = obtenerSesion();
-        setUsuarioActivo(sesion);
+        const sincronizarUsuario = () => {
+            const sesion = obtenerSesion();
+            if (sesion) {
+                const datosUsuario = buscarUsuarioPorCorreo(sesion.correo);
+                setUsuarioActivo({
+                    ...sesion,
+                    foto: datosUsuario?.foto ?? ''
+                });
+            } else {
+                setUsuarioActivo(null);
+            }
+        };
+
+        sincronizarUsuario();
         setMenuAbierto(false);
+
+        const cancelarSuscripcion = suscribirCambiosUsuario(sincronizarUsuario);
+        return cancelarSuscripcion;
     }, [location.pathname]);
 
     const cerrarMenu = () => setMenuAbierto(false);
@@ -91,9 +108,19 @@ function NavBar() {
                             <div className="col-12 col-lg-4 d-flex justify-content-lg-end align-items-center gap-3">
                                 {usuarioActivo ? (
                                     <>
-                                        <span className="text-white fw-bold d-none d-lg-inline">
-                                            Hola, {usuarioActivo.correo.split('@')[0]}
-                                        </span>
+                                        <Enlace
+                                            to="/perfil"
+                                            texto={
+                                                <>
+                                                    <AvatarPerfil 
+                                                        foto={usuarioActivo.foto} 
+                                                        alt="Mi perfil" 
+                                                        esNavbar={true} 
+                                                    />
+                                                    {usuarioActivo.correo.split('@')[0]}
+                                                </>
+                                            }
+                                        />
                                         <Boton 
                                             tipoBoton="button"
                                             texto="Cerrar sesión"

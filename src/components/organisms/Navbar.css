@@ -14,3 +14,7 @@
   --bs-nav-link-hover-color: #fff;
   --bs-nav-underline-link-active-color: #fff;
 }
+.navbar-clinica__avatar {
+    width: 2rem;
+    height: 2rem;
+}

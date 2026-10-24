@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TemplateLogin from "../components/templates/TemplateLogin";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTituloPagina } from "../Hooks/useTituloPagina";
 import validarLogin, { validarCredenciales } from "../utils/validaciones/ValidarLogin_Registro";
 import { buscarUsuarioPorCorreo } from "../services/usuarioService";
@@ -10,10 +10,13 @@ function Login() {
     useTituloPagina("Iniciar sesion");
     const navigate = useNavigate();
 
+    const location = useLocation();
+    const vieneDeRegistro = location.state?.registroExitoso;
+
     const [correo, setCorreo] = useState("");
     const [contra, setContra] = useState("");
-    const [mensajeLogin, setMensajeLogin] = useState("");
-    const [claseMensaje, setClaseMensaje] = useState("");
+    const [mensajeLogin, setMensajeLogin] = useState(vieneDeRegistro ? "¡Te registraste con éxito! Ya puedes iniciar sesión." : "");
+    const [claseMensaje, setClaseMensaje] = useState(vieneDeRegistro ? "text-success" : "");
 
     const [errorCorreo, setErrorCorreo] = useState("");
     const [errorContra, setErrorContra] = useState("");

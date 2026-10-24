@@ -26,7 +26,6 @@ function TarjetaServicio(props) {
                     {servicio.titulo}
                 </Card.Title>
 
-                {/* Solo se dibuja si el servicio trae observaciones */}
                 {servicio.observaciones && (
                     <Card.Text className="text-muted small mb-2">{servicio.observaciones}</Card.Text>
                 )}
