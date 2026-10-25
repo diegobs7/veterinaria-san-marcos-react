@@ -8,12 +8,15 @@ import CampoFormulario from "../molecules/CampoFormulario";
 import CampoSelector from "../molecules/CampoSelector";
 import ModalConfirmacion from "../molecules/ModalConfirmacion";
 import ResultadoSolicitud from "../molecules/ResultadoSolicitud";
+import ErrorSolicitud from "../molecules/ErrorSolicitud";
 import DatoResumen from "../molecules/DatoResumen";
 import validarReserva from "../../utils/validaciones/ValidarReserva";
+import { validarSolicitudCita } from "../../utils/solicitudes";
+import { useServicios } from "../../context/ServiciosContext";
 import { HORARIOS } from "../../data/OpcionesReserva";
 import { filtrarMascotasCompatibles, crearOpcionesMascotas } from "../../utils/MascotasReserva";
 import { obtenerSesion } from "../../utils/sesionAdmin";
-import { guardarCita } from "../../services/citasService";
+import { guardarCita, obtenerCitasUsuario } from "../../services/citasService";
 import { listarMascotasDeUsuario } from "../../services/mascotaService";
 import { buscarUsuarioPorCorreo, nombreCompleto } from "../../services/usuarioService";
 
@@ -27,9 +30,11 @@ function FormularioReserva(props) {
     const [valores, setValores] = useState(VALORES_INICIALES);
     const [errores, setErrores] = useState({});
     const [solicitudEnviada, setSolicitudEnviada] = useState(null);
+    const [errorSolicitud, setErrorSolicitud] = useState("");
     const [modalLoginAbierto, setModalLoginAbierto] = useState(false);
 
     const navigate = useNavigate();
+    const { servicios } = useServicios();
 
     const sesion = obtenerSesion();
     const usuario = sesion ? buscarUsuarioPorCorreo(sesion.correo) : null;
@@ -51,6 +56,10 @@ function FormularioReserva(props) {
         setErrores({});
     };
 
+    const manejarReintentarError = () => {
+         setErrorSolicitud("");
+     };
+
     const manejarSubmit = (e) => {
         e.preventDefault();
 
@@ -68,7 +77,9 @@ function FormularioReserva(props) {
             const nuevaCita = {
                 correo: correoCliente,
                 nombreCliente,
+                servicioId: props.servicioId,
                 servicio: props.nombreServicio || "Consulta Veterinaria",
+                precio: props.precio,
                 mascotaId: mascota.id,
                 mascota: mascota.nombre,
                 especie: mascota.especie,
@@ -76,11 +87,22 @@ function FormularioReserva(props) {
                 hora: valores.horario
             };
 
+            const problema = validarSolicitudCita(nuevaCita, {
+                 servicios,
+                 citas: obtenerCitasUsuario(correoCliente),
+             });
+             if (problema) {
+                 setErrorSolicitud(problema);
+                 return;
+             }
+
             const resultado = guardarCita(nuevaCita);
 
             if (resultado.success && resultado.cita) {
                 setSolicitudEnviada(resultado.cita);
                 setValores(VALORES_INICIALES);
+            } else {
+                setErrorSolicitud(resultado.message);
             }
         }
     };
@@ -93,6 +115,15 @@ function FormularioReserva(props) {
     const cerrarModal = () => {
         setModalLoginAbierto(false);
     };
+
+    if (errorSolicitud) {
+         return (
+             <ErrorSolicitud
+                 mensaje={errorSolicitud}
+                 onReintentar={manejarReintentarError}
+             />
+         );
+    }
 
     if (solicitudEnviada) {
         return (
