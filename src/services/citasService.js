@@ -21,7 +21,11 @@ export const guardarCita = (nuevaCita) => {
   };
 
   guardar([...leer(), cita]);
-  return { success: true, message: 'Solicitud de cita enviada.' };
+  return {
+    success: true,
+    message: 'Solicitud de cita enviada.',
+    cita,
+  };
 };
 
 export const obtenerCitasUsuario = (correoUsuario) => {
@@ -30,7 +34,6 @@ export const obtenerCitasUsuario = (correoUsuario) => {
 
 // --- Funciones para el Administrador ---
 
-// Retorna todas las solicitudes registradas de todos los clientes
 export const obtenerTodasLasCitas = () => {
   return leer();
 };
@@ -41,7 +44,7 @@ export const cambiarEstadoCita = (idCita, estado) => {
 };
 
 export const obtenerCitaPorId = (idCita) => {
-    return leer().find((cita) => String(cita.id) === String(idCita)) ?? null;
+  return leer().find((cita) => String(cita.id) === String(idCita)) ?? null;
 };
 
 export const confirmarCita = (idCita) => cambiarEstadoCita(idCita, 'Confirmada');

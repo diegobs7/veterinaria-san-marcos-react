@@ -7,7 +7,7 @@ import CampoFormulario from '../molecules/CampoFormulario';
 import CampoSelector from '../molecules/CampoSelector';
 import CampoTextArea from '../molecules/CampoTextArea';
 import DatoResumen from '../molecules/DatoResumen';
-import { CATEGORIAS, ESPECIES_SERVICIO } from '../../data/OpcionesAdmin';
+import { obtenerOpcionesCategorias, ESPECIES_SERVICIO } from '../../data/OpcionesAdmin';
 
 const normalizarOpciones = (lista = []) =>
   lista.map((item) =>
@@ -17,7 +17,8 @@ const normalizarOpciones = (lista = []) =>
   );
 
 function FormularioServicio(props) {
-  const { valores, errores, onCambio, codigo, esEdicion, manejarSubmit, mensaje, textoBoton } = props;
+  const { valores, errores, onCambio, codigo, manejarSubmit, mensaje, textoBoton } = props;
+  const opcionesCategorias = obtenerOpcionesCategorias();
 
   return (
     <Row className="justify-content-center">
@@ -74,7 +75,7 @@ function FormularioServicio(props) {
             id="categoria"
             textoLabel="Categoría:"
             textoDefecto="Selecciona una categoría"
-            opciones={normalizarOpciones(CATEGORIAS)}
+            opciones={normalizarOpciones(opcionesCategorias)}
             value={valores.categoria}
             onChange={onCambio('categoria')}
             error={errores.categoria}

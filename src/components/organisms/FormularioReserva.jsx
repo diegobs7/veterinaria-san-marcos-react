@@ -7,12 +7,14 @@ import Parrafo from "../atoms/Parrafo";
 import CampoFormulario from "../molecules/CampoFormulario";
 import CampoSelector from "../molecules/CampoSelector";
 import ModalConfirmacion from "../molecules/ModalConfirmacion";
+import ResultadoSolicitud from "../molecules/ResultadoSolicitud";
 import validarReserva from "../../utils/validaciones/ValidarReserva";
 import { HORARIOS } from "../../data/OpcionesReserva";
 import { filtrarMascotasCompatibles, crearOpcionesMascotas } from "../../utils/MascotasReserva";
 import { obtenerSesion } from "../../utils/sesionAdmin";
 import { guardarCita } from "../../services/citasService";
 import { listarMascotasDeUsuario } from "../../services/mascotaService";
+import { buscarUsuarioPorCorreo, nombreCompleto } from "../../services/usuarioService";
 
 const VALORES_INICIALES = {
     mascotaId: '',
@@ -23,7 +25,7 @@ const VALORES_INICIALES = {
 function FormularioReserva(props) {
     const [valores, setValores] = useState(VALORES_INICIALES);
     const [errores, setErrores] = useState({});
-    const [mensajeReserva, setMensajeReserva] = useState("");
+    const [solicitudEnviada, setSolicitudEnviada] = useState(null);
     const [modalLoginAbierto, setModalLoginAbierto] = useState(false);
 
     const navigate = useNavigate();
@@ -36,7 +38,12 @@ function FormularioReserva(props) {
     const manejarCambio = (campo) => (e) => {
         setValores({ ...valores, [campo]: e.target.value });
         setErrores({ ...errores, [campo]: "" });
-        setMensajeReserva("");
+    };
+
+    const manejarReintentar = () => {
+        setSolicitudEnviada(null);
+        setValores(VALORES_INICIALES);
+        setErrores({});
     };
 
     const manejarSubmit = (e) => {
@@ -52,9 +59,12 @@ function FormularioReserva(props) {
 
         if (Object.keys(erroresValidacion).length === 0) {
             const mascota = mascotasCompatibles.find((m) => m.id === valores.mascotaId);
+            const usuario = buscarUsuarioPorCorreo(sesion.correo);
+            const nombreCliente = usuario ? nombreCompleto(usuario) : '';
 
             const nuevaCita = {
                 correo: sesion.correo,
+                nombreCliente,
                 servicio: props.nombreServicio || "Consulta Veterinaria",
                 mascotaId: mascota.id,
                 mascota: mascota.nombre,
@@ -65,12 +75,10 @@ function FormularioReserva(props) {
 
             const resultado = guardarCita(nuevaCita);
 
-            if (resultado.success) {
-                setMensajeReserva("Solicitud enviada. La clínica confirmará tu hora; revisa el estado en 'Mis citas'.");
+            if (resultado.success && resultado.cita) {
+                setSolicitudEnviada(resultado.cita);
                 setValores(VALORES_INICIALES);
             }
-        } else {
-            setMensajeReserva("");
         }
     };
 
@@ -82,6 +90,15 @@ function FormularioReserva(props) {
     const cerrarModal = () => {
         setModalLoginAbierto(false);
     };
+
+    if (solicitudEnviada) {
+        return (
+            <ResultadoSolicitud
+                solicitud={solicitudEnviada}
+                onReintentar={manejarReintentar}
+            />
+        );
+    }
 
     return (
         <>
@@ -128,10 +145,6 @@ function FormularioReserva(props) {
                 />
 
                 <Boton texto="Confirmar reserva" tipoBoton="submit" />
-
-                {mensajeReserva && (
-                    <Parrafo clasesExtras="text-success fw-bold mt-3">{mensajeReserva}</Parrafo>
-                )}
             </form>
 
             <ModalConfirmacion
