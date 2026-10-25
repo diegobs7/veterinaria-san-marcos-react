@@ -95,4 +95,4 @@ Se trabaja con una rama por integrante (`RamaAndres`, `RamaThom`, `RamaDiego`) q
 ## Material complementario
 
 Carpeta de Drive con los documentos del semestre (ERS V2, documento de cobertura y otros):
-[Carpeta de Drive del equipo](https://drive.google.com/drive/folders/1I1ChF_IqJwgaGxx6EkDyAtpXKsXHXyQX?usp=sharing)
+https://drive.google.com/drive/folders/134xFPeqdPwCJd2sjJ30z7a-os8IIasWA?usp=sharing
