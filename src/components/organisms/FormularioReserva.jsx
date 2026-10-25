@@ -8,6 +8,7 @@ import CampoFormulario from "../molecules/CampoFormulario";
 import CampoSelector from "../molecules/CampoSelector";
 import ModalConfirmacion from "../molecules/ModalConfirmacion";
 import ResultadoSolicitud from "../molecules/ResultadoSolicitud";
+import DatoResumen from "../molecules/DatoResumen";
 import validarReserva from "../../utils/validaciones/ValidarReserva";
 import { HORARIOS } from "../../data/OpcionesReserva";
 import { filtrarMascotasCompatibles, crearOpcionesMascotas } from "../../utils/MascotasReserva";
@@ -31,6 +32,10 @@ function FormularioReserva(props) {
     const navigate = useNavigate();
 
     const sesion = obtenerSesion();
+    const usuario = sesion ? buscarUsuarioPorCorreo(sesion.correo) : null;
+    const nombreCliente = usuario ? nombreCompleto(usuario) : '';
+    const correoCliente = sesion?.correo || '';
+
     const mascotasCompatibles = sesion
         ? filtrarMascotasCompatibles(listarMascotasDeUsuario(sesion.correo), props.especies)
         : [];
@@ -59,11 +64,9 @@ function FormularioReserva(props) {
 
         if (Object.keys(erroresValidacion).length === 0) {
             const mascota = mascotasCompatibles.find((m) => m.id === valores.mascotaId);
-            const usuario = buscarUsuarioPorCorreo(sesion.correo);
-            const nombreCliente = usuario ? nombreCompleto(usuario) : '';
 
             const nuevaCita = {
-                correo: sesion.correo,
+                correo: correoCliente,
                 nombreCliente,
                 servicio: props.nombreServicio || "Consulta Veterinaria",
                 mascotaId: mascota.id,
@@ -104,6 +107,23 @@ function FormularioReserva(props) {
         <>
             <form onSubmit={manejarSubmit} noValidate>
                 <Subtitulo nivel="h2" texto="Agendar una cita" clasesExtras="h4 mb-3" />
+
+                {sesion && (
+                    <div className="bg-light border rounded-3 p-3 mb-3">
+                        <Parrafo clasesExtras="fw-semibold mb-2 small text-uppercase text-muted">
+                            Datos del solicitante
+                        </Parrafo>
+                        <DatoResumen
+                            etiqueta="Nombre:"
+                            valor={usuario?.nombre || '—'}
+                        />
+                        <DatoResumen
+                            etiqueta="Apellidos:"
+                            valor={usuario?.apellidos || '—'}
+                        />
+                        <DatoResumen etiqueta="Correo:" valor={correoCliente} />
+                    </div>
+                )}
 
                 <CampoSelector
                     id="mascota-cita"
