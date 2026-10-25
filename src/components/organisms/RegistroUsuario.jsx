@@ -158,7 +158,7 @@ function RegistroUsuario(props) {
                             id="contra"
                             textoLabel="Contraseña:"
                             tipo="password"
-                            placeholder="6 a 10 caracteres"
+                            placeholder="Minimo 6 caracteres"
                             value={valores.contra}
                             onChange={onCambio('contra')}
                             error={errores.contra}
