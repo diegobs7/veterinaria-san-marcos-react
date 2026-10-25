@@ -47,6 +47,10 @@ function NavBar() {
         navigate('/login');
     };
 
+    const irAlPanelAdmin = () => {
+        navigate('/admin');
+    };
+
     const enlacesPrincipales = [
         { to: "/", texto: "Inicio" },
         { to: "/servicios", texto: "Servicios" },
@@ -105,9 +109,18 @@ function NavBar() {
                                 <hr className="text-white" />
                             </div>
 
-                            <div className="col-12 col-lg-4 d-flex justify-content-lg-end align-items-center gap-3">
+                            <div className="col-12 col-lg-4 d-flex flex-wrap justify-content-lg-end align-items-center gap-3">
                                 {usuarioActivo ? (
                                     <>
+                                        {usuarioActivo.rol === 'Administrador' && (
+                                            <Boton
+                                                tipoBoton="button"
+                                                texto="Panel Admin"
+                                                variante="outline-light"
+                                                clasesExtras="btn-sm fw-bold"
+                                                onClick={irAlPanelAdmin}
+                                            />
+                                        )}
                                         <Enlace
                                             to="/perfil"
                                             texto={
