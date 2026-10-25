@@ -3,6 +3,8 @@ import Parrafo from '../atoms/Parrafo';
 import Boton from '../atoms/Boton';
 import Enlace from '../atoms/Enlace';
 import DatoResumen from './DatoResumen';
+ import { formatearNumeroSolicitud } from '../../utils/solicitudes';
+ import { formatearPrecio } from '../../utils/precios';
 
 function ResultadoSolicitud(props) {
   const { solicitud, onReintentar } = props;
@@ -26,7 +28,7 @@ function ResultadoSolicitud(props) {
       <div className="bg-light rounded-3 p-3 mb-3">
         <DatoResumen
           etiqueta="Nº de solicitud:"
-          valor={`#${solicitud.id}`}
+          valor={formatearNumeroSolicitud(solicitud)}
           clasesExtras="fs-5"
         />
         <DatoResumen etiqueta="Estado:" valor={solicitud.estado || 'Pendiente'} />
@@ -34,6 +36,9 @@ function ResultadoSolicitud(props) {
         <DatoResumen etiqueta="Mascota:" valor={`${solicitud.mascota} (${solicitud.especie})`} />
         <DatoResumen etiqueta="Fecha preferida:" valor={solicitud.fecha} />
         <DatoResumen etiqueta="Hora preferida:" valor={solicitud.hora} />
+        {solicitud.precio !== undefined && (
+          <DatoResumen etiqueta="Total referencial:" valor={formatearPrecio(solicitud.precio)} />
+        )}
         {solicitud.correo && (
           <DatoResumen etiqueta="Correo:" valor={solicitud.correo} />
         )}
@@ -45,7 +50,7 @@ function ResultadoSolicitud(props) {
       <div className="d-flex flex-column gap-2">
         <Boton
           tipoBoton="button"
-          texto="Reintentar / Nueva solicitud"
+          texto="Nueva solicitud"
           variante="outline-primary"
           clasesExtras="w-100"
           onClick={onReintentar}

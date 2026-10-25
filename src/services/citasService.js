@@ -1,3 +1,5 @@
+import { generarCodigoSolicitud } from '../utils/solicitudes';
+
 const CLAVE = 'solicitudes';
 
 function leer() {
@@ -13,14 +15,20 @@ function guardar(lista) {
 }
 
 export const guardarCita = (nuevaCita) => {
+  const citas = leer();
   const cita = {
     ...nuevaCita,
     id: Date.now().toString(),
+    codigo: generarCodigoSolicitud(citas),
     estado: 'Pendiente',
     creadaEn: new Date().toISOString(),
   };
 
-  guardar([...leer(), cita]);
+  try {
+     guardar([...citas, cita]);
+   } catch {
+     return { success: false, message: 'No pudimos guardar tu solicitud. Intenta nuevamente.' };
+   }
   return {
     success: true,
     message: 'Solicitud de cita enviada.',

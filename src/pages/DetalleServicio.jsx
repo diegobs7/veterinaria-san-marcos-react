@@ -46,6 +46,8 @@ function DetalleServicio() {
                     duracion={servicio.duracion}
                     especies={ObtenerEspeciesServicio(servicio.especie)}
                     nombreServicio={servicio.titulo}
+                    servicioId={servicio.id}
+                    precio={servicio.precio}
                 />
             }
         />
