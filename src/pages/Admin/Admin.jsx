@@ -1,9 +1,9 @@
-import Subtitulo from '../components/atoms/Subtitulo'
-import Parrafo from '../components/atoms/Parrafo'
-import ResumenAdmin from '../components/organisms/ResumenAdmin'
-import TemplateAdmin from '../components/templates/TemplateAdmin'
-import { useResumenAdmin } from '../Hooks/useResumenAdmin'
-import { useTituloPagina } from '../Hooks/useTituloPagina'
+import Subtitulo from '../../components/atoms/Subtitulo'
+import Parrafo from '../../components/atoms/Parrafo'
+import ResumenAdmin from '../../components/organisms/ResumenAdmin'
+import TemplateAdmin from '../../components/templates/TemplateAdmin'
+import { useResumenAdmin } from '../../Hooks/useResumenAdmin'
+import { useTituloPagina } from '../../Hooks/useTituloPagina'
 
 function Admin() {
     useTituloPagina('Panel administrador');

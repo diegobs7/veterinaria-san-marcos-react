@@ -22,13 +22,13 @@ function ResumenAdmin(props) {
             <Col xs={12} md={6} xl={4}>
                 <TarjetaResumenAdmin
                     titulo="Catálogo"
-                    descripcion="Crea, edita y revisa los productos y servicios publicados."
+                    descripcion="Crea, edita y revisa los servicios publicados."
                     datos={[
                         { etiqueta: 'Servicios publicados:', valor: catalogo.total },
                         { etiqueta: 'Categorías:', valor: catalogo.categorias },
                     ]}
-                    to="/admin/productos"
-                    textoEnlace="Ir a Producto"
+                    to="/admin/servicios"
+                    textoEnlace="Ir a Servicios"
                 />
             </Col>
             <Col xs={12} md={6} xl={4}>
@@ -37,7 +37,7 @@ function ResumenAdmin(props) {
                     descripcion="Administra las cuentas de los clientes registrados."
                     datos={[{ etiqueta: 'Usuarios registrados:', valor: usuarios.total }]}
                     to="/admin/usuarios"
-                    textoEnlace="Ir a Usuario"
+                    textoEnlace="Ir a Usuarios"
                 />
             </Col>
         </Row>

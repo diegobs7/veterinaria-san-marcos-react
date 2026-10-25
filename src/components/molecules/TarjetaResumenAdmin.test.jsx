@@ -11,8 +11,8 @@ describe('TarjetaResumenAdmin', () => {
           titulo="Catálogo"
           descripcion="Gestiona el catálogo."
           datos={[{ etiqueta: 'Servicios publicados:', valor: 12 }]}
-          to="/admin/productos"
-          textoEnlace="Ir a Producto"
+          to="/admin/servicios"
+          textoEnlace="Ir a Servicios"
         />
       </MemoryRouter>,
     )
@@ -20,6 +20,6 @@ describe('TarjetaResumenAdmin', () => {
     expect(screen.getByText('Catálogo')).toBeInTheDocument()
     expect(screen.getByText('Servicios publicados:')).toBeInTheDocument()
     expect(screen.getByText('12', { exact: false })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Ir a Producto' })).toHaveAttribute('href', '/admin/productos')
+    expect(screen.getByRole('link', { name: 'Ir a Servicios' })).toHaveAttribute('href', '/admin/servicios')
   })
 })

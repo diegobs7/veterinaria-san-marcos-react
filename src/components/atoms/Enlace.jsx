@@ -7,6 +7,7 @@ function Enlace(props) {
     return (
         <NavLink
             to={props.to}
+            end={props.end}
             className={({ isActive }) =>
                 `${clasesBase} ${props.clasesExtras || ""} ${esNavLink && isActive ? "active" : ""}`.trim()
             }

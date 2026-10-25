@@ -4,8 +4,8 @@ import ListaEnlaces from '../molecules/ListaEnlaces'
 const ENLACES_ADMIN = [
     { to: '/admin', texto: 'Inicio', end: true },
     { to: '/admin/solicitudes', texto: 'Solicitudes' },
-    { to: '/admin/productos', texto: 'Producto' },
-    { to: '/admin/usuarios', texto: 'Usuario' },
+    { to: '/admin/servicios', texto: 'Servicios' },
+    { to: '/admin/usuarios', texto: 'Usuarios' },
     { to: '/', texto: 'Volver a la tienda' },
 ];
 
