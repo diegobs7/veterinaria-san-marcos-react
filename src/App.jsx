@@ -28,6 +28,9 @@ import AdminUsuario from "./pages/Admin/AdminUsuario";
 import AdminUsuarioListado from "./pages/Admin/AdminUsuarioListado";
 import AdminUsuarioForm from "./pages/Admin/AdminUsuarioForm";
 import AdminSolicitudes from "./pages/Admin/AdminSolicitudes";
+import AdminSolicitudDetalle from "./pages/Admin/AdminSolicitudDetalle";
+import AdminUsuarioHistorial from "./pages/Admin/AdminUsuarioHistorial";
+import AdminReportes from "./pages/Admin/AdminReportes";
 
 // Componentes estructurales
 import Footer from "./components/organisms/Footer";
@@ -64,9 +67,14 @@ function RutasAdmin() {
         <Route path="/usuarios/listado" element={<AdminUsuarioListado />} />
         <Route path="/usuarios/nuevo" element={<AdminUsuarioForm />} />
         <Route path="/usuarios/:id/editar" element={<AdminUsuarioForm />} />
+        <Route path="/usuarios/:id/historial" element={<AdminUsuarioHistorial />} />
 
         <Route path="/solicitudes" element={<AdminSolicitudes />} />
         <Route path="/solicitudes/listado" element={<AdminSolicitudes />} />
+        <Route path="/solicitudes/:id" element={<AdminSolicitudDetalle />} />
+
+        <Route path="/reportes" element={<AdminReportes />} />
+        <Route path="/criticos" element={<AdminReportes />} />
 
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Routes>

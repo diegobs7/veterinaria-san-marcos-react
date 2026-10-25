@@ -6,6 +6,7 @@ import Boton from '../../components/atoms/Boton';
 import Badge from '../../components/atoms/Badge';
 import ModalConfirmacion from '../../components/molecules/ModalConfirmacion';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
+import  Enlace  from '../../components/atoms/Enlace';
 
 // Diccionario fuera del componente para no recrearlo en cada render
 const VARIANTES_ESTADO = {
@@ -162,7 +163,6 @@ function AdminSolicitudes() {
         />
       </div>
 
-      {/* Tabla */}
       {solicitudesFiltradas.length === 0 ? (
         <div className="alert alert-light border text-center py-5 rounded-4 shadow-sm">
           <Parrafo clasesExtras="text-muted fs-6">
@@ -225,6 +225,12 @@ function AdminSolicitudes() {
                       <td className="px-3 text-end">
                         <div className="d-flex justify-content-end gap-1">
                           
+                          <Enlace
+                              to={`/admin/solicitudes/${cita.id}`}
+                              texto="Ver ficha"
+                              clasesExtras="btn btn-sm btn-outline-primary"
+                          />
+
                           {esPendiente && (
                             <Boton
                               tipoBoton="button"

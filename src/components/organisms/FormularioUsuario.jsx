@@ -75,7 +75,6 @@ function FormularioUsuario(props) {
                         />
                     )}
 
-                    {/* Campo Teléfono integrado para coincidir con usuarioService */}
                     <CampoFormulario
                         id="telefono"
                         textoLabel="Teléfono de contacto:"
@@ -88,7 +87,7 @@ function FormularioUsuario(props) {
 
                     <CampoFormulario
                         id="fecha-nacimiento"
-                        textoLabel="Fecha de nacimiento (opcional):"
+                        textoLabel="Fecha de nacimiento:"
                         tipo="date"
                         value={valores.fechaNacimiento}
                         onChange={onCambio('fechaNacimiento')}

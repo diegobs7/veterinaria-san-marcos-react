@@ -40,7 +40,7 @@ function validarUsuario(valores, esEdicion = false) {
         nombre: validarNombreUsuario(valores.nombre),
         apellidos: validarApellidos(valores.apellidos),
         correo: esEdicion ? "" : validarCorreo(valores.correo),
-        fechaNacimiento: validarFechaNacimiento(valores.fechaNacimiento),
+        fechaNacimiento: valores.fechaNacimiento? validarFechaNacimiento(valores.fechaNacimiento):"",
         tipo: valores.tipo ? "" : "Selecciona el tipo de usuario.",
         region: valores.region ? "" : "Selecciona una región.",
         direccion: validarDireccionUsuario(valores.direccion),
