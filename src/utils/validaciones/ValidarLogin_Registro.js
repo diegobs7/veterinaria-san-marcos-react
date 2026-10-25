@@ -21,8 +21,8 @@ export function validarCorreo(valor) {
 export function validarContra(valor) {
     const contra = valor.trim();
 
-    if (contra === "" || contra.length < 6 || contra.length > 10) {
-        return "La contraseña debe tener entre 6 y 10 caracteres.";
+    if (contra === "" || contra.length < 6) {
+        return "La contraseña debe tener un minimo de 6 caracteres";
     }
 
     return "";
