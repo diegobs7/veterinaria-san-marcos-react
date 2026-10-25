@@ -7,11 +7,13 @@ import TarjetaAgendarCita from '../components/organisms/TarjetaAgendarCita';
 import formatearPrecio from '../utils/FormatearPrecio';
 import { useServicios } from '../context/ServiciosContext';
 import ObtenerEspeciesServicio from '../utils/ObtenerEspeciesServicio';
+import { useTituloPagina } from '../Hooks/useTituloPagina';
 
 function DetalleServicio() {
     const { id } = useParams();
     const { obtener } = useServicios();
     const servicio = obtener(id);
+    useTituloPagina(servicio ? servicio.titulo : 'Servicio no encontrado');
 
     if (!servicio) {
         return (
