@@ -1,12 +1,10 @@
 import { ICONOS_CATEGORIA } from '../utils/categorias'
 
-// Las categorías son las mismas que ya usa la tienda (cada una tiene su ícono).
 export const CATEGORIAS = Object.keys(ICONOS_CATEGORIA).map((nombre) => ({
     valor: nombre,
     texto: nombre,
 }));
 
-// Textos que ya existen en Servicios.json; ObtenerEspeciesServicio los interpreta.
 export const ESPECIES_SERVICIO = [
     'Perro / Gato',
     'Perro',

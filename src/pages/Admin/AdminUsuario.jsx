@@ -1,7 +1,7 @@
-import TemplateAdmin from '../components/templates/TemplateAdmin';
-import EncabezadoAdmin from '../components/molecules/EncabezadoAdmin';
-import AccesosAdmin from '../components/organisms/AccesosAdmin';
-import { useTituloPagina } from '../Hooks/useTituloPagina';
+import TemplateAdmin from '../../components/templates/TemplateAdmin';
+import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin';
+import AccesosAdmin from '../../components/organisms/AccesosAdmin';
+import { useTituloPagina } from '../../Hooks/useTituloPagina';
 
 const ACCESOS = [
     {

@@ -20,36 +20,20 @@ import Citas from "./pages/Citas";
 import Perfil from "./pages/Perfil";
 
 // Páginas de administración
-import Admin from "./pages/Admin";
-import AdminProducto from "./pages/AdminProducto";
-import AdminProductoListado from "./pages/AdminProductoListado";
-import AdminProductoForm from "./pages/AdminProductoForm";
-import AdminUsuario from "./pages/AdminUsuario";
-import AdminUsuarioListado from "./pages/AdminUsuarioListado";
-import AdminUsuarioForm from "./pages/AdminUsuarioForm";
+import Admin from "./pages/Admin/Admin";
+import AdminServicios from "./pages/Admin/AdminServicios";
+import AdminServicioListado from "./pages/Admin/AdminServicioListado";
+import AdminServicioForm from "./pages/Admin/AdminServicioForm";
+import AdminUsuario from "./pages/Admin/AdminUsuario";
+import AdminUsuarioListado from "./pages/Admin/AdminUsuarioListado";
+import AdminUsuarioForm from "./pages/Admin/AdminUsuarioForm";
+import AdminSolicitudes from "./pages/Admin/AdminSolicitudes";
 
 // Componentes estructurales
-import TemplateAdmin from "./components/templates/TemplateAdmin";
 import Footer from "./components/organisms/Footer";
 import Navbar from "./components/organisms/NavBar";
 import LogoTitulo from "./components/molecules/LogoTitulo";
 import { obtenerSesion } from "./utils/sesionAdmin";
-
-// Vista provisional para Solicitudes (evita pantalla en blanco mientras creas la página definitiva)
-function AdminSolicitudes() {
-  return (
-    <TemplateAdmin>
-      <div className="py-4 text-center">
-        <h2 className="h4 mb-3">Gestión de Solicitudes</h2>
-        <div className="alert alert-info d-inline-block px-4 py-3 text-start">
-          <p className="mb-0">
-            <strong>Bandeja vacía:</strong> Actualmente no hay solicitudes registradas o este módulo está en preparación.
-          </p>
-        </div>
-      </div>
-    </TemplateAdmin>
-  );
-}
 
 function SoloAdmin(props) {
   const usuario = obtenerSesion();
@@ -71,10 +55,10 @@ function RutasAdmin() {
       <Routes>
         <Route path="/" element={<Admin />} />
 
-        <Route path="/productos" element={<AdminProducto />} />
-        <Route path="/productos/listado" element={<AdminProductoListado />} />
-        <Route path="/productos/nuevo" element={<AdminProductoForm />} />
-        <Route path="/productos/:id/editar" element={<AdminProductoForm />} />
+        <Route path="/servicios" element={<AdminServicios />} />
+        <Route path="/servicios/listado" element={<AdminServicioListado />} />
+        <Route path="/servicios/nuevo" element={<AdminServicioForm />} />
+        <Route path="/servicios/:id/editar" element={<AdminServicioForm />} />
 
         <Route path="/usuarios" element={<AdminUsuario />} />
         <Route path="/usuarios/listado" element={<AdminUsuarioListado />} />

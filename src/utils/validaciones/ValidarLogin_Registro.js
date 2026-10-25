@@ -86,27 +86,20 @@ export function validarNombreMascota(valor) {
     return "";
 }
 
-
+//Cambio de validacion, antes solo era matematico
 export function validarRut(valor) {
-    const rut = valor.replace(/[.\s]/g, "").toUpperCase();
-
-    if (!/^\d{7,8}-[\dK]$/.test(rut)) {
-        return "Ingresa un RUT válido, por ejemplo 12.345.678-5.";
+    if (!valor || typeof valor !== "string") {
+        return "Ingresa un RUT.";
     }
 
-    const [cuerpo, digito] = rut.split("-");
-    let suma = 0;
-    let factor = 2;
+    const rutLimpio = valor.trim().replace(/[.\s]/g, "").toUpperCase();
 
-    for (let i = cuerpo.length - 1; i >= 0; i--) {
-        suma += Number(cuerpo[i]) * factor;
-        factor = factor === 7 ? 2 : factor + 1;
+    // Valida que tenga entre 7 y 8 dígitos, guion y dígito verificador (número o K)
+    if (!/^\d{7,8}-[\dK]$/.test(rutLimpio)) {
+        return "Ingresa un RUT con formato válido (ej: 12.345.678-5 o 12345678-5).";
     }
 
-    const resto = 11 - (suma % 11);
-    const esperado = resto === 11 ? "0" : resto === 10 ? "K" : String(resto);
-
-    return digito === esperado ? "" : "El RUT ingresado no es válido.";
+    return "";
 }
 
 export function validarTelefono(valor) {

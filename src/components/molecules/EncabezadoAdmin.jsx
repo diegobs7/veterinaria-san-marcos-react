@@ -6,7 +6,7 @@ function EncabezadoAdmin(props) {
         <>
             <Subtitulo texto={props.titulo} clasesExtras="h4 fw-normal text-center mb-3" />
             {props.descripcion && (
-                <Parrafo clasesExtras="text-muted mb-4">{props.descripcion}</Parrafo>
+                <Parrafo clasesExtras="text-muted text-center mb-4">{props.descripcion}</Parrafo>
             )}
         </>
     );
