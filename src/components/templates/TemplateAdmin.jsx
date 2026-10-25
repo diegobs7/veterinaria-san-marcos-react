@@ -22,7 +22,7 @@ function TemplateAdmin(props) {
 
             <div className="d-flex flex-column flex-md-row flex-grow-1">
                 <MenuAdmin onCerrarSesion={manejarCerrarSesion} />
-                <main className="flex-grow-1 p-4">
+                <main className="flex-grow-1 p-4 min-w-0 overflow-x-hidden">
                     <div className="admin-contenido">
                         {props.children}
                     </div>

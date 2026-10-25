@@ -40,6 +40,10 @@ export const cambiarEstadoCita = (idCita, estado) => {
   return { success: true };
 };
 
+export const obtenerCitaPorId = (idCita) => {
+    return leer().find((cita) => String(cita.id) === String(idCita)) ?? null;
+};
+
 export const confirmarCita = (idCita) => cambiarEstadoCita(idCita, 'Confirmada');
 
 export const cancelarCita = (idCita) => cambiarEstadoCita(idCita, 'Cancelada');

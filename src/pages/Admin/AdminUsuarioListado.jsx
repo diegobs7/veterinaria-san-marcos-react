@@ -111,6 +111,12 @@ function AdminUsuarioListado() {
                             clasesExtras="btn btn-sm btn-outline-primary"
                           />
 
+                          <Enlace
+                              to={`/admin/usuarios/${u.id}/historial`}
+                              texto="Historial"
+                              clasesExtras="btn btn-sm btn-outline-secondary"
+                          />
+
                           {!noSePuedeEliminar ? (
                             <Boton
                               tipoBoton="button"
