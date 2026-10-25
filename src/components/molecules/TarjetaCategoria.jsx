@@ -11,7 +11,7 @@ function TarjetaCategoria(props) {
         <Card className="h-100 tarjeta-animada">
             <Card.Body className="d-flex flex-column text-center">
                 <span className="fs-1">
-                    <Icono simbolo={ICONOS_CATEGORIA[categoria.nombre] ?? '🐾'} />
+                    <Icono simbolo={categoria.icono || ICONOS_CATEGORIA[categoria.nombre] || '🐾'} />
                 </span>
                 <Card.Title as="h3" className="h5 titulo-clinica">
                     {categoria.nombre}

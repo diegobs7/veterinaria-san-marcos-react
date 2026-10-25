@@ -7,6 +7,7 @@ const ENLACES_ADMIN = [
     { to: '/admin/servicios', texto: 'Servicios' },
     { to: '/admin/usuarios', texto: 'Usuarios' },
     {to: '/admin/reportes', texto: 'Reportes'},
+    {to: '/admin/categorias', texto: 'Categorías'},
     { to: '/', texto: 'Volver a la tienda' },
 ];
 

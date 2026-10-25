@@ -1,5 +1,5 @@
 import { useServicios } from '../context/ServiciosContext'
-import { obtenerCategorias } from '../utils/categorias'
+import { listarCategorias } from '../services/categoriaService'
 
 function leerLista(clave) {
   try {
@@ -21,7 +21,7 @@ export function useResumenAdmin() {
     },
     catalogo: {
       total: servicios.length,
-      categorias: obtenerCategorias(servicios).length,
+      categorias: listarCategorias().length,
     },
     usuarios: { total: usuarios.length },
   }

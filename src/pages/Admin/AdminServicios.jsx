@@ -19,7 +19,7 @@ const ACCESOS = [
     {
         titulo: 'Editar servicio',
         descripcion: 'Modifica los datos de un servicio ya existente.',
-        to: '/admin/servicios/editar',
+        to: '/admin/servicios/listado',
         textoEnlace: 'Editar',
     },
 ];
