@@ -9,7 +9,7 @@ export const ICONOS_CATEGORIA = {
   Otros: '🐾',
 }
 
-//lee iconos guardados en el CRUD sin importar el service
+
 function iconosDesdeStorage() {
   try {
     const raw = localStorage.getItem('categorias')
