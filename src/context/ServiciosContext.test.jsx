@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
 import { ServiciosProvider, useServicios } from './ServiciosContext'
 
-// Mock completo del service: el context no debe depender de localStorage real
 const mockListar = vi.fn()
 const mockCrear = vi.fn()
 const mockActualizar = vi.fn()
@@ -27,7 +26,7 @@ const SERVICIOS_MOCK = [
   },
 ]
 
-/** Componente de prueba que expone el contexto en pantalla */
+
 function Consumidor() {
   const { servicios, obtener, crear, actualizar, eliminar, restablecer } = useServicios()
 
