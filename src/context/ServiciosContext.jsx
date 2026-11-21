@@ -3,7 +3,7 @@ import * as servicioService from '../services/servicioService'
 
 const ServiciosContext = createContext(null)
 
-export function ServiciosProvider({ children }) {
+export function ServiciosProvider(props) {
  
   const [servicios, setServicios] = useState(() => servicioService.listarServicios())
 
@@ -37,7 +37,7 @@ export function ServiciosProvider({ children }) {
     <ServiciosContext.Provider
       value={{ servicios, obtener, crear, actualizar, eliminar, restablecer }}
     >
-      {children}
+      {props.children}
     </ServiciosContext.Provider>
   )
 }
