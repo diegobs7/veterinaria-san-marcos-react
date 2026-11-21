@@ -2,17 +2,12 @@ import Subtitulo from '../atoms/Subtitulo';
 import Parrafo from '../atoms/Parrafo';
 import Boton from '../atoms/Boton';
 
-function ModalConfirmacion({ 
-    abierto, 
-    titulo, 
-    mensaje, 
-    onConfirmar, 
-    onCancelar,
-    textoConfirmar = "Sí, cancelar cita",
-    textoCancelar = "Volver",
-    varianteConfirmar = "danger" 
-}) {
-    if (!abierto) return null;
+function ModalConfirmacion(props) {
+    if (!props.abierto) return null;
+
+    const textoConfirmar = props.textoConfirmar || "Sí, cancelar cita";
+    const textoCancelar = props.textoCancelar || "Volver";
+    const varianteConfirmar = props.varianteConfirmar || "danger";
 
     return (
         <>
@@ -20,24 +15,24 @@ function ModalConfirmacion({
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content shadow-lg border-0 rounded-4">
                         <div className="modal-header border-0 pb-0">
-                            <Subtitulo nivel="h5" texto={titulo} clasesExtras={`modal-title fw-bold text-${varianteConfirmar}`} />
-                            <button type="button" className="btn-close" onClick={onCancelar} aria-label="Cerrar"></button>
+                            <Subtitulo nivel="h5" texto={props.titulo} clasesExtras={`modal-title fw-bold text-${varianteConfirmar}`} />
+                            <button type="button" className="btn-close" onClick={props.onCancelar} aria-label="Cerrar"></button>
                         </div>
                         <div className="modal-body py-4">
-                            <Parrafo clasesExtras="fs-5 m-0 text-secondary">{mensaje}</Parrafo>
+                            <Parrafo clasesExtras="fs-5 m-0 text-secondary">{props.mensaje}</Parrafo>
                         </div>
                         <div className="modal-footer border-0 bg-light rounded-bottom-4">
                             <Boton 
                                 tipoBoton="button" 
                                 variante="secondary" 
                                 texto={textoCancelar} 
-                                onClick={onCancelar} 
+                                onClick={props.onCancelar} 
                             />
                             <Boton 
                                 tipoBoton="button" 
                                 variante={varianteConfirmar} 
                                 texto={textoConfirmar} 
-                                onClick={onConfirmar} 
+                                onClick={props.onConfirmar} 
                             />
                         </div>
                     </div>

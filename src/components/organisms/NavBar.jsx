@@ -24,6 +24,7 @@ function NavBar() {
                 const datosUsuario = buscarUsuarioPorCorreo(sesion.correo);
                 setUsuarioActivo({
                     ...sesion,
+                    nombre: datosUsuario?.nombre ?? '',
                     foto: datosUsuario?.foto ?? ''
                 });
             } else {
@@ -130,7 +131,7 @@ function NavBar() {
                                                         alt="Mi perfil" 
                                                         esNavbar={true} 
                                                     />
-                                                    {usuarioActivo.correo.split('@')[0]}
+                                                    {usuarioActivo.nombre || usuarioActivo.correo.split('@')[0]}
                                                 </>
                                             }
                                         />

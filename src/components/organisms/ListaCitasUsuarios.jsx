@@ -5,8 +5,8 @@ import Boton from '../atoms/Boton';
 import Badge from '../atoms/Badge';
 import { VARIANTE_ESTADO_CITA } from '../../data/OpcionesCitas';
 
-function ListaCitasUsuario({ citas, onCancelar }) {
-    if (!citas || citas.length === 0) {
+function ListaCitasUsuarios(props) {
+    if (!props.citas || props.citas.length === 0) {
         return (
             <div className="text-center py-5">
                 <Subtitulo texto="No tienes citas agendadas" clasesExtras="text-muted mb-3" />
@@ -18,7 +18,7 @@ function ListaCitasUsuario({ citas, onCancelar }) {
 
     return (
         <div className="row g-4">
-            {citas.map((cita) => (
+            {props.citas.map((cita) => (
                 <div className="col-12 col-md-6 col-lg-4" key={cita.id}>
                     <div className="card h-100 shadow-sm border-0 rounded-4 bg-white overflow-hidden">
 
@@ -54,13 +54,13 @@ function ListaCitasUsuario({ citas, onCancelar }) {
                                 </div>
                             </div>
 
-                            {onCancelar && (
+                            {props.onCancelar && (
                                 <Boton
                                     tipoBoton="button"
                                     variante="outline-danger"
                                     clasesExtras="w-100 fw-bold rounded-pill"
                                     texto="Cancelar cita"
-                                    onClick={() => onCancelar(cita.id)}
+                                    onClick={() => props.onCancelar(cita.id)}
                                 />
                             )}
                         </div>
@@ -71,4 +71,4 @@ function ListaCitasUsuario({ citas, onCancelar }) {
     );
 }
 
-export default ListaCitasUsuario;
+export default ListaCitasUsuarios;
