@@ -22,14 +22,9 @@ export default function PeekRating({
   shape = 'star',
   icon,
   labels = [],
-  activeColor = '#f5b400',
-  idleColor = '#52525b',
-  tipColor = '#27272a',
-  tipTextColor = '#f5f5f5',
-  size = 28,
+  size = 36,
   lift = 6,
   magnify = 1.15,
-  riseDuration = 320,
   popScale = 1.3,
   showTip = true,
   allowClear = true,
@@ -235,7 +230,6 @@ export default function PeekRating({
 
   const Star = readOnly ? 'span' : 'button';
   const shapeIcon = SHAPES[shape] || SHAPES.star;
-  const tipRoom = interactive && showTip ? Math.round(size * 0.9) : 0;
 
   return (
     <div
@@ -244,16 +238,6 @@ export default function PeekRating({
       aria-label={readOnly ? `${value} of ${count}` : ariaLabel}
       aria-disabled={disabled || undefined}
       className={`peek-rating${className ? ` ${className}` : ''}`}
-      style={{
-        '--pr-active': activeColor,
-        '--pr-idle': idleColor,
-        '--pr-tip': tipColor,
-        '--pr-tip-text': tipTextColor,
-        '--pr-size': `${size}px`,
-        '--pr-gap': `${Math.round(size * 0.22)}px`,
-        '--pr-room': `${lift + tipRoom}px`,
-        '--pr-rise': `${riseDuration}ms`
-      }}
       onKeyDown={readOnly ? undefined : handleKeyDown}
     >
       <div

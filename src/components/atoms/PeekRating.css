@@ -1,11 +1,11 @@
 .peek-rating {
-  --pr-active: #f5b400;
-  --pr-idle: #52525b;
-  --pr-tip: #27272a;
-  --pr-tip-text: #f5f5f5;
-  --pr-size: 28px;
-  --pr-gap: 6px;
-  --pr-room: 31px;
+  --pr-active: var(--bs-warning);
+  --pr-idle: var(--bs-gray-400);
+  --pr-tip: var(--bs-dark);
+  --pr-tip-text: var(--bs-light);
+  --pr-size: 36px;
+  --pr-gap: 8px;
+  --pr-room: 38px;
   --pr-rise: 320ms;
   --pr-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 

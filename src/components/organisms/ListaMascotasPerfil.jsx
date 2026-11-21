@@ -21,17 +21,6 @@ const ESTERILIZADA = [
 ];
 
 function ListaMascotasPerfil(props) {
-    const {
-        mascotas,
-        mostrarFormulario,
-        onAlternarFormulario,
-        valoresMascota,
-        erroresMascota,
-        onCambioMascota,
-        manejarSubmitMascota,
-        mensajeMascota
-    } = props;
-
     return (
         <section className="p-4 border rounded shadow-sm bg-light mt-4">
             <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
@@ -42,24 +31,24 @@ function ListaMascotasPerfil(props) {
                 />
                 <Boton
                     tipoBoton="button"
-                    texto={mostrarFormulario ? "Cancelar" : "Agregar mascota"}
-                    variante={mostrarFormulario ? "secondary" : "outline-primary"}
+                    texto={props.mostrarFormulario ? "Cancelar" : "Agregar mascota"}
+                    variante={props.mostrarFormulario ? "secondary" : "outline-primary"}
                     clasesExtras="btn-sm fw-bold"
-                    onClick={onAlternarFormulario}
+                    onClick={props.onAlternarFormulario}
                 />
             </div>
 
-            {mensajeMascota && (
+            {props.mensajeMascota && (
                 <Parrafo clasesExtras="text-success fw-bold text-center mb-3">
-                    {mensajeMascota}
+                    {props.mensajeMascota}
                 </Parrafo>
             )}
 
-            {mostrarFormulario && (
+            {props.mostrarFormulario && (
                 <form 
                     className="p-4 border rounded bg-white mb-4" 
                     noValidate 
-                    onSubmit={manejarSubmitMascota}
+                    onSubmit={props.manejarSubmitMascota}
                 >
                     <Subtitulo 
                         nivel="h3" 
@@ -73,10 +62,10 @@ function ListaMascotasPerfil(props) {
                                 id="nombre-mascota"
                                 textoLabel="Nombre Mascota:"
                                 placeholder="Nombre Mascota"
-                                value={valoresMascota.nombreMascota}
-                                onChange={onCambioMascota('nombreMascota')}
-                                error={erroresMascota.nombreMascota}
-                                mensajeError={erroresMascota.nombreMascota}
+                                value={props.valoresMascota.nombreMascota}
+                                onChange={props.onCambioMascota('nombreMascota')}
+                                error={props.erroresMascota.nombreMascota}
+                                mensajeError={props.erroresMascota.nombreMascota}
                             />
                         </Col>
 
@@ -86,10 +75,10 @@ function ListaMascotasPerfil(props) {
                                 textoLabel="Especie:"
                                 textoDefecto="Selecciona una especie"
                                 opciones={ESPECIES}
-                                value={valoresMascota.especie}
-                                onChange={onCambioMascota('especie')}
-                                error={erroresMascota.especie}
-                                mensajeError={erroresMascota.especie}
+                                value={props.valoresMascota.especie}
+                                onChange={props.onCambioMascota('especie')}
+                                error={props.erroresMascota.especie}
+                                mensajeError={props.erroresMascota.especie}
                             />
                         </Col>
                         <Col xs={12} md={6}>
@@ -97,10 +86,10 @@ function ListaMascotasPerfil(props) {
                                 id="raza"
                                 textoLabel="Raza:"
                                 placeholder="Raza"
-                                value={valoresMascota.raza}
-                                onChange={onCambioMascota('raza')}
-                                error={erroresMascota.raza}
-                                mensajeError={erroresMascota.raza}
+                                value={props.valoresMascota.raza}
+                                onChange={props.onCambioMascota('raza')}
+                                error={props.erroresMascota.raza}
+                                mensajeError={props.erroresMascota.raza}
                             />
                         </Col>
                         <Col xs={12} md={6}>
@@ -109,10 +98,10 @@ function ListaMascotasPerfil(props) {
                                 textoLabel="Sexo:"
                                 textoDefecto="Seleccionar una opción"
                                 opciones={SEXOS}
-                                value={valoresMascota.sexo}
-                                onChange={onCambioMascota('sexo')}
-                                error={erroresMascota.sexo}
-                                mensajeError={erroresMascota.sexo}
+                                value={props.valoresMascota.sexo}
+                                onChange={props.onCambioMascota('sexo')}
+                                error={props.erroresMascota.sexo}
+                                mensajeError={props.erroresMascota.sexo}
                             />
                         </Col>
 
@@ -121,10 +110,10 @@ function ListaMascotasPerfil(props) {
                                 id="fecha-nacimiento"
                                 textoLabel="Fecha de nacimiento:"
                                 tipo="date"
-                                value={valoresMascota.fechaNacimiento}
-                                onChange={onCambioMascota('fechaNacimiento')}
-                                error={erroresMascota.fechaNacimiento}
-                                mensajeError={erroresMascota.fechaNacimiento}
+                                value={props.valoresMascota.fechaNacimiento}
+                                onChange={props.onCambioMascota('fechaNacimiento')}
+                                error={props.erroresMascota.fechaNacimiento}
+                                mensajeError={props.erroresMascota.fechaNacimiento}
                             />
                         </Col>
 
@@ -133,8 +122,8 @@ function ListaMascotasPerfil(props) {
                                 name="esterilizada"
                                 textoLabel="¿La mascota está esterilizada?"
                                 opciones={ESTERILIZADA}
-                                value={valoresMascota.esterilizada}
-                                onChange={onCambioMascota('esterilizada')}
+                                value={props.valoresMascota.esterilizada}
+                                onChange={props.onCambioMascota('esterilizada')}
                             />
                         </Col>
 
@@ -143,8 +132,8 @@ function ListaMascotasPerfil(props) {
                                 id="comentario"
                                 textoLabel="Comentario (Opcional):"
                                 rows={2}
-                                value={valoresMascota.comentario}
-                                onChange={onCambioMascota('comentario')}
+                                value={props.valoresMascota.comentario}
+                                onChange={props.onCambioMascota('comentario')}
                             />
                         </Col>
                     </Row>
@@ -155,13 +144,13 @@ function ListaMascotasPerfil(props) {
                 </form>
             )}
 
-            {!mascotas || mascotas.length === 0 ? (
+            {!props.mascotas || props.mascotas.length === 0 ? (
                 <Parrafo clasesExtras="text-secondary mb-0">
                     No tienes mascotas registradas actualmente.
                 </Parrafo>
             ) : (
                 <Row className="g-3">
-                    {mascotas.map((mascota) => (
+                    {props.mascotas.map((mascota) => (
                         <Col xs={12} md={6} key={mascota.id}>
                             <TarjetaMascota mascota={mascota} />
                         </Col>

@@ -8,7 +8,6 @@ import DatoResumen from '../molecules/DatoResumen';
 import AvatarPerfil from '../molecules/AvatarPerfil';
 
 function FormularioPerfil(props) {
-    const { usuario, valores, errores, onCambio } = props;
 
     return (
         <form
@@ -18,15 +17,15 @@ function FormularioPerfil(props) {
         >
             <Row className="g-4">
                 <Col xs={12} md={4}>
-                    <AvatarPerfil foto={valores.foto} alt="Foto de perfil" />
+                    <AvatarPerfil foto={props.valores.foto} alt="Foto de perfil" />
 
                     <CampoFormulario
                         id="foto"
                         textoLabel="Cambiar foto"
                         tipo="file"
                         onChange={props.onCambioFoto}
-                        error={errores.foto}
-                        mensajeError={errores.foto}
+                        error={props.errores.foto}
+                        mensajeError={props.errores.foto}
                     />
                 </Col>
 
@@ -34,38 +33,38 @@ function FormularioPerfil(props) {
                     <Subtitulo nivel="h2" texto="Datos personales" clasesExtras="h4 text-primary mb-3" />
 
                     <div className="mb-3">
-                        <DatoResumen etiqueta="Correo:" valor={usuario.correo} />
-                        <DatoResumen etiqueta="RUT:" valor={usuario.rut || "No registrado"} />
+                        <DatoResumen etiqueta="Correo:" valor={props.usuario.correo} />
+                        <DatoResumen etiqueta="RUT:" valor={props.usuario.rut || "No registrado"} />
                     </div>
 
                     <CampoFormulario
                         id="nombre"
                         textoLabel="Nombre completo"
                         placeholder="Nombre completo"
-                        value={valores.nombre}
-                        onChange={onCambio('nombre')}
-                        error={errores.nombre}
-                        mensajeError={errores.nombre}
+                        value={props.valores.nombre}
+                        onChange={props.onCambio('nombre')}
+                        error={props.errores.nombre}
+                        mensajeError={props.errores.nombre}
                     />
 
                     <CampoFormulario
                         id="telefono"
                         textoLabel="Teléfono"
                         placeholder="+569xxxxxxxx"
-                        value={valores.telefono}
-                        onChange={onCambio('telefono')}
-                        error={errores.telefono}
-                        mensajeError={errores.telefono}
+                        value={props.valores.telefono}
+                        onChange={props.onCambio('telefono')}
+                        error={props.errores.telefono}
+                        mensajeError={props.errores.telefono}
                     />
 
                     <CampoFormulario
                         id="direccion"
                         textoLabel="Dirección"
                         placeholder="Dirección"
-                        value={valores.direccion}
-                        onChange={onCambio('direccion')}
-                        error={errores.direccion}
-                        mensajeError={errores.direccion}
+                        value={props.valores.direccion}
+                        onChange={props.onCambio('direccion')}
+                        error={props.errores.direccion}
+                        mensajeError={props.errores.direccion}
                     />
                 </Col>
             </Row>

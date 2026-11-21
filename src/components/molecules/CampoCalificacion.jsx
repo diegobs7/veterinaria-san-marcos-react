@@ -12,8 +12,6 @@ function CampoCalificacion(props) {
                     onChange={props.onChange}
                     labels={props.etiquetas}
                     ariaLabel={props.textoLabel}
-                    idleColor="#ced4da"
-                    size={36}
                 />
             </div>
             {props.mensajeError && (
