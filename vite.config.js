@@ -10,6 +10,7 @@ export default defineConfig({
     setupFiles: './src/setupTests.js',
     coverage: {
       provider: 'v8',
+      reportOnFailure: true,
       include: ['src/utils/**', 'src/components/**', 'src/services/**', 'src/context/**'],
     },
   },
