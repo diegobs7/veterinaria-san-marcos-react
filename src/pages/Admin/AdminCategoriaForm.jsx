@@ -12,6 +12,7 @@ import {
   crearCategoria,
   actualizarCategoria,
 } from '../../services/categoriaService';
+import { useServicios } from '../../context/ServiciosContext';
 
 import validarCategoria from '../../utils/validaciones/ValidarCateogria';
 
@@ -32,6 +33,7 @@ function aValores(categoria) {
 function AdminCategoriaForm() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { recargar } = useServicios();
   const esEdicion = Boolean(id);
   const categoria = esEdicion ? obtenerCategoria(id) : null;
 
@@ -89,6 +91,7 @@ function AdminCategoriaForm() {
     try {
       if (esEdicion && categoria) {
         actualizarCategoria(categoria.id, datos);
+        recargar();
         setMensaje('Los cambios se guardaron correctamente.');
       } else {
         crearCategoria(datos);

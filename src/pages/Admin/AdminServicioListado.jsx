@@ -6,11 +6,13 @@ import Parrafo from '../../components/atoms/Parrafo';
 import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin';
 import ModalConfirmacion from '../../components/molecules/ModalConfirmacion';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
-import { listarServicios, eliminarServicio } from '../../services/servicioService';
 import { formatearPrecio } from '../../utils/precios';
+import { listarServicios } from '../../services/servicioService';
+import { useServicios } from '../../context/ServiciosContext';
 
 function AdminServicioListado() {
     useTituloPagina('Listado de servicios');
+    const { eliminar } = useServicios();
 
     const [servicios, setServicios] = useState([]);
     const [modalEliminar, setModalEliminar] = useState({ abierto: false, servicio: null });
@@ -33,7 +35,7 @@ function AdminServicioListado() {
 
     const confirmarEliminar = () => {
         if (modalEliminar.servicio) {
-            eliminarServicio(modalEliminar.servicio.id);
+            eliminar(modalEliminar.servicio.id);
             cargarServicios();
             cerrarModal();
         }

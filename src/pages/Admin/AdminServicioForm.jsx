@@ -7,8 +7,9 @@ import Parrafo from '../../components/atoms/Parrafo';
 import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin';
 import FormularioServicio from '../../components/organisms/FormularioServicio';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
-import { obtenerServicio, crearServicio, actualizarServicio } from '../../services/servicioService';
 import validarServicio from '../../utils/validaciones/ValidarServicio';
+import { obtenerServicio } from '../../services/servicioService';
+import { useServicios } from '../../context/ServiciosContext';
 
 const VALORES_INICIALES = {
   nombre: '',
@@ -35,6 +36,7 @@ function aValores(servicio) {
 function AdminServicioForm() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { crear, actualizar } = useServicios();
   const esEdicion = Boolean(id);
   const servicio = esEdicion ? obtenerServicio(id) : null;
 
@@ -92,10 +94,10 @@ function AdminServicioForm() {
 
     try {
       if (esEdicion && servicio) {
-        actualizarServicio(servicio.id, datos);
+        actualizar(servicio.id, datos);
         setMensaje('Los cambios se guardaron correctamente.');
       } else {
-        crearServicio(datos);
+        crear(datos);
         setValores(VALORES_INICIALES);
         setMensaje('El servicio se guardó correctamente.');
       }
