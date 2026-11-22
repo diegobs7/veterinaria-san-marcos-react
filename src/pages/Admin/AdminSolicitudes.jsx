@@ -3,17 +3,9 @@ import TemplateAdmin from '../../components/templates/TemplateAdmin';
 import Subtitulo from '../../components/atoms/Subtitulo';
 import Parrafo from '../../components/atoms/Parrafo';
 import Boton from '../../components/atoms/Boton';
-import Badge from '../../components/atoms/Badge';
 import ModalConfirmacion from '../../components/molecules/ModalConfirmacion';
+import TablaSolicitudesAdmin from '../../components/molecules/TablaSolicitudesAdmin';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
-import  Enlace  from '../../components/atoms/Enlace';
-
-// Diccionario fuera del componente para no recrearlo en cada render
-const VARIANTES_ESTADO = {
-  confirmada: 'success',
-  cancelada: 'danger',
-  pendiente: 'warning',
-};
 
 function AdminSolicitudes() {
   useTituloPagina('Gestión de Solicitudes');
@@ -21,11 +13,11 @@ function AdminSolicitudes() {
   const [solicitudes, setSolicitudes] = useState([]);
   const [filtro, setFiltro] = useState('todas');
 
-  // estado unificado para el modal de confirmación (cancelar o eliminar)
+
   const [modal, setModal] = useState({
     abierto: false,
     id: null,
-    tipo: null, // cancelar o eliminar
+    tipo: null, 
     titulo: '',
     mensaje: '',
     textoBoton: '',
@@ -44,7 +36,6 @@ function AdminSolicitudes() {
     cargarCitas();
   }, []);
 
-  
   const actualizarEstado = (idCita, nuevoEstado) => {
     try {
       const actuales = JSON.parse(localStorage.getItem('solicitudes')) || [];
@@ -58,7 +49,7 @@ function AdminSolicitudes() {
     }
   };
 
-  // elimina la solicitud de forma permanente
+
   const eliminarSolicitud = (idCita) => {
     try {
       const actuales = JSON.parse(localStorage.getItem('solicitudes')) || [];
@@ -131,7 +122,6 @@ function AdminSolicitudes() {
         </Parrafo>
       </div>
 
-      
       <div className="d-flex flex-wrap gap-2 mb-4">
         <Boton
           tipoBoton="button"
@@ -163,113 +153,12 @@ function AdminSolicitudes() {
         />
       </div>
 
-      {solicitudesFiltradas.length === 0 ? (
-        <div className="alert alert-light border text-center py-5 rounded-4 shadow-sm">
-          <Parrafo clasesExtras="text-muted fs-6">
-            No hay solicitudes en esta categoría.
-          </Parrafo>
-        </div>
-      ) : (
-        <div className="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
-          <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0">
-              <thead className="table-light">
-                <tr>
-                  <th className="py-3 px-3">Cliente</th>
-                  <th className="py-3">Mascota</th>
-                  <th className="py-3">Servicio</th>
-                  <th className="py-3">Fecha y Hora</th>
-                  <th className="py-3">Estado</th>
-                  <th className="py-3 px-3 text-end">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {solicitudesFiltradas.map((cita) => {
-                  const estadoActual = cita.estado || 'Pendiente';
-                  const esPendiente = estadoActual.toLowerCase() === 'pendiente';
-                  const esConfirmada = estadoActual.toLowerCase() === 'confirmada';
-                  const varianteBadge = VARIANTES_ESTADO[estadoActual.toLowerCase()] || 'warning';
-
-                  return (
-                    <tr key={cita.id}>
-                      <td className="px-3">
-                        <div className="fw-bold text-dark">
-                          {cita.cliente || cita.nombreCliente || cita.correo || 'Usuario'}
-                        </div>
-                        {cita.correo && (
-                          <small className="text-muted d-block">{cita.correo}</small>
-                        )}
-                      </td>
-                      <td>
-                        <span className="fw-semibold text-dark">{cita.mascota || cita.nombreMascota || 'Mascota'}</span>
-                        {cita.especie && (
-                          <span className="badge bg-light text-secondary border ms-2">
-                            {cita.especie}
-                          </span>
-                        )}
-                      </td>
-                      <td className="text-primary fw-medium">
-                        {cita.servicio || 'Atención médica'}
-                      </td>
-                      <td>
-                        <div className="fw-bold">{cita.fecha || 'Sin fecha'}</div>
-                        <small className="text-muted">{cita.hora || cita.horario || ''}</small>
-                      </td>
-                      <td>
-                        <Badge
-                          variante={varianteBadge}
-                          texto={estadoActual}
-                          clasesExtras="px-2 py-1"
-                        />
-                      </td>
-                      <td className="px-3 text-end">
-                        <div className="d-flex justify-content-end gap-1">
-                          
-                          <Enlace
-                              to={`/admin/solicitudes/${cita.id}`}
-                              texto="Ver ficha"
-                              clasesExtras="btn btn-sm btn-outline-primary"
-                          />
-
-                          {esPendiente && (
-                            <Boton
-                              tipoBoton="button"
-                              variante="success"
-                              texto="Confirmar"
-                              onClick={() => manejarConfirmar(cita.id)}
-                              clasesExtras="btn-sm text-white"
-                            />
-                          )}
-
-                         
-                          {(esPendiente || esConfirmada) && (
-                            <Boton
-                              tipoBoton="button"
-                              variante="outline-warning"
-                              texto="Cancelar"
-                              onClick={() => abrirModalCancelar(cita.id)}
-                              clasesExtras="btn-sm text-dark"
-                            />
-                          )}
-
-                          
-                          <Boton
-                            tipoBoton="button"
-                            variante="outline-danger"
-                            texto="Borrar"
-                            onClick={() => abrirModalEliminar(cita.id)}
-                            clasesExtras="btn-sm"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      <TablaSolicitudesAdmin
+        solicitudes={solicitudesFiltradas}
+        onConfirmar={manejarConfirmar}
+        onSolicitarCancelacion={abrirModalCancelar}
+        onEliminar={abrirModalEliminar}
+      />
 
       <ModalConfirmacion
         abierto={modal.abierto}
