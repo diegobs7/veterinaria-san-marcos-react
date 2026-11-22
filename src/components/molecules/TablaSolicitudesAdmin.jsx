@@ -13,7 +13,9 @@ function obtenerBadgeClase(estado) {
   }
 }
 
-function TablaSolicitudesAdmin({ solicitudes = [], onConfirmar, onSolicitarCancelacion }) {
+function TablaSolicitudesAdmin(props) {
+  const solicitudes = props.solicitudes || [];
+
   if (solicitudes.length === 0) {
     return (
       <div className="alert alert-secondary text-center py-4 my-3">
@@ -76,14 +78,14 @@ function TablaSolicitudesAdmin({ solicitudes = [], onConfirmar, onSolicitarCance
                     {esPendiente && (
                       <Boton
                         texto="Confirmar"
-                        onClick={() => onConfirmar(solicitud.id)}
+                        onClick={() => props.onConfirmar(solicitud.id)}
                         clasesExtras="btn btn-sm btn-success text-white"
                       />
                     )}
                     {(esPendiente || esConfirmada) && (
                       <Boton
                         texto="Cancelar"
-                        onClick={() => onSolicitarCancelacion(solicitud.id)}
+                        onClick={() => props.onSolicitarCancelacion(solicitud.id)}
                         clasesExtras="btn btn-sm btn-outline-danger ms-1"
                       />
                     )}
