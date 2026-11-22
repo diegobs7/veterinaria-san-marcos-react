@@ -68,7 +68,9 @@ Para generar la versión de producción: `npm run build`.
 | `npm run test:run` | Ejecuta todas las pruebas una vez |
 | `npm run test:cov` | Ejecuta las pruebas y muestra el reporte de cobertura |
 
-Hoy hay 43 pruebas en 10 archivos. Cada archivo `.test.js` o `.test.jsx` está junto al código que prueba.
+Hoy hay 57 pruebas en 14 archivos: 56 pasan y 1 falla a propósito (`src/utils/categorias.demo.test.js`). Cada archivo `.test.js` o `.test.jsx` está junto al código que prueba.
+
+El documento de cobertura está en [`docs/COBERTURA.md`](docs/COBERTURA.md).
 
 ## Rutas y roles
 
@@ -85,7 +87,7 @@ Hoy hay 43 pruebas en 10 archivos. Cada archivo `.test.js` o `.test.jsx` está j
 
 ## Datos
 
-Los datos de partida están en `src/data` y los cambios quedan en localStorage (claves `servicios`, `categorias`, `usuarios`, `mascotas` y `solicitudes`); la sesión queda en sessionStorage.
+Los datos de partida están en `src/data` y los cambios quedan en localStorage (claves `servicios`, `categorias`, `usuarios`, `mascotas`, `solicitudes`, `evaluaciones` y `mensajesContacto`); la sesión queda en sessionStorage.
 Para volver a los datos iniciales, borrar el almacenamiento del sitio desde las herramientas del navegador (Application → Clear site data).
 
 ## Trabajo en equipo
