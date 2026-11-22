@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import TemplateContacto from '../components/templates/TemplateContacto';
 import { useTituloPagina } from '../Hooks/useTituloPagina';
+import { registrarMensajeContacto } from '../services/contactoService';
 
 function Contacto() {
 
@@ -48,6 +49,12 @@ function Contacto() {
         }
 
         if (formularioValido) {
+            registrarMensajeContacto({
+                nombre: valorNombre,
+                correo: valorCorreo,
+                mensaje: valorMensaje,
+            });
+
             setMensajeExito("¡Tu mensaje ha sido enviado con éxito! Te responderemos pronto.");
             setClaseMensaje("text-success");
 

@@ -6,6 +6,8 @@ import CampoCalificacion from '../molecules/CampoCalificacion';
 import CampoTextArea from '../molecules/CampoTextArea';
 import ValidarEvaluacion from '../../utils/validaciones/ValidarEvaluacion';
 import { ETIQUETAS_CALIFICACION } from '../../data/OpcionesEvaluacion';
+import { registrarEvaluacion } from '../../services/evaluacionService';
+import { obtenerSesion } from '../../utils/sesionAdmin';
 
 const VALORES_INICIALES = {
     calificacion: 0,
@@ -30,6 +32,14 @@ function FormularioEvaluacion() {
         setErrores(erroresValidacion);
 
         if (Object.keys(erroresValidacion).length === 0) {
+            const sesion = obtenerSesion();
+
+            registrarEvaluacion({
+                calificacion: valores.calificacion,
+                comentario: valores.comentario.trim(),
+                correo: sesion ? sesion.correo : null,
+            });
+
             setMensajeEvaluacion("¡Gracias por evaluar nuestra atención!");
             setValores(VALORES_INICIALES);
         } else {
