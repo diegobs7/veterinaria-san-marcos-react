@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TemplateRegistro from '../components/templates/TemplateRegistro';
 import { useTituloPagina } from '../Hooks/useTituloPagina';
-import { buscarUsuarioPorCorreo, registrarUsuario } from '../services/usuarioService';
+import { buscarUsuarioPorCorreo, buscarUsuarioPorRut, registrarUsuario } from '../services/usuarioService';
 import { registrarMascota } from '../services/mascotaService';
 import { validarRegistro, validarCorreoDisponible } from '../utils/validaciones/ValidarLogin_Registro';
 
@@ -48,6 +48,10 @@ const manejarSubmit = (e) => {
         if (mensajeCorreo) {
             nuevosErrores.correo = mensajeCorreo;
         }
+    }
+    // Igual que con el correo: no se puede registrar un RUT que ya tiene otra cuenta
+    if (!nuevosErrores.rut && buscarUsuarioPorRut(valores.rut)) {
+        nuevosErrores.rut = "Ya existe una cuenta con este RUT.";
     }
 
     setErrores(nuevosErrores);

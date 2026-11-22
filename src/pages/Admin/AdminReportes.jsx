@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import TemplateAdmin from '../../components/templates/TemplateAdmin';
 import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin';
 import DatoResumen from '../../components/molecules/DatoResumen';
@@ -19,7 +20,20 @@ function AdminReportes() {
 
     const citas = obtenerTodasLasCitas();
     const servicios = listarServicios();
-    const usuarios = listarUsuarios();
+    
+    const [totalUsuarios, setTotalUsuarios] = useState('Cargando...');
+
+    useEffect(() => {
+        const cargarTotalUsuarios = async () => {
+            try {
+                const lista = await listarUsuarios();
+                setTotalUsuarios(String(lista.length));
+            } catch {
+                setTotalUsuarios('No disponible');
+            }
+        };
+        cargarTotalUsuarios();
+    }, []);
     const sesion = obtenerSesion();
 
     // 1. Reporte de citas por estado
@@ -108,7 +122,7 @@ function AdminReportes() {
                         <DatoResumen etiqueta="Nombre:" valor={sesion?.nombre || 'Administrador'} />
                         <DatoResumen etiqueta="Correo:" valor={sesion?.correo || 'admin@duocuc.cl'} />
                         <DatoResumen etiqueta="Rol activo:" valor={sesion?.rol || 'Administrador'} />
-                        <DatoResumen etiqueta="Usuarios en sistema:" valor={String(usuarios.length)} />
+                        <DatoResumen etiqueta="Usuarios en sistema:" valor={totalUsuarios} />
                         <div className="mt-3">
                             <Enlace to="/perfil" texto="Editar mi perfil" clasesExtras="btn btn-outline-primary btn-sm" />
                         </div>
