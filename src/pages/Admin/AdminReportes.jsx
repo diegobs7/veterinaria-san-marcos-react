@@ -10,6 +10,9 @@ import { obtenerTodasLasCitas } from '../../services/citasService';
 import { listarServicios } from '../../services/servicioService';
 import { listarUsuarios } from '../../services/usuarioService';
 import { obtenerSesion } from '../../utils/sesionAdmin';
+import { duracionEnMinutos } from '../../utils/duracion';
+
+const DURACION_CRITICA_MIN = 60;
 
 function AdminReportes() {
     useTituloPagina('Reportes y Perfil Admin');
@@ -21,20 +24,20 @@ function AdminReportes() {
 
     // 1. Reporte de citas por estado
     const porEstado = {
-        pendientes: citas.filter((c) => (c.estado || 'Pendiente').toLowerCase() === 'pendiente').length,
-        confirmadas: citas.filter((c) => c.estado?.toLowerCase() === 'confirmada').length,
-        canceladas: citas.filter((c) => c.estado?.toLowerCase() === 'cancelada').length,
+        pendientes: citas.filter((c) => c.estado === 'Pendiente').length,
+        confirmadas: citas.filter((c) => c.estado === 'Confirmada').length,
+        canceladas: citas.filter((c) => c.estado === 'Cancelada').length,
     };
 
-    // 2. Reporte de citas por servicio e identificación de servicios críticos (0 solicitudes o alta duración)
+    // 2. Reporte de citas por servicio e identificación de servicios críticos
+    //    (sin solicitudes, o con una duración de DURACION_CRITICA_MIN minutos o más)
     const conteoPorServicio = servicios.map((srv) => {
         const cantidad = citas.filter((c) => c.servicio === srv.titulo).length;
         return { ...srv, solicitudes: cantidad };
     });
 
     const masSolicitados = [...conteoPorServicio].sort((a, b) => b.solicitudes - a.solicitudes).slice(0, 5);
-    const serviciosCriticos = conteoPorServicio.filter((s) => s.solicitudes === 0 || s.duracion?.includes('60'));
-
+    const serviciosCriticos = conteoPorServicio.filter((s) => s.solicitudes === 0 || duracionEnMinutos(s.duracion) >= DURACION_CRITICA_MIN);
     return (
         <TemplateAdmin>
             <EncabezadoAdmin
@@ -117,8 +120,7 @@ function AdminReportes() {
             <div className="card border-0 shadow-sm rounded-4 bg-white p-4">
                 <Subtitulo nivel="h3" texto="Ítems Críticos (Cupos limitados / Sin rotación)" clasesExtras="h5 fw-bold mb-2" />
                 <Parrafo clasesExtras="text-muted small mb-3">
-                    Servicios de larga duración (60 min) con disponibilidad reducida de box o servicios sin solicitudes recientes.
-                </Parrafo>
+                    Servicios de {DURACION_CRITICA_MIN} min o más, que ocupan el box por más tiempo, o servicios que aún no tienen solicitudes.</Parrafo>
                 <div className="table-responsive">
                     <table className="table table-sm align-middle mb-0">
                         <thead className="table-light">

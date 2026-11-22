@@ -52,14 +52,39 @@ function Consumidor() {
 }
 
 describe('ServiciosContext', () => {
+  // "Base de datos" falsa en memoria: los mocks la leen y la modifican,
+  // así la prueba revisa lo que hace el Context y no un valor fijado de antemano
+  let baseDatos
+
   beforeEach(() => {
     vi.clearAllMocks()
-    mockListar.mockReturnValue([...SERVICIOS_MOCK])
-    mockCrear.mockImplementation((datos) => ({ id: 'sv-nuevo', ...datos }))
-    mockActualizar.mockImplementation((id, cambios) => ({ id, ...cambios }))
-    mockEliminar.mockReturnValue(true)
-    mockRestablecer.mockImplementation(() => {})
+    baseDatos = [...SERVICIOS_MOCK]
+
+    mockListar.mockImplementation(() => [...baseDatos])
+    mockCrear.mockImplementation((datos) => {
+      const nuevo = { id: 'sv-nuevo', ...datos }
+      baseDatos = [...baseDatos, nuevo]
+      return nuevo
+    })
+    mockActualizar.mockImplementation((id, cambios) => {
+      baseDatos = baseDatos.map((s) => (s.id === id ? { ...s, ...cambios } : s))
+      return baseDatos.find((s) => s.id === id)
+    })
+    mockEliminar.mockImplementation((id) => {
+      baseDatos = baseDatos.filter((s) => s.id !== id)
+      return true
+    })
+    mockRestablecer.mockImplementation(() => {
+      baseDatos = [...SERVICIOS_MOCK]
+    })
   })
+
+  // Comprueba que el Context volvió a leer la lista DESPUÉS de llamar al service
+  function releyoDespuesDe(mockAccion) {
+    const ordenAccion = mockAccion.mock.invocationCallOrder[0]
+    const ordenUltimaLectura = mockListar.mock.invocationCallOrder.at(-1)
+    return ordenUltimaLectura > ordenAccion
+  }
 
   it('provee la lista inicial de servicios desde el service', () => {
     render(
@@ -73,24 +98,30 @@ describe('ServiciosContext', () => {
     expect(screen.getByTestId('primero').textContent).toBe('Consulta general')
   })
 
-  it('obtener devuelve el servicio por id', () => {
+  it('obtener busca por id dentro de la lista del Context', () => {
+    function ConsumidorObtener() {
+      const { obtener } = useServicios()
+      return (
+        <div>
+          <p data-testid="existe">{obtener('sv001')?.titulo ?? 'no-encontrado'}</p>
+          <p data-testid="no-existe">{obtener('sv999')?.titulo ?? 'no-encontrado'}</p>
+        </div>
+      )
+    }
+
     render(
       <ServiciosProvider>
-        <Consumidor />
+        <ConsumidorObtener />
       </ServiciosProvider>,
     )
 
-    expect(screen.getByTestId('obtener').textContent).toBe('Consulta general')
+    expect(screen.getByTestId('existe').textContent).toBe('Consulta general')
+    expect(screen.getByTestId('no-existe').textContent).toBe('no-encontrado')
+    // obtener no vuelve a llamar al service: usa la lista que ya tiene el Context
+    expect(mockListar).toHaveBeenCalledTimes(1)
   })
 
-  it('crear llama al service y refresca la lista', () => {
-    mockListar
-      .mockReturnValueOnce([...SERVICIOS_MOCK])
-      .mockReturnValueOnce([
-        ...SERVICIOS_MOCK,
-        { id: 'sv-nuevo', titulo: 'Nuevo' },
-      ])
-
+  it('crear envía los datos al service y vuelve a leer la lista', () => {
     render(
       <ServiciosProvider>
         <Consumidor />
@@ -101,16 +132,13 @@ describe('ServiciosContext', () => {
       screen.getByText('crear').click()
     })
 
+    expect(mockCrear).toHaveBeenCalledTimes(1)
     expect(mockCrear).toHaveBeenCalledWith({ titulo: 'Nuevo' })
-    expect(mockListar.mock.calls.length).toBeGreaterThanOrEqual(2)
+    expect(releyoDespuesDe(mockCrear)).toBe(true)
     expect(screen.getByTestId('total').textContent).toBe('2')
   })
 
-  it('actualizar llama al service y refresca la lista', () => {
-    mockListar
-      .mockReturnValueOnce([...SERVICIOS_MOCK])
-      .mockReturnValueOnce([{ ...SERVICIOS_MOCK[0], titulo: 'Editado' }])
-
+  it('actualizar envía el id correcto y los cambios, y vuelve a leer la lista', () => {
     render(
       <ServiciosProvider>
         <Consumidor />
@@ -121,15 +149,13 @@ describe('ServiciosContext', () => {
       screen.getByText('actualizar').click()
     })
 
+    expect(mockActualizar).toHaveBeenCalledTimes(1)
     expect(mockActualizar).toHaveBeenCalledWith('sv001', { titulo: 'Editado' })
+    expect(releyoDespuesDe(mockActualizar)).toBe(true)
     expect(screen.getByTestId('primero').textContent).toBe('Editado')
   })
 
-  it('eliminar llama al service y refresca la lista', () => {
-    mockListar
-      .mockReturnValueOnce([...SERVICIOS_MOCK])
-      .mockReturnValueOnce([])
-
+  it('eliminar envía el id correcto y vuelve a leer la lista', () => {
     render(
       <ServiciosProvider>
         <Consumidor />
@@ -140,11 +166,13 @@ describe('ServiciosContext', () => {
       screen.getByText('eliminar').click()
     })
 
+    expect(mockEliminar).toHaveBeenCalledTimes(1)
     expect(mockEliminar).toHaveBeenCalledWith('sv001')
+    expect(releyoDespuesDe(mockEliminar)).toBe(true)
     expect(screen.getByTestId('total').textContent).toBe('0')
   })
 
-  it('restablecer llama al service y refresca la lista', () => {
+  it('restablecer llama al service y vuelve a leer la lista', () => {
     render(
       <ServiciosProvider>
         <Consumidor />
@@ -152,11 +180,17 @@ describe('ServiciosContext', () => {
     )
 
     act(() => {
+      screen.getByText('eliminar').click()
+    })
+    expect(screen.getByTestId('total').textContent).toBe('0')
+
+    act(() => {
       screen.getByText('restablecer').click()
     })
 
-    expect(mockRestablecer).toHaveBeenCalled()
-    expect(mockListar.mock.calls.length).toBeGreaterThanOrEqual(2)
+    expect(mockRestablecer).toHaveBeenCalledTimes(1)
+    expect(releyoDespuesDe(mockRestablecer)).toBe(true)
+    expect(screen.getByTestId('total').textContent).toBe('1')
   })
 
   it('useServicios fuera del provider lanza error', () => {
