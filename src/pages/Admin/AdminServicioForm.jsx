@@ -125,7 +125,6 @@ function AdminServicioForm() {
       />
       <FormularioServicio
         codigo={servicio?.codigo}
-        esEdicion={esEdicion}
         valores={valores}
         errores={errores}
         onCambio={manejarCambio}
