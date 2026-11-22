@@ -25,3 +25,8 @@ dist-ssr
 
 # Reporte de cobertura (lo genera npm run test:cov)
 coverage
+
+# Variables de entorno (no subir claves ni direcciones privadas)
+.env
+.env.*
+!.env.example

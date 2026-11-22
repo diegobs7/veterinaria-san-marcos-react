@@ -27,7 +27,8 @@ function Perfil() {
     useTituloPagina('Mi perfil');
 
     const sesion = obtenerSesion();
-    const usuario = sesion ? buscarUsuarioPorCorreo(sesion.correo) : null;
+    const usuario = sesion
+    ? (buscarUsuarioPorCorreo(sesion.correo) ?? { correo: sesion.correo, nombre: sesion.nombre }) : null;
 
     const [valores, setValores] = useState({
         nombre: usuario?.nombre ?? '',

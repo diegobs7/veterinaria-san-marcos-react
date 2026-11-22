@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 import TemplateRegistro from '../components/templates/TemplateRegistro';
 import { useTituloPagina } from '../Hooks/useTituloPagina';
-import { buscarUsuarioPorCorreo, buscarUsuarioPorRut, registrarUsuario } from '../services/usuarioService';
+import { registrar } from '../services/authService';
+import { obtenerMensajeError } from '../services/apiErrores';
+import { registroRequestDto } from '../dto/auth.dto';
 import { registrarMascota } from '../services/mascotaService';
-import { validarRegistro, validarCorreoDisponible } from '../utils/validaciones/ValidarLogin_Registro';
+import { validarRegistro } from '../utils/validaciones/ValidarLogin_Registro';
 
 const VALORES_INICIALES = {
   nombreMascota: '',
@@ -31,6 +33,7 @@ function Registro() {
   const [errores, setErrores] = useState({});
   const [mensajeRegistro, setMensajeRegistro] = useState('');
   const [claseMensaje, setClaseMensaje] = useState('');
+  const [enviando, setEnviando] = useState(false);
 
   
   const manejarCambio = (campo) => (e) => {
@@ -38,33 +41,23 @@ function Registro() {
     setErrores({ ...errores, [campo]: '' });
   };
 
-const manejarSubmit = (e) => {
+const manejarSubmit = async (e) => {
     e.preventDefault();
 
     const nuevosErrores = validarRegistro(valores);
-
-    if (!nuevosErrores.correo) {
-        const mensajeCorreo = validarCorreoDisponible(buscarUsuarioPorCorreo(valores.correo));
-        if (mensajeCorreo) {
-            nuevosErrores.correo = mensajeCorreo;
-        }
-    }
-    // Igual que con el correo: no se puede registrar un RUT que ya tiene otra cuenta
-    if (!nuevosErrores.rut && buscarUsuarioPorRut(valores.rut)) {
-        nuevosErrores.rut = "Ya existe una cuenta con este RUT.";
-    }
-
     setErrores(nuevosErrores);
 
-    if (Object.keys(nuevosErrores).length === 0) {
-        registrarUsuario({
-            nombre: valores.nombreCompleto,
-            rut: valores.rut,
-            telefono: valores.telefono,
-            correo: valores.correo,
-            direccion: valores.direccion,
-            contra: valores.contra,
-        });
+    if (Object.keys(nuevosErrores).length > 0) {
+        setMensajeRegistro("");
+        return;
+    }
+
+    setEnviando(true);
+    setMensajeRegistro('Creando tu cuenta...');
+    setClaseMensaje('text-muted');
+
+    try {
+      await registrar(registroRequestDto(valores));
 
       registrarMascota({
           correoDueno: valores.correo.trim(),
@@ -79,8 +72,14 @@ const manejarSubmit = (e) => {
           esterilizada: valores.esterilizada,
       });
       navigate("/login", { state: { registroExitoso: true } });
-    } else {
-        setMensajeRegistro("");
+    } catch (error) {
+      if (error.response?.status === 409) {
+        setErrores({ ...nuevosErrores, correo: 'Ya existe una cuenta con este correo.' });
+      }
+      setMensajeRegistro(obtenerMensajeError(error));
+      setClaseMensaje('text-danger');
+    } finally {
+      setEnviando(false);
     }
 };
 
@@ -92,6 +91,7 @@ const manejarSubmit = (e) => {
       mensajeRegistro={mensajeRegistro}
       claseMensaje={claseMensaje}
       manejarSubmit={manejarSubmit}
+      enviando={enviando}
     />
   );
 }

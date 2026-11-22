@@ -17,6 +17,7 @@ function TemplateLogin(props) {
                     mensajeLogin = {props.mensajeLogin}
                     claseMensaje = {props.claseMensaje}
                     manejarSubmit = {props.manejarSubmit}
+                    enviando = {props.enviando}
                     />
                 </div>
             </div>
