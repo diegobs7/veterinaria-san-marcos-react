@@ -10,7 +10,7 @@ const VALIDOS = {
   tipo: 'Cliente',
   region: 'Maule',
   direccion: 'Calle Los Aromos 245',
-  contra: 'abc123',
+  contra: 'abc12345',
 }
 
 describe('validarUsuario', () => {

@@ -34,7 +34,7 @@ function IniciarSesion(props) {
                 </div>
 
                 <div className="d-grid mt-4">
-                    <Boton tipoBoton="submit" texto="Entrar" variante="primary" />
+                    <Boton tipoBoton="submit" texto={props.enviando ? "Entrando..." : "Entrar"} variante="primary" deshabilitado={props.enviando} />
                 </div>
                 <MensajeRegistro ruta = "/registro" textoEnlace="Registrate aqui" textoPregunta="¿Aún no tienes una cuenta? " />
             </form>

@@ -6,6 +6,7 @@ function Boton(props) {
             type={props.tipoBoton}
             className={`btn btn-${variante} ${props.clasesExtras || ""}`.trim()}
             onClick={props.onClick}
+            disabled={props.deshabilitado}
             aria-label={props.ariaLabel}
             aria-expanded={props.ariaExpanded}
             aria-controls={props.ariaControls}

@@ -24,7 +24,7 @@ function NavBar() {
                 const datosUsuario = buscarUsuarioPorCorreo(sesion.correo);
                 setUsuarioActivo({
                     ...sesion,
-                    nombre: datosUsuario?.nombre ?? '',
+                    nombre: datosUsuario?.nombre ?? sesion.nombre ?? '',
                     foto: datosUsuario?.foto ?? ''
                 });
             } else {

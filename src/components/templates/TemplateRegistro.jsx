@@ -14,6 +14,7 @@ function TemplateRegistro(props) {
                         mensajeRegistro={props.mensajeRegistro}
                         claseMensaje={props.claseMensaje}
                         manejarSubmit={props.manejarSubmit}
+                        enviando={props.enviando}
                     />
                 </div>
             </div>

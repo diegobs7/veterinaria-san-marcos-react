@@ -38,7 +38,7 @@ function FormularioReserva(props) {
 
     const sesion = obtenerSesion();
     const usuario = sesion ? buscarUsuarioPorCorreo(sesion.correo) : null;
-    const nombreCliente = usuario ? nombreCompleto(usuario) : '';
+    const nombreCliente = usuario ? nombreCompleto(usuario) : (sesion?.nombre ?? '');
     const correoCliente = sesion?.correo || '';
 
     const mascotasCompatibles = sesion

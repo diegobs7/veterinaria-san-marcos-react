@@ -2,9 +2,11 @@ import { useState } from "react";
 import TemplateLogin from "../components/templates/TemplateLogin";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTituloPagina } from "../Hooks/useTituloPagina";
-import validarLogin, { validarCredenciales } from "../utils/validaciones/ValidarLogin_Registro";
-import { buscarUsuarioPorCorreo } from "../services/usuarioService";
 import { iniciarSesion } from "../utils/sesionAdmin";
+import validarLogin from "../utils/validaciones/ValidarLogin_Registro";
+import { login, obtenerPerfil } from "../services/authService";
+import { obtenerMensajeError } from "../services/apiErrores";
+import { loginRequestDto } from "../dto/auth.dto";
 
 function Login() {
     useTituloPagina("Iniciar sesion");
@@ -20,33 +22,37 @@ function Login() {
 
     const [errorCorreo, setErrorCorreo] = useState("");
     const [errorContra, setErrorContra] = useState("");
+    const [enviando, setEnviando] = useState(false);
 
-const manejarSubmit = (e) => {
+const manejarSubmit = async (e) => {
     e.preventDefault();
 
     const errores = validarLogin({ correo, contra });
 
-    if (!errores.correo) {
-        const usuario = buscarUsuarioPorCorreo(correo);
-        const erroresCredenciales = validarCredenciales(usuario, contra);
-
-        if (erroresCredenciales.correo) {
-            errores.correo = erroresCredenciales.correo;
-        } else if (!errores.contra && erroresCredenciales.contra) {
-            errores.contra = erroresCredenciales.contra;
-        }
-    }
-
     setErrorCorreo(errores.correo || "");
     setErrorContra(errores.contra || "");
 
-    if (Object.keys(errores).length === 0) {
-        setMensajeLogin("Verificacion exitosa...");
-        setClaseMensaje("text-success");
-        const sesion = iniciarSesion(correo.trim());
-        navigate(sesion.rol === "Administrador" ? "/admin" : "/");
-    } else {
+    if (Object.keys(errores).length > 0) {
         setMensajeLogin("");
+        return;
+    }
+
+    setEnviando(true);
+    setMensajeLogin("Verificando tus datos...");
+    setClaseMensaje("text-muted");
+
+    try {
+        const token = await login(loginRequestDto({ correo, contra }));
+        const perfil = await obtenerPerfil(token.accessToken);
+        const sesion = iniciarSesion(token, perfil);
+        setMensajeLogin("Verificación exitosa...");
+        setClaseMensaje("text-success");
+        navigate(sesion.rol === "Administrador" ? "/admin" : "/");
+    } catch (error) {
+        setMensajeLogin(obtenerMensajeError(error));
+        setClaseMensaje("text-danger");
+    } finally {
+        setEnviando(false);
     }
 };
 
@@ -61,6 +67,7 @@ const manejarSubmit = (e) => {
         mensajeLogin={mensajeLogin}
         claseMensaje={claseMensaje}
         manejarSubmit={manejarSubmit}
+        enviando={enviando}
         />
     );
     }

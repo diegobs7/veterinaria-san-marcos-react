@@ -21,8 +21,8 @@ export function validarCorreo(valor) {
 export function validarContra(valor) {
     const contra = valor.trim();
 
-    if (contra === "" || contra.length < 6) {
-        return "La contraseña debe tener un minimo de 6 caracteres";
+        if (contra === "" || contra.length < 8) {
+        return "La contraseña debe tener un minimo de 8 caracteres";
     }
 
     return "";
@@ -66,12 +66,7 @@ export function validarCorreoDisponible(usuarioExistente) {
     return usuarioExistente ? "Ya existe una cuenta con este correo." : "";
 }
 
-
-
-
-
 //Validaciones de Registro de mascota
-
 export function validarNombreMascota(valor) {
     const nombre = valor.trim();
 
@@ -155,22 +150,17 @@ export function validarRegistro(valores) {
     return Object.fromEntries(Object.entries(revisiones).filter(([, mensaje]) => mensaje !== ""));
 }
 
-
-
-
 //Validacion de Login
 
 function validarLogin(valores) {
     const errores = {};
-
-    const mensajeCorreo = validarCorreo(valores.correo);
-    if (mensajeCorreo) {
-        errores.correo = mensajeCorreo;
+    const correo = valores.correo.trim();
+    if (correo === "" || !PATRON_CORREO.test(correo)) {
+        errores.correo = "Ingresa un correo válido.";
     }
 
-    const mensajeContra = validarContra(valores.contra);
-    if (mensajeContra) {
-        errores.contra = mensajeContra;
+    if (valores.contra === "") {
+        errores.contra = "Ingresa tu contraseña.";
     }
 
     return errores;
