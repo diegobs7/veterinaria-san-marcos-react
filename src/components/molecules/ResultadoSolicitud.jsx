@@ -3,13 +3,11 @@ import Parrafo from '../atoms/Parrafo';
 import Boton from '../atoms/Boton';
 import Enlace from '../atoms/Enlace';
 import DatoResumen from './DatoResumen';
- import { formatearNumeroSolicitud } from '../../utils/solicitudes';
- import { formatearPrecio } from '../../utils/precios';
+import { formatearNumeroSolicitud } from '../../utils/solicitudes';
+import { formatearPrecio } from '../../utils/precios';
 
 function ResultadoSolicitud(props) {
-  const { solicitud, onReintentar } = props;
-
-  if (!solicitud) return null;
+  if (!props.solicitud) return null;
 
   return (
     <div className="border rounded-4 p-4 bg-white shadow-sm" role="status" aria-live="polite">
@@ -28,22 +26,22 @@ function ResultadoSolicitud(props) {
       <div className="bg-light rounded-3 p-3 mb-3">
         <DatoResumen
           etiqueta="Nº de solicitud:"
-          valor={formatearNumeroSolicitud(solicitud)}
+          valor={formatearNumeroSolicitud(props.solicitud)}
           clasesExtras="fs-5"
         />
-        <DatoResumen etiqueta="Estado:" valor={solicitud.estado || 'Pendiente'} />
-        <DatoResumen etiqueta="Servicio:" valor={solicitud.servicio} />
-        <DatoResumen etiqueta="Mascota:" valor={`${solicitud.mascota} (${solicitud.especie})`} />
-        <DatoResumen etiqueta="Fecha preferida:" valor={solicitud.fecha} />
-        <DatoResumen etiqueta="Hora preferida:" valor={solicitud.hora} />
-        {solicitud.precio !== undefined && (
-          <DatoResumen etiqueta="Total referencial:" valor={formatearPrecio(solicitud.precio)} />
+        <DatoResumen etiqueta="Estado:" valor={props.solicitud.estado || 'Pendiente'} />
+        <DatoResumen etiqueta="Servicio:" valor={props.solicitud.servicio} />
+        <DatoResumen etiqueta="Mascota:" valor={`${props.solicitud.mascota} (${props.solicitud.especie})`} />
+        <DatoResumen etiqueta="Fecha preferida:" valor={props.solicitud.fecha} />
+        <DatoResumen etiqueta="Hora preferida:" valor={props.solicitud.hora} />
+        {props.solicitud.precio !== undefined && (
+          <DatoResumen etiqueta="Total referencial:" valor={formatearPrecio(props.solicitud.precio)} />
         )}
-        {solicitud.correo && (
-          <DatoResumen etiqueta="Correo:" valor={solicitud.correo} />
+        {props.solicitud.correo && (
+          <DatoResumen etiqueta="Correo:" valor={props.solicitud.correo} />
         )}
-        {solicitud.nombreCliente && (
-          <DatoResumen etiqueta="Cliente:" valor={solicitud.nombreCliente} />
+        {props.solicitud.nombreCliente && (
+          <DatoResumen etiqueta="Cliente:" valor={props.solicitud.nombreCliente} />
         )}
       </div>
 
@@ -53,7 +51,7 @@ function ResultadoSolicitud(props) {
           texto="Nueva solicitud"
           variante="outline-primary"
           clasesExtras="w-100"
-          onClick={onReintentar}
+          onClick={props.onReintentar}
         />
         <Enlace
           to="/citas"

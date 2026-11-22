@@ -18,49 +18,47 @@ const normalizarOpciones = (lista = []) =>
     );
 
 function FormularioUsuario(props) {
-    const { valores, errores, onCambio, esEdicion, manejarSubmit, mensaje, textoBoton } = props;
-
     return (
         <Row className="justify-content-center">
             <Col xs={12} lg={8}>
                 <form
                     className="p-4 border rounded-4 shadow-sm bg-light"
                     noValidate
-                    onSubmit={manejarSubmit}
+                    onSubmit={props.manejarSubmit}
                 >
                     <CampoFormulario
                         id="rut"
                         textoLabel="RUT:"
                         placeholder="12.345.678-5"
-                        value={valores.rut}
-                        onChange={onCambio('rut')}
-                        error={errores.rut}
-                        mensajeError={errores.rut}
+                        value={props.valores.rut}
+                        onChange={props.onCambio('rut')}
+                        error={props.errores.rut}
+                        mensajeError={props.errores.rut}
                     />
 
                     <CampoFormulario
                         id="nombre"
                         textoLabel="Nombre:"
                         placeholder="Nombre"
-                        value={valores.nombre}
-                        onChange={onCambio('nombre')}
-                        error={errores.nombre}
-                        mensajeError={errores.nombre}
+                        value={props.valores.nombre}
+                        onChange={props.onCambio('nombre')}
+                        error={props.errores.nombre}
+                        mensajeError={props.errores.nombre}
                     />
 
                     <CampoFormulario
                         id="apellidos"
                         textoLabel="Apellidos:"
                         placeholder="Apellidos"
-                        value={valores.apellidos}
-                        onChange={onCambio('apellidos')}
-                        error={errores.apellidos}
-                        mensajeError={errores.apellidos}
+                        value={props.valores.apellidos}
+                        onChange={props.onCambio('apellidos')}
+                        error={props.errores.apellidos}
+                        mensajeError={props.errores.apellidos}
                     />
 
-                    {esEdicion ? (
+                    {props.esEdicion ? (
                         <div className="mb-3 p-3 bg-white rounded border">
-                            <DatoResumen etiqueta="Correo registrado:" valor={valores.correo} />
+                            <DatoResumen etiqueta="Correo registrado:" valor={props.valores.correo} />
                         </div>
                     ) : (
                         <CampoFormulario
@@ -68,10 +66,10 @@ function FormularioUsuario(props) {
                             textoLabel="Correo electrónico:"
                             tipo="email"
                             placeholder="correo@duocuc.cl"
-                            value={valores.correo}
-                            onChange={onCambio('correo')}
-                            error={errores.correo}
-                            mensajeError={errores.correo}
+                            value={props.valores.correo}
+                            onChange={props.onCambio('correo')}
+                            error={props.errores.correo}
+                            mensajeError={props.errores.correo}
                         />
                     )}
 
@@ -79,20 +77,20 @@ function FormularioUsuario(props) {
                         id="telefono"
                         textoLabel="Teléfono de contacto:"
                         placeholder="+56912345678"
-                        value={valores.telefono}
-                        onChange={onCambio('telefono')}
-                        error={errores.telefono}
-                        mensajeError={errores.telefono}
+                        value={props.valores.telefono}
+                        onChange={props.onCambio('telefono')}
+                        error={props.errores.telefono}
+                        mensajeError={props.errores.telefono}
                     />
 
                     <CampoFormulario
                         id="fecha-nacimiento"
                         textoLabel="Fecha de nacimiento:"
                         tipo="date"
-                        value={valores.fechaNacimiento}
-                        onChange={onCambio('fechaNacimiento')}
-                        error={errores.fechaNacimiento}
-                        mensajeError={errores.fechaNacimiento}
+                        value={props.valores.fechaNacimiento}
+                        onChange={props.onCambio('fechaNacimiento')}
+                        error={props.errores.fechaNacimiento}
+                        mensajeError={props.errores.fechaNacimiento}
                     />
 
                     <CampoSelector
@@ -100,10 +98,10 @@ function FormularioUsuario(props) {
                         textoLabel="Tipo de usuario / Rol:"
                         textoDefecto="Selecciona un tipo"
                         opciones={normalizarOpciones(TIPOS_USUARIO)}
-                        value={valores.tipo}
-                        onChange={onCambio('tipo')}
-                        error={errores.tipo}
-                        mensajeError={errores.tipo}
+                        value={props.valores.tipo}
+                        onChange={props.onCambio('tipo')}
+                        error={props.errores.tipo}
+                        mensajeError={props.errores.tipo}
                     />
 
                     <CampoSelector
@@ -111,39 +109,39 @@ function FormularioUsuario(props) {
                         textoLabel="Región:"
                         textoDefecto="Selecciona una región"
                         opciones={normalizarOpciones(REGIONES)}
-                        value={valores.region}
-                        onChange={onCambio('region')}
-                        error={errores.region}
-                        mensajeError={errores.region}
+                        value={props.valores.region}
+                        onChange={props.onCambio('region')}
+                        error={props.errores.region}
+                        mensajeError={props.errores.region}
                     />
 
                     <CampoTextArea
                         id="direccion"
                         textoLabel="Dirección:"
                         placeholder="Dirección completa de residencia"
-                        value={valores.direccion}
-                        onChange={onCambio('direccion')}
-                        error={errores.direccion}
-                        mensajeError={errores.direccion}
+                        value={props.valores.direccion}
+                        onChange={props.onCambio('direccion')}
+                        error={props.errores.direccion}
+                        mensajeError={props.errores.direccion}
                     />
 
-                    {!esEdicion && (
+                    {!props.esEdicion && (
                         <CampoFormulario
                             id="contra"
                             textoLabel="Contraseña:"
                             tipo="password"
                             placeholder="6 a 10 caracteres"
-                            value={valores.contra}
-                            onChange={onCambio('contra')}
-                            error={errores.contra}
-                            mensajeError={errores.contra}
+                            value={props.valores.contra}
+                            onChange={props.onCambio('contra')}
+                            error={props.errores.contra}
+                            mensajeError={props.errores.contra}
                         />
                     )}
 
-                    {mensaje && (
+                    {props.mensaje && (
                         <div className="alert alert-success text-center py-2 my-3 rounded-3 shadow-sm">
                             <Parrafo clasesExtras="fw-bold mb-0">
-                                {mensaje}
+                                {props.mensaje}
                             </Parrafo>
                         </div>
                     )}
@@ -156,7 +154,7 @@ function FormularioUsuario(props) {
                         />
                         <Boton
                             tipoBoton="submit"
-                            texto={textoBoton}
+                            texto={props.textoBoton}
                             variante="primary"
                             clasesExtras="px-4 text-white fw-semibold"
                         />

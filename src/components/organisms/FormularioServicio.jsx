@@ -17,7 +17,6 @@ const normalizarOpciones = (lista = []) =>
   );
 
 function FormularioServicio(props) {
-  const { valores, errores, onCambio, codigo, manejarSubmit, mensaje, textoBoton } = props;
   const opcionesCategorias = obtenerOpcionesCategorias();
 
   return (
@@ -26,12 +25,12 @@ function FormularioServicio(props) {
         <form
           className="p-4 border rounded-4 shadow-sm bg-light"
           noValidate
-          onSubmit={manejarSubmit}
+          onSubmit={props.manejarSubmit}
         >
           <div className="mb-3">
-            {codigo ? (
+            {props.codigo ? (
               <div className="p-3 bg-white rounded border">
-                <DatoResumen etiqueta="Código del servicio:" valor={codigo} />
+                <DatoResumen etiqueta="Código del servicio:" valor={props.codigo} />
               </div>
             ) : (
               <Parrafo clasesExtras="text-muted small">
@@ -44,20 +43,20 @@ function FormularioServicio(props) {
             id="nombre"
             textoLabel="Nombre del servicio:"
             placeholder="Ej: Consulta General, Vacunación Sextuple"
-            value={valores.nombre}
-            onChange={onCambio('nombre')}
-            error={errores.nombre}
-            mensajeError={errores.nombre}
+            value={props.valores.nombre}
+            onChange={props.onCambio('nombre')}
+            error={props.errores.nombre}
+            mensajeError={props.errores.nombre}
           />
 
           <CampoTextArea
             id="descripcion"
             textoLabel="Descripción del servicio:"
             placeholder="Detalles sobre lo que incluye la atención (opcional)"
-            value={valores.descripcion}
-            onChange={onCambio('descripcion')}
-            error={errores.descripcion}
-            mensajeError={errores.descripcion}
+            value={props.valores.descripcion}
+            onChange={props.onCambio('descripcion')}
+            error={props.errores.descripcion}
+            mensajeError={props.errores.descripcion}
           />
 
           <CampoFormulario
@@ -65,10 +64,10 @@ function FormularioServicio(props) {
             textoLabel="Precio ($ CLP):"
             tipo="number"
             placeholder="Ej: 15000"
-            value={valores.precio}
-            onChange={onCambio('precio')}
-            error={errores.precio}
-            mensajeError={errores.precio}
+            value={props.valores.precio}
+            onChange={props.onCambio('precio')}
+            error={props.errores.precio}
+            mensajeError={props.errores.precio}
           />
 
           <CampoSelector
@@ -76,10 +75,10 @@ function FormularioServicio(props) {
             textoLabel="Categoría:"
             textoDefecto="Selecciona una categoría"
             opciones={normalizarOpciones(opcionesCategorias)}
-            value={valores.categoria}
-            onChange={onCambio('categoria')}
-            error={errores.categoria}
-            mensajeError={errores.categoria}
+            value={props.valores.categoria}
+            onChange={props.onCambio('categoria')}
+            error={props.errores.categoria}
+            mensajeError={props.errores.categoria}
           />
 
           <CampoSelector
@@ -87,25 +86,25 @@ function FormularioServicio(props) {
             textoLabel="Especie de atención:"
             textoDefecto="Selecciona una especie"
             opciones={normalizarOpciones(ESPECIES_SERVICIO)}
-            value={valores.especie}
-            onChange={onCambio('especie')}
-            error={errores.especie}
-            mensajeError={errores.especie}
+            value={props.valores.especie}
+            onChange={props.onCambio('especie')}
+            error={props.errores.especie}
+            mensajeError={props.errores.especie}
           />
 
           <CampoFormulario
             id="duracion"
             textoLabel="Duración estimada:"
             placeholder="Ej: 30 min, 45 min"
-            value={valores.duracion}
-            onChange={onCambio('duracion')}
-            error={errores.duracion}
-            mensajeError={errores.duracion}
+            value={props.valores.duracion}
+            onChange={props.onCambio('duracion')}
+            error={props.errores.duracion}
+            mensajeError={props.errores.duracion}
           />
 
-          {mensaje && (
+          {props.mensaje && (
             <div className="alert alert-success text-center py-2 my-3 rounded-3 shadow-sm">
-              <Parrafo clasesExtras="fw-bold mb-0">{mensaje}</Parrafo>
+              <Parrafo clasesExtras="fw-bold mb-0">{props.mensaje}</Parrafo>
             </div>
           )}
 
@@ -117,7 +116,7 @@ function FormularioServicio(props) {
             />
             <Boton
               tipoBoton="submit"
-              texto={textoBoton}
+              texto={props.textoBoton}
               variante="primary"
               clasesExtras="px-4 text-white fw-semibold"
             />
