@@ -29,8 +29,8 @@ export const ESPECIES_SERVICIO = [
 
 export const TIPOS_USUARIO = [
   { valor: 'Administrador', texto: 'Administrador' },
+  { valor: 'Recepcionista', texto: 'Recepcionista' },
   { valor: 'Cliente', texto: 'Cliente' },
-  { valor: 'Vendedor', texto: 'Vendedor' },
 ];
 
 export const REGIONES = [
