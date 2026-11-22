@@ -18,13 +18,24 @@ function AdminUsuarioListado() {
   useTituloPagina('Listado de usuarios');
 
   const [usuarios, setUsuarios] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState('');
   const [modalEliminar, setModalEliminar] = useState({ abierto: false, usuario: null });
 
-  // Obtenemos la sesión actual para no permitir que el admin se borre a sí mismo
+
   const sesionActual = obtenerSesion();
 
-  const cargarUsuarios = () => {
-    setUsuarios(listarUsuarios());
+  const cargarUsuarios = async () => {
+    setCargando(true);
+    setError('');
+    try {
+      const lista = await listarUsuarios();
+      setUsuarios(lista);
+    } catch {
+      setError('No se pudieron cargar los usuarios. Revisa tu conexión e intenta de nuevo.');
+    } finally {
+      setCargando(false);
+    }
   };
 
   useEffect(() => {
@@ -63,7 +74,14 @@ function AdminUsuarioListado() {
         <span className="text-muted small">Total: {usuarios.length} cuentas</span>
       </div>
 
-      {usuarios.length === 0 ? (
+      {cargando ? (
+        <Parrafo clasesExtras="text-muted text-center py-5">Cargando usuarios...</Parrafo>
+      ) : error ? (
+        <div className="alert alert-danger text-center py-4 rounded-4">
+          <Parrafo clasesExtras="mb-3">{error}</Parrafo>
+          <Boton tipoBoton="button" variante="outline-danger" texto="Reintentar" onClick={cargarUsuarios} />
+        </div>
+      ) : usuarios.length === 0 ? (
         <div className="alert alert-light border text-center py-5 rounded-4 shadow-sm">
           <Parrafo clasesExtras="text-muted">No hay usuarios registrados en el sistema.</Parrafo>
         </div>
@@ -144,7 +162,6 @@ function AdminUsuarioListado() {
         </div>
       )}
 
-      {/* Modal de confirmación para eliminar */}
       <ModalConfirmacion
         abierto={modalEliminar.abierto}
         titulo="Eliminar cuenta de usuario"
