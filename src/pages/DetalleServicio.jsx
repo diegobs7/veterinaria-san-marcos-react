@@ -8,6 +8,8 @@ import formatearPrecio from '../utils/FormatearPrecio';
 import { useServicios } from '../context/ServiciosContext';
 import ObtenerEspeciesServicio from '../utils/ObtenerEspeciesServicio';
 import { useTituloPagina } from '../Hooks/useTituloPagina';
+import { obtenerOfertas } from '../utils/ofertas';
+import ofertasIniciales from '../data/ofertas.json';
 
 function DetalleServicio() {
     const { id } = useParams();
@@ -23,6 +25,9 @@ function DetalleServicio() {
             </div>
         );
     }
+
+    const servicioEnOferta = obtenerOfertas([servicio], ofertasIniciales)[0];
+    const precioFinal = servicioEnOferta?.precioOferta ?? servicio.precio;
 
     return (
         <DetalleServicioTemplate
@@ -41,13 +46,13 @@ function DetalleServicio() {
             lateral={
                 <TarjetaAgendarCita
                     key={servicio.id}
-                    etiquetaPrecio="Valor del servicio"
-                    monto={formatearPrecio(servicio.precio)}
+                    etiquetaPrecio={servicioEnOferta ? "Precio en oferta" : "Valor del servicio"}
+                    monto={formatearPrecio(precioFinal)}
                     duracion={servicio.duracion}
                     especies={ObtenerEspeciesServicio(servicio.especie)}
                     nombreServicio={servicio.titulo}
                     servicioId={servicio.id}
-                    precio={servicio.precio}
+                    precio={precioFinal}
                 />
             }
         />
