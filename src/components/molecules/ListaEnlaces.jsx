@@ -1,11 +1,11 @@
-import EnlaceNav from '../atoms/Enlace';
+import Enlace from '../atoms/Enlace';
 
 function ListaEnlaces(props) {
     return (
         <ul className={`nav nav-underline ${props.clasesExtras || ""}`.trim()}>
             {props.enlaces.map((enlace) => (
                 <li className="nav-item" key={enlace.to}>
-                    <EnlaceNav
+                    <Enlace
                         to={enlace.to}
                         end={enlace.end}
                         texto={enlace.texto}
