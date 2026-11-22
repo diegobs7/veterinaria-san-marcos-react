@@ -8,29 +8,19 @@ import Parrafo from '../atoms/Parrafo';
 import Alerta from '../molecules/Alerta';
 
 function FormularioCategoria(props) {
-  const {
-    valores,
-    errores,
-    onCambio,
-    manejarSubmit,
-    mensaje,
-    textoBoton,
-    esEdicion,
-  } = props;
-
   return (
     <Row className="justify-content-center">
       <Col xs={12} lg={8}>
         <form
           className="p-4 border rounded-4 shadow-sm bg-light"
           noValidate
-          onSubmit={manejarSubmit}
+          onSubmit={props.manejarSubmit}
         >
-          {mensaje && (
+          {props.mensaje && (
             <Alerta
               variante="success"
               titulo="Listo."
-              texto={mensaje}
+              texto={props.mensaje}
               clasesExtras="mb-3"
             />
           )}
@@ -40,10 +30,10 @@ function FormularioCategoria(props) {
             textoLabel="Nombre de la categoría:"
             tipo="text"
             placeholder="Ej: Consultas, Vacunación, Cirugía..."
-            value={valores.nombre}
-            onChange={onCambio('nombre')}
-            error={errores.nombre}
-            mensajeError={errores.nombre}
+            value={props.valores.nombre}
+            onChange={props.onCambio('nombre')}
+            error={props.errores.nombre}
+            mensajeError={props.errores.nombre}
           />
 
           <CampoFormulario
@@ -51,10 +41,10 @@ function FormularioCategoria(props) {
             textoLabel="Icono (emoji):"
             tipo="text"
             placeholder="Ej: 🩺  💉  🏥  💊  🔬  🐾"
-            value={valores.icono}
-            onChange={onCambio('icono')}
-            error={errores.icono}
-            mensajeError={errores.icono}
+            value={props.valores.icono}
+            onChange={props.onCambio('icono')}
+            error={props.errores.icono}
+            mensajeError={props.errores.icono}
           />
 
           <div className="mb-3">
@@ -62,7 +52,7 @@ function FormularioCategoria(props) {
               Vista previa del icono:
             </Parrafo>
             <span className="fs-2" aria-hidden="true">
-              {valores.icono?.trim() || '🐾'}
+              {props.valores.icono?.trim() || '🐾'}
             </span>
           </div>
 
@@ -70,10 +60,10 @@ function FormularioCategoria(props) {
             id="descripcion"
             textoLabel="Descripción (opcional):"
             placeholder="Breve descripción de qué tipo de servicios agrupa esta categoría."
-            value={valores.descripcion}
-            onChange={onCambio('descripcion')}
-            error={errores.descripcion}
-            mensajeError={errores.descripcion}
+            value={props.valores.descripcion}
+            onChange={props.onCambio('descripcion')}
+            error={props.errores.descripcion}
+            mensajeError={props.errores.descripcion}
             rows={3}
           />
 
@@ -85,13 +75,13 @@ function FormularioCategoria(props) {
             />
             <Boton
               tipoBoton="submit"
-              texto={textoBoton}
+              texto={props.textoBoton}
               variante="primary"
               clasesExtras="px-4 text-white fw-semibold"
             />
           </div>
 
-          {esEdicion && (
+          {props.esEdicion && (
             <Parrafo clasesExtras="text-muted small mt-3 mb-0">
               Si cambias el nombre, se actualizará automáticamente en los servicios
               que ya usan esta categoría.

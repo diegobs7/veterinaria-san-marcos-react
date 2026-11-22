@@ -3,8 +3,6 @@ import Col from 'react-bootstrap/Col'
 import TarjetaResumenAdmin from '../molecules/TarjetaResumenAdmin'
 
 function ResumenAdmin(props) {
-    const { solicitudes, catalogo, usuarios } = props.resumen;
-
     return (
         <Row className="g-3">
             <Col xs={12} md={6} xl={4}>
@@ -12,8 +10,8 @@ function ResumenAdmin(props) {
                     titulo="Solicitudes"
                     descripcion="Revisa las solicitudes de atención recibidas desde el sitio."
                     datos={[
-                        { etiqueta: 'Total:', valor: solicitudes.total },
-                        { etiqueta: 'Pendientes:', valor: solicitudes.pendientes },
+                        { etiqueta: 'Total:', valor: props.resumen.solicitudes.total },
+                        { etiqueta: 'Pendientes:', valor: props.resumen.solicitudes.pendientes },
                     ]}
                     to="/admin/solicitudes"
                     textoEnlace="Ir a Solicitudes"
@@ -24,8 +22,8 @@ function ResumenAdmin(props) {
                     titulo="Catálogo"
                     descripcion="Crea, edita y revisa los servicios publicados."
                     datos={[
-                        { etiqueta: 'Servicios publicados:', valor: catalogo.total },
-                        { etiqueta: 'Categorías:', valor: catalogo.categorias },
+                        { etiqueta: 'Servicios publicados:', valor: props.resumen.catalogo.total },
+                        { etiqueta: 'Categorías:', valor: props.resumen.catalogo.categorias },
                     ]}
                     to="/admin/servicios"
                     textoEnlace="Ir a Servicios"
@@ -35,7 +33,7 @@ function ResumenAdmin(props) {
                 <TarjetaResumenAdmin
                     titulo="Usuarios"
                     descripcion="Administra las cuentas de los clientes registrados."
-                    datos={[{ etiqueta: 'Usuarios registrados:', valor: usuarios.total }]}
+                    datos={[{ etiqueta: 'Usuarios registrados:', valor: props.resumen.usuarios.total }]}
                     to="/admin/usuarios"
                     textoEnlace="Ir a Usuarios"
                 />

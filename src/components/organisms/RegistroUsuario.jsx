@@ -20,8 +20,6 @@ const ESTERILIZADA = [
 ];
 
 function RegistroUsuario(props) {
-    const { valores, errores, onCambio } = props;
-
     return (
         <form noValidate onSubmit={props.manejarSubmit}>
             <Row className="g-4">
@@ -33,10 +31,10 @@ function RegistroUsuario(props) {
                             id="nombre-mascota"
                             textoLabel="Nombre Mascota:"
                             placeholder="Nombre Mascota"
-                            value={valores.nombreMascota}
-                            onChange={onCambio('nombreMascota')}
-                            error={errores.nombreMascota}
-                            mensajeError={errores.nombreMascota}
+                            value={props.valores.nombreMascota}
+                            onChange={props.onCambio('nombreMascota')}
+                            error={props.errores.nombreMascota}
+                            mensajeError={props.errores.nombreMascota}
                         />
 
                         <CampoSelector
@@ -44,20 +42,20 @@ function RegistroUsuario(props) {
                             textoLabel="Especie:"
                             textoDefecto="Selecciona una especie"
                             opciones={ESPECIES}
-                            value={valores.especie}
-                            onChange={onCambio('especie')}
-                            error={errores.especie}
-                            mensajeError={errores.especie}
+                            value={props.valores.especie}
+                            onChange={props.onCambio('especie')}
+                            error={props.errores.especie}
+                            mensajeError={props.errores.especie}
                         />
 
                         <CampoFormulario
                             id="raza"
                             textoLabel="Raza:"
                             placeholder="Raza"
-                            value={valores.raza}
-                            onChange={onCambio('raza')}
-                            error={errores.raza}
-                            mensajeError={errores.raza}
+                            value={props.valores.raza}
+                            onChange={props.onCambio('raza')}
+                            error={props.errores.raza}
+                            mensajeError={props.errores.raza}
                         />
 
                         <CampoSelector
@@ -65,36 +63,36 @@ function RegistroUsuario(props) {
                             textoLabel="Sexo:"
                             textoDefecto="Seleccionar una opción"
                             opciones={SEXOS}
-                            value={valores.sexo}
-                            onChange={onCambio('sexo')}
-                            error={errores.sexo}
-                            mensajeError={errores.sexo}
+                            value={props.valores.sexo}
+                            onChange={props.onCambio('sexo')}
+                            error={props.errores.sexo}
+                            mensajeError={props.errores.sexo}
                         />
 
                         <CampoFormulario
                             id="fecha-nacimiento"
                             textoLabel="Fecha de nacimiento:"
                             tipo="date"
-                            value={valores.fechaNacimiento}
-                            onChange={onCambio('fechaNacimiento')}
-                            error={errores.fechaNacimiento}
-                            mensajeError={errores.fechaNacimiento}
+                            value={props.valores.fechaNacimiento}
+                            onChange={props.onCambio('fechaNacimiento')}
+                            error={props.errores.fechaNacimiento}
+                            mensajeError={props.errores.fechaNacimiento}
                         />
 
                         <CampoTextArea
                             id="comentario"
                             textoLabel="Comentario (Opcional):"
                             rows={2}
-                            value={valores.comentario}
-                            onChange={onCambio('comentario')}
+                            value={props.valores.comentario}
+                            onChange={props.onCambio('comentario')}
                         />
 
                         <CampoRadio
                             name="esterilizada"
                             textoLabel="¿La mascota está esterilizada?"
                             opciones={ESTERILIZADA}
-                            value={valores.esterilizada}
-                            onChange={onCambio('esterilizada')}
+                            value={props.valores.esterilizada}
+                            onChange={props.onCambio('esterilizada')}
                         />
                     </section>
                 </Col>
@@ -107,30 +105,30 @@ function RegistroUsuario(props) {
                             id="nombre-completo"
                             textoLabel="Nombre Completo:"
                             placeholder="Nombre completo"
-                            value={valores.nombreCompleto}
-                            onChange={onCambio('nombreCompleto')}
-                            error={errores.nombreCompleto}
-                            mensajeError={errores.nombreCompleto}
+                            value={props.valores.nombreCompleto}
+                            onChange={props.onCambio('nombreCompleto')}
+                            error={props.errores.nombreCompleto}
+                            mensajeError={props.errores.nombreCompleto}
                         />
 
                         <CampoFormulario
                             id="rut"
                             textoLabel="RUT:"
                             placeholder="xx.xxx.xxx-x"
-                            value={valores.rut}
-                            onChange={onCambio('rut')}
-                            error={errores.rut}
-                            mensajeError={errores.rut}
+                            value={props.valores.rut}
+                            onChange={props.onCambio('rut')}
+                            error={props.errores.rut}
+                            mensajeError={props.errores.rut}
                         />
 
                         <CampoFormulario
                             id="telefono"
                             textoLabel="Teléfono:"
                             placeholder="+569xxxxxxxx"
-                            value={valores.telefono}
-                            onChange={onCambio('telefono')}
-                            error={errores.telefono}
-                            mensajeError={errores.telefono}
+                            value={props.valores.telefono}
+                            onChange={props.onCambio('telefono')}
+                            error={props.errores.telefono}
+                            mensajeError={props.errores.telefono}
                         />
 
                         <CampoFormulario
@@ -138,20 +136,20 @@ function RegistroUsuario(props) {
                             textoLabel="Correo electrónico:"
                             tipo="email"
                             placeholder="correo@ejemplo.cl"
-                            value={valores.correo}
-                            onChange={onCambio('correo')}
-                            error={errores.correo}
-                            mensajeError={errores.correo}
+                            value={props.valores.correo}
+                            onChange={props.onCambio('correo')}
+                            error={props.errores.correo}
+                            mensajeError={props.errores.correo}
                         />
 
                         <CampoFormulario
                             id="direccion"
                             textoLabel="Dirección:"
                             placeholder="Dirección"
-                            value={valores.direccion}
-                            onChange={onCambio('direccion')}
-                            error={errores.direccion}
-                            mensajeError={errores.direccion}
+                            value={props.valores.direccion}
+                            onChange={props.onCambio('direccion')}
+                            error={props.errores.direccion}
+                            mensajeError={props.errores.direccion}
                         />
 
                         <CampoFormulario
@@ -159,10 +157,10 @@ function RegistroUsuario(props) {
                             textoLabel="Contraseña:"
                             tipo="password"
                             placeholder="Minimo 6 caracteres"
-                            value={valores.contra}
-                            onChange={onCambio('contra')}
-                            error={errores.contra}
-                            mensajeError={errores.contra}
+                            value={props.valores.contra}
+                            onChange={props.onCambio('contra')}
+                            error={props.errores.contra}
+                            mensajeError={props.errores.contra}
                         />
                     </section>
                 </Col>
