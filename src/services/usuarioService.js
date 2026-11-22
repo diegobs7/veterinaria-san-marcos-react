@@ -1,4 +1,5 @@
 import usuariosIniciales from "../data/usuarios.json";
+import { normalizarRut } from "../utils/rut";
 
 const CLAVE = "usuarios";
 const oyentes = new Set();
@@ -39,6 +40,20 @@ export function buscarUsuarioPorCorreo(correo) {
   return leer().find((u) => u.correo?.trim().toLowerCase() === buscado) ?? null;
 }
 
+// Busca por RUT sin importar si viene con puntos o sin ellos
+export function buscarUsuarioPorRut(rut) {
+  const buscado = normalizarRut(rut);
+  if (!buscado) return null;
+  return leer().find((u) => normalizarRut(u.rut) === buscado) ?? null;
+}
+
+// Error que indica en qué campo del formulario debe mostrarse
+function errorDeCampo(campo, mensaje) {
+  const error = new Error(mensaje);
+  error.campo = campo;
+  return error;
+}
+
 export function buscarUsuarioPorId(id) {
   if (!id) return null;
   return leer().find((u) => String(u.id) === String(id)) ?? null;
@@ -75,7 +90,11 @@ export function registrarUsuario({
   }
 
   if (buscarUsuarioPorCorreo(correoLimpio)) {
-    throw new Error("Ya existe un usuario con ese correo");
+    throw errorDeCampo("correo", "Ya existe un usuario con ese correo");
+  }
+
+  if (buscarUsuarioPorRut(rut)) {
+    throw errorDeCampo("rut", "Ya existe un usuario con ese RUT");
   }
 
   const nuevo = {
@@ -118,14 +137,23 @@ export function actualizarUsuario(identificador, cambios) {
       (u) => u.id !== existente.id && u.correo?.trim().toLowerCase() === nuevoCorreo
     );
     if (ocupado) {
-      throw new Error("El nuevo correo ya está registrado por otro usuario");
+      throw errorDeCampo("correo", "El nuevo correo ya está registrado por otro usuario");
+    }
+  }
+
+  // Si cambian el RUT, verificar que no lo tenga otra cuenta
+  if (cambios.rut) {
+    const nuevoRut = normalizarRut(cambios.rut);
+    const ocupado = lista.find((u) => u.id !== existente.id && normalizarRut(u.rut) === nuevoRut);
+    if (ocupado) {
+      throw errorDeCampo("rut", "El RUT ya está registrado por otro usuario");
     }
   }
 
   const actualizado = {
     ...existente,
     ...cambios,
-    id: existente.id, // El ID original nunca se sobreescribe
+    id: existente.id,
   };
 
   guardar(lista.map((u) => (u.id === existente.id ? actualizado : u)));

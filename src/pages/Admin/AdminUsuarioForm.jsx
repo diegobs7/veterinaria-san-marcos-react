@@ -9,14 +9,12 @@ import FormularioUsuario from '../../components/organisms/FormularioUsuario';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
 import {
   actualizarUsuario,
-  buscarUsuarioPorCorreo,
   buscarUsuarioPorId,
   nombreCompleto,
   registrarUsuario,
   tipoDeUsuario,
 } from '../../services/usuarioService';
 import validarUsuario from '../../utils/validaciones/ValidarUsuario';
-import { validarCorreoDisponible } from '../../utils/validaciones/ValidarLogin_Registro';
 
 const VALORES_INICIALES = {
   rut: '',
@@ -50,27 +48,50 @@ function AdminUsuarioForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const esEdicion = Boolean(id);
-  const usuario = esEdicion ? buscarUsuarioPorId(id) : null;
 
   useTituloPagina(esEdicion ? 'Editar usuario' : 'Nuevo usuario');
 
-  const [valores, setValores] = useState(usuario ? aValores(usuario) : VALORES_INICIALES);
+  const [usuario, setUsuario] = useState(null);
+  const [cargando, setCargando] = useState(esEdicion);
+  const [guardando, setGuardando] = useState(false);
+  const [valores, setValores] = useState(VALORES_INICIALES);
   const [errores, setErrores] = useState({});
   const [mensaje, setMensaje] = useState('');
 
-  // Sincroniza y limpia los campos al alternar entre /nuevo y /:id/editar
+  // Al editar, carga el usuario (con el backend la respuesta tarda); al crear, limpia el formulario
   useEffect(() => {
-    if (id) {
-      const usuarioEncontrado = buscarUsuarioPorId(id);
-      if (usuarioEncontrado) {
-        setValores(aValores(usuarioEncontrado));
+    const cargarUsuario = async () => {
+      setErrores({});
+      setMensaje('');
+
+      if (!id) {
+        setUsuario(null);
+        setValores(VALORES_INICIALES);
+        setCargando(false);
+        return;
       }
-    } else {
-      setValores(VALORES_INICIALES);
-    }
-    setErrores({});
-    setMensaje('');
+
+      setCargando(true);
+      try {
+        const encontrado = await buscarUsuarioPorId(id);
+        setUsuario(encontrado);
+        if (encontrado) setValores(aValores(encontrado));
+      } catch {
+        setUsuario(null);
+      } finally {
+        setCargando(false);
+      }
+    };
+    cargarUsuario();
   }, [id]);
+
+  if (cargando) {
+    return (
+      <TemplateAdmin>
+        <Parrafo clasesExtras="text-muted text-center py-5">Cargando usuario...</Parrafo>
+      </TemplateAdmin>
+    );
+  }
 
   if (id && !usuario) {
     return (
@@ -87,19 +108,11 @@ function AdminUsuarioForm() {
     setMensaje('');
   };
 
-  const manejarSubmit = (e) => {
+  const manejarSubmit = async (e) => {
     e.preventDefault();
+    if (guardando) return;
 
     const nuevosErrores = validarUsuario(valores, esEdicion);
-
-    if (!esEdicion && !nuevosErrores.correo) {
-      const usuarioExistente = buscarUsuarioPorCorreo(valores.correo);
-      const mensajeCorreo = validarCorreoDisponible(usuarioExistente);
-      if (mensajeCorreo) {
-        nuevosErrores.correo = mensajeCorreo;
-      }
-    }
-
     setErrores(nuevosErrores);
 
     if (Object.keys(nuevosErrores).length > 0) {
@@ -119,25 +132,23 @@ function AdminUsuarioForm() {
       direccion: valores.direccion.trim(),
     };
 
+    setGuardando(true);
     try {
-      if (esEdicion && usuario) {
-        // Actualizamos usando el ID como identificador principal
-        actualizarUsuario(usuario.id, datos);
+      if (esEdicion) {
+        await actualizarUsuario(usuario.id, datos);
         setMensaje('Los cambios se guardaron correctamente.');
-        setTimeout(() => navigate('/admin/usuarios/listado'), 1200);
       } else {
-        registrarUsuario({
-          ...datos,
-          contra: valores.contra,
-        });
+        await registrarUsuario({ ...datos, contra: valores.contra });
         setValores(VALORES_INICIALES);
         setMensaje('El usuario se guardó correctamente.');
-        setTimeout(() => navigate('/admin/usuarios/listado'), 1200);
       }
+      setTimeout(() => navigate('/admin/usuarios/listado'), 1200);
     } catch (error) {
-      // Captura excepciones del servicio (como correo duplicado) y las refleja en el formulario
-      setErrores({ correo: error.message });
+      // El correo repetido (o cualquier error del servicio) se muestra en el formulario
+      setErrores({ [error.campo || 'correo']: error.message });
       setMensaje('');
+    } finally {
+      setGuardando(false);
     }
   };
 
@@ -161,7 +172,7 @@ function AdminUsuarioForm() {
         errores={errores}
         onCambio={manejarCambio}
         mensaje={mensaje}
-        textoBoton={esEdicion ? 'Guardar cambios' : 'Guardar usuario'}
+        textoBoton={guardando ? 'Guardando...' : esEdicion ? 'Guardar cambios' : 'Guardar usuario'}
         manejarSubmit={manejarSubmit}
       />
     </TemplateAdmin>
