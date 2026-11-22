@@ -30,7 +30,7 @@ function ListaCitasUsuarios(props) {
 
                                 <div className="d-flex align-items-center gap-2 mt-1">
                                     <Subtitulo nivel="h4" texto={cita.mascota} clasesExtras="fw-bold text-dark m-0" />
-                                    <span className="badge bg-white text-secondary border border-secondary border-opacity-25 rounded-pill px-2 py-1 fw-normal">
+                                    <span className="badge bg-white bg-opacity-100 text-secondary border border-secondary border-opacity-25 rounded-pill px-2 py-1 fw-normal">
                                         {cita.especie}
                                     </span>
                                 </div>
@@ -38,7 +38,7 @@ function ListaCitasUsuarios(props) {
                             <Badge
                                 texto={cita.estado}
                                 variante={VARIANTE_ESTADO_CITA[cita.estado] || 'secondary'}
-                                clasesExtras="rounded-pill px-3 py-2"
+                                clasesExtras="rounded-pill px-3 py-2 bg-opacity-100"
                             />
                         </div>
 

@@ -1,6 +1,6 @@
 export const VARIANTE_ESTADO_CITA = {
     Pendiente: 'warning',
     Confirmada: 'success',
-    Cancelada: 'secondary',
+    Cancelada: 'danger',
     Completada: 'primary',
 };
