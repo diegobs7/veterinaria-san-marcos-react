@@ -8,6 +8,7 @@ import Parrafo from '../../components/atoms/Parrafo';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
 import { buscarUsuarioPorId, nombreCompleto, tipoDeUsuario } from '../../services/usuarioService';
 import { obtenerCitasUsuario } from '../../services/citasService';
+import { useState, useEffect } from 'react';
 
 const VARIANTES_ESTADO = {
     confirmada: 'success',
@@ -17,9 +18,26 @@ const VARIANTES_ESTADO = {
 
 function AdminUsuarioHistorial() {
     const { id } = useParams();
-    const usuario = buscarUsuarioPorId(id);
+    const [usuario, setUsuario] = useState(null);
+    const [cargando, setCargando] = useState(true);
+
+    useEffect(() => {
+        setCargando(true);
+        buscarUsuarioPorId(id)
+            .then(setUsuario)
+            .catch(() => setUsuario(null))
+            .finally(() => setCargando(false));
+    }, [id]);
 
     useTituloPagina(usuario ? `Historial de ${nombreCompleto(usuario)}` : 'Historial de usuario');
+
+        if (cargando) {
+        return (
+            <TemplateAdmin>
+                <Parrafo clasesExtras="text-muted text-center py-5">Cargando usuario...</Parrafo>
+            </TemplateAdmin>
+        );
+    }
 
     if (!usuario) {
         return (

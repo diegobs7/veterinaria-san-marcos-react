@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { useServicios } from '../context/ServiciosContext'
 import { listarCategorias } from '../services/categoriaService'
+import { listarUsuarios } from '../services/usuarioService'
 
 function leerLista(clave) {
   try {
@@ -11,7 +13,13 @@ function leerLista(clave) {
 
 export function useResumenAdmin() {
   const { servicios } = useServicios()
-  const usuarios = leerLista('usuarios')
+  const [totalUsuarios, setTotalUsuarios] = useState('Cargando...')
+
+  useEffect(() => {
+    listarUsuarios()
+      .then((lista) => setTotalUsuarios(lista.length))
+      .catch(() => setTotalUsuarios('No disponible'))
+  }, [])
   const solicitudes = leerLista('solicitudes')
 
   return {
@@ -23,6 +31,6 @@ export function useResumenAdmin() {
       total: servicios.length,
       categorias: listarCategorias().length,
     },
-    usuarios: { total: usuarios.length },
+    usuarios: { total: totalUsuarios },
   }
 }

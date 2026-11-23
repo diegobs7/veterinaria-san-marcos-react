@@ -10,9 +10,27 @@ import {
   listarUsuarios,
   nombreCompleto,
   tipoDeUsuario,
+  desactivarUsuario,
+  reactivarUsuario,
   eliminarUsuario,
 } from '../../services/usuarioService';
 import { obtenerSesion } from '../../utils/sesionAdmin';
+
+// Textos del modal según la acción: desactivar (reversible) o eliminar (permanente)
+const TEXTOS_MODAL = {
+  desactivar: {
+    titulo: 'Desactivar cuenta de usuario',
+    pregunta: '¿Deseas desactivar a',
+    aviso: 'Ya no podrá iniciar sesión, pero puedes reactivarla después.',
+    confirmar: 'Sí, desactivar cuenta',
+  },
+  eliminar: {
+    titulo: 'Eliminar cuenta de usuario',
+    pregunta: '¿Deseas eliminar permanentemente a',
+    aviso: 'Esta acción no se puede deshacer.',
+    confirmar: 'Sí, eliminar cuenta',
+  },
+};
 
 function AdminUsuarioListado() {
   useTituloPagina('Listado de usuarios');
@@ -20,8 +38,7 @@ function AdminUsuarioListado() {
   const [usuarios, setUsuarios] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
-  const [modalEliminar, setModalEliminar] = useState({ abierto: false, usuario: null });
-
+  const [modal, setModal] = useState({ abierto: false, usuario: null, accion: 'desactivar' });
 
   const sesionActual = obtenerSesion();
 
@@ -42,21 +59,41 @@ function AdminUsuarioListado() {
     cargarUsuarios();
   }, []);
 
-  const abrirModalEliminar = (usuario) => {
-    setModalEliminar({ abierto: true, usuario });
+  const abrirModal = (usuario, accion) => {
+    setModal({ abierto: true, usuario, accion });
   };
 
   const cerrarModal = () => {
-    setModalEliminar({ abierto: false, usuario: null });
+    setModal({ abierto: false, usuario: null, accion: 'desactivar' });
   };
 
-  const confirmarEliminar = () => {
-    if (modalEliminar.usuario) {
-      eliminarUsuario(modalEliminar.usuario.id);
-      cargarUsuarios();
+  const confirmarAccion = async () => {
+    if (!modal.usuario) return;
+    try {
+      if (modal.accion === 'eliminar') {
+        await eliminarUsuario(modal.usuario.id);
+      } else {
+        await desactivarUsuario(modal.usuario.id);
+      }
       cerrarModal();
+      cargarUsuarios();
+    } catch (error) {
+      cerrarModal();
+      setError(error.message);
     }
   };
+
+  // Reactivar no necesita confirmación: no se pierde nada
+  const reactivar = async (usuario) => {
+    try {
+      await reactivarUsuario(usuario.id);
+      cargarUsuarios();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const textos = TEXTOS_MODAL[modal.accion];
 
   return (
     <TemplateAdmin>
@@ -103,11 +140,14 @@ function AdminUsuarioListado() {
                   const rol = tipoDeUsuario(u);
                   const esAdminPrincipal = u.correo?.toLowerCase() === 'admin@duocuc.cl';
                   const esMiSesion = sesionActual?.correo?.toLowerCase() === u.correo?.toLowerCase();
-                  const noSePuedeEliminar = esAdminPrincipal || esMiSesion;
+                  const esProtegido = esAdminPrincipal || esMiSesion;
 
                   return (
                     <tr key={u.id}>
-                      <td className="px-3 fw-medium text-dark">{nombreCompleto(u) || 'Sin nombre'}</td>
+                      <td className="px-3 fw-medium text-dark">
+                        {nombreCompleto(u) || 'Sin nombre'}
+                        {!u.activo && <span className="badge bg-secondary ms-2">Inactivo</span>}
+                      </td>
                       <td>{u.correo}</td>
                       <td>
                         <span
@@ -130,26 +170,44 @@ function AdminUsuarioListado() {
                           />
 
                           <Enlace
-                              to={`/admin/usuarios/${u.id}/historial`}
-                              texto="Historial"
-                              clasesExtras="btn btn-sm btn-outline-secondary"
+                            to={`/admin/usuarios/${u.id}/historial`}
+                            texto="Historial"
+                            clasesExtras="btn btn-sm btn-outline-secondary"
                           />
 
-                          {!noSePuedeEliminar ? (
-                            <Boton
-                              tipoBoton="button"
-                              variante="outline-danger"
-                              texto="Eliminar"
-                              onClick={() => abrirModalEliminar(u)}
-                              clasesExtras="btn-sm"
-                            />
-                          ) : (
+                          {esProtegido ? (
                             <span
                               className="badge bg-light text-muted border px-2 py-1 align-self-center"
-                              title="No es posible eliminar el administrador principal ni tu cuenta activa"
+                              title="No es posible desactivar ni eliminar el administrador principal ni tu cuenta activa"
                             >
                               Protegido
                             </span>
+                          ) : u.activo ? (
+                            <Boton
+                              tipoBoton="button"
+                              variante="outline-danger"
+                              texto="Desactivar"
+                              onClick={() => abrirModal(u, 'desactivar')}
+                              clasesExtras="btn-sm"
+                            />
+                          ) : (
+                            // Solo una cuenta ya desactivada se puede eliminar (dos pasos para no borrar por error)
+                            <>
+                              <Boton
+                                tipoBoton="button"
+                                variante="outline-success"
+                                texto="Reactivar"
+                                onClick={() => reactivar(u)}
+                                clasesExtras="btn-sm"
+                              />
+                              <Boton
+                                tipoBoton="button"
+                                variante="danger"
+                                texto="Eliminar"
+                                onClick={() => abrirModal(u, 'eliminar')}
+                                clasesExtras="btn-sm"
+                              />
+                            </>
                           )}
                         </div>
                       </td>
@@ -163,12 +221,12 @@ function AdminUsuarioListado() {
       )}
 
       <ModalConfirmacion
-        abierto={modalEliminar.abierto}
-        titulo="Eliminar cuenta de usuario"
-        mensaje={`¿Estás seguro de que deseas eliminar permanentemente a "${nombreCompleto(modalEliminar.usuario)} (${modalEliminar.usuario?.correo})"? Esta acción no se puede deshacer.`}
-        onConfirmar={confirmarEliminar}
+        abierto={modal.abierto}
+        titulo={textos.titulo}
+        mensaje={`${textos.pregunta} "${nombreCompleto(modal.usuario)} (${modal.usuario?.correo})"? ${textos.aviso}`}
+        onConfirmar={confirmarAccion}
         onCancelar={cerrarModal}
-        textoConfirmar="Sí, eliminar cuenta"
+        textoConfirmar={textos.confirmar}
         textoCancelar="Cancelar"
         varianteConfirmar="danger"
       />

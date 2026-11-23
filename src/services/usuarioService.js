@@ -1,5 +1,9 @@
 import usuariosIniciales from "../data/usuarios.json";
 import { normalizarRut } from "../utils/rut";
+import { api } from "./api";
+import { obtenerMensajeError } from "./apiErrores";
+import { aUsuarioBackend, aUsuarioFrontend, aUsuarioNuevoBackend } from "../utils/usuarioMapper";
+import { codigoRol } from "../utils/roles";
 
 const CLAVE = "usuarios";
 const oyentes = new Set();
@@ -30,8 +34,9 @@ function guardar(lista) {
   oyentes.forEach((notificar) => notificar());
 }
 
-export function listarUsuarios() {
-  return leer();
+export async function listarUsuarios() {
+  const respuesta = await api.get("/usuarios");
+  return respuesta.data.map(aUsuarioFrontend);
 }
 
 export function buscarUsuarioPorCorreo(correo) {
@@ -54,9 +59,24 @@ function errorDeCampo(campo, mensaje) {
   return error;
 }
 
-export function buscarUsuarioPorId(id) {
+function errorDeApi(error) {
+  const mensaje = obtenerMensajeError(error);
+  let campo;
+  if (mensaje.includes("RUT")) campo = "rut";
+  else if (mensaje.includes("rol")) campo = "tipo";
+  else if (error.response?.status === 409) campo = "correo";
+  return errorDeCampo(campo, mensaje);
+}
+
+export async function buscarUsuarioPorId(id) {
   if (!id) return null;
-  return leer().find((u) => String(u.id) === String(id)) ?? null;
+  try {
+    const respuesta = await api.get(`/usuarios/${id}`);
+    return aUsuarioFrontend(respuesta.data);
+  } catch (error) {
+    if (error.response?.status === 404) return null;
+    throw errorDeApi(error);
+  }
 }
 
 export function tipoDeUsuario(usuario) {
@@ -70,51 +90,27 @@ export function nombreCompleto(usuario) {
   return [usuario.nombre, usuario.apellidos].filter(Boolean).join(" ");
 }
 
-// Registro defensivo: ningún campo undefined romperá la app con .trim()
-export function registrarUsuario({
-  nombre = "",
-  apellidos = "",
-  rut = "",
-  telefono = "",
-  correo = "",
-  direccion = "",
-  contra = "",
-  tipo = "Cliente",
-  region = "",
-  fechaNacimiento = "",
-}) {
-  const correoLimpio = String(correo).trim().toLowerCase();
-
-  if (!correoLimpio) {
-    throw new Error("El correo electrónico es obligatorio");
+// POST /usuarios: el admin crea un usuario con su rol
+export async function registrarUsuario(valores) {
+  try {
+    const respuesta = await api.post("/usuarios", aUsuarioNuevoBackend(valores));
+    return aUsuarioFrontend(respuesta.data);
+  } catch (error) {
+    throw errorDeApi(error);
   }
+}
 
-  if (buscarUsuarioPorCorreo(correoLimpio)) {
-    throw errorDeCampo("correo", "Ya existe un usuario con ese correo");
+export async function editarUsuario(id, valores, tipoAnterior) {
+  try {
+    const respuesta = await api.put(`/usuarios/${id}`, aUsuarioBackend(valores));
+    if (valores.tipo !== tipoAnterior) {
+      const conRolNuevo = await api.patch(`/usuarios/${id}/rol`, { rol: codigoRol(valores.tipo) });
+      return aUsuarioFrontend(conRolNuevo.data);
+    }
+    return aUsuarioFrontend(respuesta.data);
+  } catch (error) {
+    throw errorDeApi(error);
   }
-
-  if (buscarUsuarioPorRut(rut)) {
-    throw errorDeCampo("rut", "Ya existe un usuario con ese RUT");
-  }
-
-  const nuevo = {
-    id: `u${Date.now()}`,
-    nombre: String(nombre).trim(),
-    apellidos: String(apellidos).trim(),
-    rut: String(rut).trim(),
-    telefono: String(telefono).trim(),
-    correo: correoLimpio,
-    direccion: String(direccion).trim(),
-    contra: String(contra).trim(),
-    foto: "",
-    tipo: tipo || "Cliente",
-    region: String(region).trim(),
-    fechaNacimiento: String(fechaNacimiento).trim(),
-  };
-
-  const listaActual = leer();
-  guardar([...listaActual, nuevo]);
-  return nuevo;
 }
 
 // Permite actualizar tanto por ID (recomendado para Admin) como por correo
@@ -160,10 +156,29 @@ export function actualizarUsuario(identificador, cambios) {
   return actualizado;
 }
 
-// Elimina un usuario por su ID
-export function eliminarUsuario(id) {
-  const lista = leer();
-  const filtrados = lista.filter((u) => String(u.id) !== String(id));
-  guardar(filtrados);
-  return true;
+// DELETE /usuarios/{id}: el backend no borra, deja la cuenta inactiva (activo = false)
+export async function desactivarUsuario(id) {
+  try {
+    await api.delete(`/usuarios/${id}`);
+  } catch (error) {
+    throw errorDeApi(error);
+  }
+}
+
+// PATCH /usuarios/{id}/activar: vuelve a habilitar una cuenta desactivada
+export async function reactivarUsuario(id) {
+  try {
+    await api.patch(`/usuarios/${id}/activar`);
+  } catch (error) {
+    throw errorDeApi(error);
+  }
+}
+
+// DELETE /usuarios/{id}/eliminar: borra la cuenta (no se puede deshacer)
+export async function eliminarUsuario(id) {
+  try {
+    await api.delete(`/usuarios/${id}/eliminar`);
+  } catch (error) {
+    throw errorDeApi(error);
+  }
 }

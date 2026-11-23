@@ -2,7 +2,8 @@ import { NavLink } from 'react-router-dom';
 
 function Enlace(props) {
     const esNavLink = props.clasesExtras?.includes('nav-link');
-    const clasesBase = esNavLink ? '' : 'text-decoration-none text-primary fw-bold';
+    const esBoton = props.clasesExtras?.includes('btn');
+    const clasesBase = esNavLink ? '' : esBoton ? 'text-decoration-none' : 'text-decoration-none text-primary fw-bold';
 
     return (
         <NavLink
