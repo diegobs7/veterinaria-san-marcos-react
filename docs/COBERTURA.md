@@ -12,19 +12,19 @@ npm run test:cov
 
 La configuración está en `vite.config.js` (`test.coverage`). Se mide `src/utils`, `src/components`, `src/services` y `src/context`. Se activó `reportOnFailure: true` para que el reporte se genere aunque falle la prueba intencional `src/utils/categorias.demo.test.js`.
 
-Las pruebas de los servicios que llaman a la API (`api.js`, `authService.js`) no necesitan el backend encendido: simulan las respuestas de Axios.
+Las pruebas de los servicios que llaman a la API (`api.js`, `authService.js`, `usuarioService.js`) no necesitan el backend encendido: simulan las respuestas de Axios.
 El porcentaje de ramas de `api.js` puede variar levemente según exista o no el archivo `.env` con `VITE_API_URL`, porque cambia qué lado del valor por defecto se ejecuta.
 
 ## Resultado de las pruebas
 
-- 84 pruebas en 21 archivos: 83 pasan y 1 falla a propósito (`categorias.demo.test.js`, espera `cirugia mayor` y `crearSlug` devuelve `cirugia-mayor`).
-- Respecto del reporte anterior (63 pruebas en 16 archivos) se sumaron las pruebas de `api.js`, `apiErrores.js`, `authService.js`, `sesionAdmin.js` y de los DTO de autenticación (`src/dto/auth.dto.test.js`).
+- 93 pruebas en 22 archivos: 92 pasan y 1 falla a propósito (`categorias.demo.test.js`, espera `cirugia mayor` y `crearSlug` devuelve `cirugia-mayor`).
+- Respecto del reporte anterior (63 pruebas en 16 archivos) se sumaron las pruebas de `api.js`, `apiErrores.js`, `authService.js`, `sesionAdmin.js`, de los DTO de autenticación (`src/dto/auth.dto.test.js`) y de `usuarioService.js` (9 pruebas del CRUD de usuarios contra la API simulada).
 
 ## Cobertura total
 
 | Sentencias | Ramas | Funciones | Líneas |
 | --- | --- | --- | --- |
-| 29.7 % | 23.3 % | 34.9 % | 29.9 % |
+| 33.2 % | 24.4 % | 37.5 % | 33.4 % |
 
 Antes: 26.7 % · 20.8 % · 32.4 % · 26.6 %.
 
@@ -37,7 +37,7 @@ Antes: 26.7 % · 20.8 % · 32.4 % · 26.6 %.
 | `components/organisms` | 0.0 % | 0.0 % | 0.0 % | 0.0 % |
 | `components/templates` | 0.0 % | 0.0 % | 0.0 % | 0.0 % |
 | `context` | 95.2 % | 100.0 % | 90.0 % | 94.7 % |
-| `services` | 53.6 % | 45.2 % | 62.5 % | 55.1 % |
+| `services` | 65.7 % | 50.3 % | 71.9 % | 67.5 % |
 | `utils` | 37.2 % | 42.6 % | 34.4 % | 38.3 % |
 | `utils/validaciones` | 35.1 % | 41.4 % | 41.0 % | 36.0 % |
 
@@ -64,6 +64,7 @@ Antes: 26.7 % · 20.8 % · 32.4 % · 26.6 %.
 | `services/contactoService.js` | 100.0 % | 100.0 % | 100.0 % | 100.0 % |
 | `services/evaluacionService.js` | 100.0 % | 100.0 % | 100.0 % | 100.0 % |
 | `services/servicioService.js` | 90.9 % | 64.3 % | 100.0 % | 92.8 % |
+| `services/usuarioService.js` | 38.1 % | 17.3 % | 36.0 % | 40.7 % |
 | `utils/categorias.js` | 9.5 % | 0.0 % | 10.0 % | 11.8 % |
 | `utils/duracion.js` | 100.0 % | 100.0 % | 100.0 % | 100.0 % |
 | `utils/precios.js` | 66.7 % | 60.0 % | 66.7 % | 66.7 % |
@@ -77,14 +78,15 @@ Antes: 26.7 % · 20.8 % · 32.4 % · 26.6 %.
 | `utils/validaciones/ValidarServicio.js` | 86.4 % | 82.8 % | 100.0 % | 94.1 % |
 | `utils/validaciones/ValidarUsuario.js` | 90.9 % | 81.0 % | 100.0 % | 90.0 % |
 
+`usuarioService.js` queda en 40.7 % de líneas porque sus funciones que llaman al backend (listar, buscar, crear, editar, cambiar rol, desactivar, reactivar y eliminar) sí tienen pruebas, pero las funciones antiguas que leen localStorage (`buscarUsuarioPorCorreo`, `buscarUsuarioPorRut`, `actualizarUsuario`) no. De ellas, solo `buscarUsuarioPorCorreo` se sigue usando (barra de navegación y reserva de citas); las otras dos se pueden borrar cuando todo pase al backend.
+
 ## Archivos sin pruebas automáticas
 
-- `services/usuarioService.js` (0 %): sus funciones llaman al backend (listar, crear, editar, cambiar rol, desactivar, reactivar y eliminar). Se probaron de forma manual desde el panel de administración, con el backend encendido.
 - `services/mascotaService.js` (0 %).
 - Las páginas, organismos y plantillas (`components/organisms`, `components/templates`) y la mayoría de los átomos y moléculas.
 
 ## Análisis
 
-- **Lo mejor cubierto:** la lógica de datos. El Context de servicios supera el 94 %; los services de citas, servicios, evaluaciones y contacto superan el 90 % de líneas; y la conexión con el backend (`api.js`, `apiErrores.js`, `authService.js`) y la sesión (`sesionAdmin.js`) están sobre el 93 % de líneas. Las utilidades de usuarios (`roles.js`, `rut.js` y `usuarioMapper.js`) están al 100 % de líneas.
+- **Lo mejor cubierto:** la lógica de datos. El Context de servicios supera el 94 %; los services de citas, servicios, evaluaciones y contacto superan el 90 % de líneas; la conexión con el backend (`api.js`, `apiErrores.js`, `authService.js`) y la sesión (`sesionAdmin.js`) están sobre el 93 % de líneas; y el CRUD de usuarios de `usuarioService.js` tiene pruebas de cada llamada a la API y de los errores 409 (correo, RUT y rol propio). Las utilidades de usuarios (`roles.js`, `rut.js` y `usuarioMapper.js`) están al 100 % de líneas.
 - **Lo menos cubierto:** las páginas, organismos y plantillas, que se revisaron con pruebas manuales en el navegador contra el backend (listar, crear, editar, cambiar rol, desactivar, reactivar y eliminar usuarios; registro con RUT repetido). Por eso el total general es bajo: la medición incluye todos los componentes visuales.
-- **Siguientes pruebas recomendadas:** `usuarioService.js` con la API simulada (crear, editar con cambio de rol, desactivar, reactivar, eliminar y los errores 409 de correo o RUT), `mascotaService.js`, la función `recargar` del Context, `ValidarLogin_Registro.js` (login y registro), `utils/solicitudes.js` y `utils/categorias.js`.
+- **Siguientes pruebas recomendadas:** `mascotaService.js`, la función `recargar` del Context, `ValidarLogin_Registro.js` (login y registro), `utils/solicitudes.js` y `utils/categorias.js`.
