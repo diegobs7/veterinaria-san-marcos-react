@@ -81,7 +81,7 @@ Para generar la versión de producción: `npm run build`.
 | `npm run test:run` | Ejecuta todas las pruebas una vez |
 | `npm run test:cov` | Ejecuta las pruebas y muestra el reporte de cobertura |
 
-Hoy hay 84 pruebas en 21 archivos: 83 pasan y 1 falla a propósito (`src/utils/categorias.demo.test.js`). Cada archivo `.test.js` o `.test.jsx` está junto al código que prueba.
+Hoy hay 93 pruebas en 22 archivos: 92 pasan y 1 falla a propósito (`src/utils/categorias.demo.test.js`). Cada archivo `.test.js` o `.test.jsx` está junto al código que prueba.
 
 El documento de cobertura está en [`docs/COBERTURA.md`](docs/COBERTURA.md).
 
