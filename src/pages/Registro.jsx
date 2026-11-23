@@ -74,7 +74,9 @@ const manejarSubmit = async (e) => {
       navigate("/login", { state: { registroExitoso: true } });
     } catch (error) {
       if (error.response?.status === 409) {
-        setErrores({ ...nuevosErrores, correo: 'Ya existe una cuenta con este correo.' });
+        const mensaje = obtenerMensajeError(error);
+        const campo = mensaje.includes('RUT') ? 'rut' : 'correo';
+        setErrores({ ...nuevosErrores, [campo]: mensaje });
       }
       setMensajeRegistro(obtenerMensajeError(error));
       setClaseMensaje('text-danger');

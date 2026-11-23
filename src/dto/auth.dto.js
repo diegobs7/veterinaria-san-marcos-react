@@ -14,5 +14,8 @@ export function registroRequestDto(formulario) {
     email: formulario.correo.trim().toLowerCase(),
     password: formulario.contra,
     aplicacion: APLICACION,
+    rut: formulario.rut.trim(),
+    telefono: formulario.telefono.trim(),
+    direccion: formulario.direccion.trim(),
   }
 }

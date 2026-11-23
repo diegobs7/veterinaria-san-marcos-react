@@ -10,21 +10,24 @@ describe('DTO de autenticación', () => {
     })
   })
 
-  it('registro: solo envía los campos del contrato (nombre, email, password, aplicacion)', () => {
+  it('registro: envía los datos de la cuenta y nunca el rol (lo asigna el servidor)', () => {
     const dto = registroRequestDto({
       nombreCompleto: ' Ana Pérez ',
       correo: 'ANA@gmail.com',
       contra: 'secreta123',
-      rut: '12.345.678-5',
+      rut: ' 12.345.678-5 ',
       telefono: '+56912345678',
+      direccion: ' Av. Siempre Viva 123 ',
     })
     expect(dto).toEqual({
       nombre: 'Ana Pérez',
       email: 'ana@gmail.com',
       password: 'secreta123',
       aplicacion: 'VETERINARIA',
+      rut: '12.345.678-5',
+      telefono: '+56912345678',
+      direccion: 'Av. Siempre Viva 123',
     })
-    expect(dto).not.toHaveProperty('rut')
     expect(dto).not.toHaveProperty('rol')
   })
 })

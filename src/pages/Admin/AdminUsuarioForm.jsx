@@ -8,7 +8,7 @@ import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin';
 import FormularioUsuario from '../../components/organisms/FormularioUsuario';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
 import {
-  actualizarUsuario,
+  editarUsuario,
   buscarUsuarioPorId,
   nombreCompleto,
   registrarUsuario,
@@ -135,7 +135,7 @@ function AdminUsuarioForm() {
     setGuardando(true);
     try {
       if (esEdicion) {
-        await actualizarUsuario(usuario.id, datos);
+        await editarUsuario(usuario.id, datos, usuario.tipo);
         setMensaje('Los cambios se guardaron correctamente.');
       } else {
         await registrarUsuario({ ...datos, contra: valores.contra });
