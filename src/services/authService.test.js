@@ -35,7 +35,7 @@ describe('authService', () => {
     await expect(login({})).rejects.toMatchObject({ response: { status: 401 } })
   })
 
-    it('verificarSesion consulta GET /auth/me con el token que agrega el interceptor', async () => {
+  it('verificarSesion consulta GET /auth/me con el token que agrega el interceptor', async () => {
     api.get.mockResolvedValue({ data: { id: 1, activo: true } })
     const perfil = await verificarSesion()
     expect(api.get).toHaveBeenCalledWith('/auth/me')
