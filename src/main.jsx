@@ -3,13 +3,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import { ServiciosProvider } from './context/ServiciosContext'
-
+import { CategoriasProvider } from './context/CategoriasProvider'
+import { ServiciosProvider } from './context/ServiciosProvider'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-     <ServiciosProvider>
-      <App />
-    </ServiciosProvider>
+    <CategoriasProvider>
+      <ServiciosProvider>
+        <App />
+      </ServiciosProvider>
+    </CategoriasProvider>
   </StrictMode>,
 )

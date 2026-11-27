@@ -1,82 +1,54 @@
-import serviciosIniciales from '../data/Servicios.json';
-import { generarCodigo } from '../utils/codigos';
+import { api } from './api';
+import { crearErrorDeApi } from './apiErrores';
+import { aServicioBackend, aServicioFrontend } from '../utils/servicioMapper';
 
-const CLAVE = 'servicios';
-
-function leer() {
-  const guardado = localStorage.getItem(CLAVE);
-
-  if (guardado === null) {
-    localStorage.setItem(CLAVE, JSON.stringify(serviciosIniciales));
-    return [...serviciosIniciales];
-  }
-
+// GET /servicios (público)
+export async function listarServicios() {
   try {
-    return JSON.parse(guardado) ?? [];
-  } catch {
-    localStorage.setItem(CLAVE, JSON.stringify(serviciosIniciales));
-    return [...serviciosIniciales];
+    const respuesta = await api.get('/servicios');
+    return respuesta.data.map(aServicioFrontend);
+  } catch (error) {
+    throw crearErrorDeApi(error);
   }
 }
 
-function guardar(lista) {
-  localStorage.setItem(CLAVE, JSON.stringify(lista));
-}
-
-export function listarServicios() {
-  return leer();
-}
-
-export function obtenerServicio(id) {
+// GET /servicios/{id} (público). null si no existe
+export async function obtenerServicio(id) {
   if (!id) return null;
-  return leer().find((s) => s.id === id) ?? null;
-}
-
-export function crearServicio(datos) {
-  const lista = leer();
-  const codigo = generarCodigo ? generarCodigo(datos.categoria, lista) : `SRV${Date.now()}`;
-
-  const nuevo = {
-    id: codigo.toLowerCase(),
-    codigo,
-    titulo: String(datos.titulo ?? '').trim(),
-    descripcion: String(datos.descripcion ?? '').trim(),
-    categoria: datos.categoria ?? '',
-    especie: datos.especie ?? '',
-    duracion: String(datos.duracion ?? '').trim(),
-    precio: Number(datos.precio) || 0,
-    incluye: datos.incluye ?? [],
-    observaciones: null,
-  };
-
-  guardar([...lista, nuevo]);
-  return nuevo;
-}
-
-export function actualizarServicio(id, cambios) {
-  const lista = leer();
-  const existente = lista.find((s) => s.id === id);
-
-  if (!existente) {
-    throw new Error(`No existe un servicio con id "${id}"`);
+  try {
+    const respuesta = await api.get(`/servicios/${id}`);
+    return aServicioFrontend(respuesta.data);
+  } catch (error) {
+    if (error.response?.status === 404) return null;
+    throw crearErrorDeApi(error);
   }
-
-  const actualizado = {
-    ...existente,
-    ...cambios,
-    id: existente.id,
-    codigo: existente.codigo,
-  };
-
-  guardar(lista.map((s) => (s.id === id ? actualizado : s)));
-  return actualizado;
 }
 
-export function eliminarServicio(id) {
-  guardar(leer().filter((s) => s.id !== id));
-  return true;
+// POST /servicios (admin). El código (VA007…) lo genera el backend
+export async function crearServicio(servicio) {
+  try {
+    const respuesta = await api.post('/servicios', aServicioBackend(servicio));
+    return aServicioFrontend(respuesta.data);
+  } catch (error) {
+    throw crearErrorDeApi(error);
+  }
 }
 
-export function restablecerServicios() {
-  localStorage.removeItem(CLAVE);
+// PUT /servicios/{id} (admin). Hay que mandar el servicio completo
+export async function actualizarServicio(id, servicio) {
+  try {
+    const respuesta = await api.put(`/servicios/${id}`, aServicioBackend(servicio));
+    return aServicioFrontend(respuesta.data);
+  } catch (error) {
+    throw crearErrorDeApi(error);
+  }
+}
+
+// DELETE /servicios/{id} (admin)
+export async function eliminarServicio(id) {
+  try {
+    await api.delete(`/servicios/${id}`);
+  } catch (error) {
+    throw crearErrorDeApi(error);
+  }
 }

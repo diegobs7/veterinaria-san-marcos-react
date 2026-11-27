@@ -4,8 +4,9 @@ import Subtitulo from '../components/atoms/Subtitulo'
 import Parrafo from '../components/atoms/Parrafo'
 import Icono from '../components/atoms/Icono'
 import BuscadorServicios from '../components/molecules/BuscadorServicios'
+import EstadoCatalogo from '../components/molecules/EstadoCatalogo'
 import ListaServicios from '../components/organisms/ListaServicios'
-import { useServicios } from '../context/ServiciosContext'
+import { useServicios } from '../Hooks/useServicios'
 import { useTituloPagina } from '../Hooks/useTituloPagina'
 import { ICONOS_CATEGORIA, obtenerCategorias } from '../utils/categorias'
 import { normalizar } from '../utils/texto'
@@ -14,7 +15,7 @@ import Enlace from '../components/atoms/Enlace'
 function Servicios() {
     useTituloPagina('Servicios');
 
-    const { servicios } = useServicios();
+    const { servicios, cargando, error } = useServicios();
     const [texto, setTexto] = useState('');
     const [categoria, setCategoria] = useState('');
 
@@ -33,7 +34,7 @@ function Servicios() {
             <Parrafo clasesExtras="text-muted mb-2">
                 Los precios son referenciales y se confirman al agendar tu hora.
             </Parrafo>
-             <div className="d-flex gap-3 mb-4">
+            <div className="d-flex gap-3 mb-4">
                 <Enlace to="/categorias" texto="Ver por categorías" />
                 <Enlace to="/ofertas" texto="Ver ofertas" />
             </div>
@@ -46,7 +47,9 @@ function Servicios() {
                 categorias={categorias}
             />
 
-            {filtrados.length === 0 && (
+            <EstadoCatalogo cargando={cargando} error={error} />
+
+            {!cargando && !error && filtrados.length === 0 && (
                 <p role="status">No encontramos servicios con esos filtros. Prueba con otra palabra.</p>
             )}
 

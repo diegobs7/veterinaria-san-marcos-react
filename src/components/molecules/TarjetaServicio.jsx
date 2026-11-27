@@ -4,10 +4,11 @@ import Icono from '../atoms/Icono'
 import EtiquetaEspecie from '../atoms/EtiquetaEspecie'
 import { ICONOS_CATEGORIA } from '../../utils/categorias'
 import { formatearPrecio } from '../../utils/precios'
+import { estaEnOferta, precioFinal } from '../../utils/ofertas'
 
 function TarjetaServicio(props) {
     const servicio = props.servicio;
-    const enOferta = servicio.descuento !== undefined;
+    const enOferta = estaEnOferta(servicio);
 
     return (
         <Card className="h-100">
@@ -40,7 +41,7 @@ function TarjetaServicio(props) {
                             </s>
                             <span className="fw-bold text-primary">
                                 <span className="visually-hidden">Precio en oferta </span>
-                                {formatearPrecio(servicio.precioOferta)}
+                                    {formatearPrecio(precioFinal(servicio))}
                             </span>
                         </span>
                     ) : (

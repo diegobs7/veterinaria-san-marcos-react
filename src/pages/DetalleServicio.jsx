@@ -5,17 +5,25 @@ import Parrafo from '../components/atoms/Parrafo';
 import InfoServicio from '../components/organisms/InfoServicio';
 import TarjetaAgendarCita from '../components/organisms/TarjetaAgendarCita';
 import formatearPrecio from '../utils/FormatearPrecio';
-import { useServicios } from '../context/ServiciosContext';
+import { useServicios } from '../Hooks/useServicios';
 import ObtenerEspeciesServicio from '../utils/ObtenerEspeciesServicio';
 import { useTituloPagina } from '../Hooks/useTituloPagina';
-import { obtenerOfertas } from '../utils/ofertas';
-import ofertasIniciales from '../data/ofertas.json';
+import EstadoCatalogo from '../components/molecules/EstadoCatalogo';
+import { estaEnOferta, precioFinal } from '../utils/ofertas';
 
 function DetalleServicio() {
     const { id } = useParams();
-    const { obtener } = useServicios();
+    const { obtener, cargando, error } = useServicios();
     const servicio = obtener(id);
-    useTituloPagina(servicio ? servicio.titulo : 'Servicio no encontrado');
+    useTituloPagina(servicio ? servicio.titulo : 'Servicio');
+
+    if (cargando || error) {
+        return (
+            <div className="container py-4">
+                <EstadoCatalogo cargando={cargando} error={error} />
+            </div>
+        );
+    }
 
     if (!servicio) {
         return (
@@ -26,8 +34,8 @@ function DetalleServicio() {
         );
     }
 
-    const servicioEnOferta = obtenerOfertas([servicio], ofertasIniciales)[0];
-    const precioFinal = servicioEnOferta?.precioOferta ?? servicio.precio;
+    const enOferta = estaEnOferta(servicio);
+    const precio = precioFinal(servicio);
 
     return (
         <DetalleServicioTemplate
@@ -46,13 +54,13 @@ function DetalleServicio() {
             lateral={
                 <TarjetaAgendarCita
                     key={servicio.id}
-                    etiquetaPrecio={servicioEnOferta ? "Precio en oferta" : "Valor del servicio"}
-                    monto={formatearPrecio(precioFinal)}
+                    etiquetaPrecio={enOferta ? "Precio en oferta" : "Valor del servicio"}
+                    monto={formatearPrecio(precio)}
                     duracion={servicio.duracion}
                     especies={ObtenerEspeciesServicio(servicio.especie)}
                     nombreServicio={servicio.titulo}
                     servicioId={servicio.id}
-                    precio={precioFinal}
+                    precio={precio}
                 />
             }
         />

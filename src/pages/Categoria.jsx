@@ -3,17 +3,26 @@ import TemplatePagina from '../components/templates/TemplatePagina'
 import ListaServicios from '../components/organisms/ListaServicios'
 import Enlace from '../components/atoms/Enlace'
 import Parrafo from '../components/atoms/Parrafo'
-import { useServicios } from '../context/ServiciosContext'
+import EstadoCatalogo from '../components/molecules/EstadoCatalogo'
+import { useCatalogo } from '../Hooks/useCatalogo'
 import { useTituloPagina } from '../Hooks/useTituloPagina'
 import { resumirCategorias } from '../utils/categorias'
 
 function Categoria() {
     const { slug } = useParams();
-    const { servicios } = useServicios();
+    const { servicios, categorias, cargando, error } = useCatalogo();
 
-    const categoria = resumirCategorias(servicios).find((c) => c.slug === slug);
+    const categoria = resumirCategorias(servicios, categorias).find((c) => c.slug === slug);
 
-    useTituloPagina(categoria ? categoria.nombre : 'Categoría no encontrada');
+    useTituloPagina(categoria ? categoria.nombre : 'Categoría');
+
+    if (cargando || error) {
+        return (
+            <TemplatePagina titulo="Categoría">
+                <EstadoCatalogo cargando={cargando} error={error} />
+            </TemplatePagina>
+        );
+    }
 
     if (!categoria) {
         return (
@@ -24,7 +33,7 @@ function Categoria() {
         );
     }
 
-    const deLaCategoria = servicios.filter((s) => s.categoria === categoria.nombre);
+    const deLaCategoria = servicios.filter((s) => s.categoriaSlug === slug);
 
     return (
         <TemplatePagina

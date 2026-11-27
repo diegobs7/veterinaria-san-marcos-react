@@ -8,6 +8,7 @@ import CampoSelector from '../molecules/CampoSelector';
 import CampoTextArea from '../molecules/CampoTextArea';
 import DatoResumen from '../molecules/DatoResumen';
 import { obtenerOpcionesCategorias, ESPECIES_SERVICIO } from '../../data/OpcionesAdmin';
+import { useCategorias } from '../../Hooks/useCategorias';
 
 const normalizarOpciones = (lista = []) =>
   lista.map((item) =>
@@ -17,7 +18,8 @@ const normalizarOpciones = (lista = []) =>
   );
 
 function FormularioServicio(props) {
-  const opcionesCategorias = obtenerOpcionesCategorias();
+  const { categorias } = useCategorias();
+  const opcionesCategorias = obtenerOpcionesCategorias(categorias);
 
   return (
     <Row className="justify-content-center">

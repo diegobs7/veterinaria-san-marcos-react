@@ -11,3 +11,8 @@ export function obtenerMensajeError(error) {
   }
   return 'No fue posible contactar la API. Revisa la conexión, su dirección y CORS.'
 }
+
+// Error de Axios → Error de JavaScript con el mensaje que mandó el backend
+export function crearErrorDeApi(error) {
+  return new Error(obtenerMensajeError(error))
+}

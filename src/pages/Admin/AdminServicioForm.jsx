@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import TemplateAdmin from '../../components/templates/TemplateAdmin';
 import Enlace from '../../components/atoms/Enlace';
 import Parrafo from '../../components/atoms/Parrafo';
 import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin';
+import EstadoCatalogo from '../../components/molecules/EstadoCatalogo';
 import FormularioServicio from '../../components/organisms/FormularioServicio';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
+import { useServicios } from '../../Hooks/useServicios';
+import { useCatalogo } from '../../Hooks/useCatalogo';
 import validarServicio from '../../utils/validaciones/ValidarServicio';
-import { obtenerServicio } from '../../services/servicioService';
-import { useServicios } from '../../context/ServiciosContext';
 
+// "categoria" guarda el id de la categoría elegida en el selector
 const VALORES_INICIALES = {
   nombre: '',
   descripcion: '',
@@ -27,7 +29,7 @@ function aValores(servicio) {
     nombre: servicio.titulo ?? '',
     descripcion: texto(servicio.descripcion),
     precio: texto(servicio.precio),
-    categoria: servicio.categoria ?? '',
+    categoria: servicio.categoriaId ?? '',
     especie: texto(servicio.especie),
     duracion: texto(servicio.duracion),
   };
@@ -36,28 +38,36 @@ function aValores(servicio) {
 function AdminServicioForm() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { crear, actualizar } = useServicios();
+  const { obtener, crear, actualizar } = useServicios();
+  const { cargando, error } = useCatalogo();
   const esEdicion = Boolean(id);
-  const servicio = esEdicion ? obtenerServicio(id) : null;
+  const servicio = esEdicion ? obtener(id) : null;
 
   useTituloPagina(esEdicion ? 'Editar servicio' : 'Nuevo servicio');
 
-  const [valores, setValores] = useState(servicio ? aValores(servicio) : VALORES_INICIALES);
+  const [valores, setValores] = useState(VALORES_INICIALES);
   const [errores, setErrores] = useState({});
   const [mensaje, setMensaje] = useState('');
+  const [cargadoDe, setCargadoDe] = useState(null);
 
-  useEffect(() => {
-    if (id) {
-      const encontrado = obtenerServicio(id);
-      if (encontrado) setValores(aValores(encontrado));
-    } else {
-      setValores(VALORES_INICIALES);
-    }
+  // Llena el formulario cuando el servicio llega del backend o cambia la ruta
+  const clave = id ?? 'nuevo';
+  if (cargadoDe !== clave && (!esEdicion || servicio)) {
+    setCargadoDe(clave);
+    setValores(servicio ? aValores(servicio) : VALORES_INICIALES);
     setErrores({});
     setMensaje('');
-  }, [id]);
+  }
 
-  if (id && !servicio) {
+  if (cargando || error) {
+    return (
+      <TemplateAdmin>
+        <EstadoCatalogo cargando={cargando} error={error} />
+      </TemplateAdmin>
+    );
+  }
+
+  if (esEdicion && !servicio) {
     return (
       <TemplateAdmin>
         <Parrafo clasesExtras="mb-3">Servicio no encontrado.</Parrafo>
@@ -72,7 +82,7 @@ function AdminServicioForm() {
     setMensaje('');
   };
 
-  const manejarSubmit = (e) => {
+  const manejarSubmit = async (e) => {
     e.preventDefault();
 
     const nuevosErrores = validarServicio(valores);
@@ -86,18 +96,18 @@ function AdminServicioForm() {
     const datos = {
       titulo: valores.nombre.trim(),
       descripcion: valores.descripcion.trim(),
-      categoria: valores.categoria,
+      categoriaId: valores.categoria,
       especie: valores.especie,
       duracion: valores.duracion.trim(),
       precio: Number(valores.precio),
     };
 
     try {
-      if (esEdicion && servicio) {
-        actualizar(servicio.id, datos);
+      if (esEdicion) {
+        await actualizar(servicio.id, datos);
         setMensaje('Los cambios se guardaron correctamente.');
       } else {
-        crear(datos);
+        await crear(datos);
         setValores(VALORES_INICIALES);
         setMensaje('El servicio se guardó correctamente.');
       }
@@ -106,6 +116,7 @@ function AdminServicioForm() {
         navigate('/admin/servicios/listado');
       }, 1200);
     } catch (error) {
+      // Por ejemplo el 409 "Ya existe un servicio con ese nombre en la categoría"
       setErrores({ nombre: error.message || 'Ocurrió un error al guardar el servicio.' });
       setMensaje('');
     }
@@ -116,7 +127,7 @@ function AdminServicioForm() {
       <EncabezadoAdmin
         titulo={esEdicion ? 'Editar servicio' : 'Nuevo servicio'}
         descripcion={
-          esEdicion && servicio ? (
+          esEdicion ? (
             <>
               Editando: <strong>{servicio.titulo}</strong> (código {servicio.codigo})
             </>
