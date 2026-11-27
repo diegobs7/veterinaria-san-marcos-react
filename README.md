@@ -139,6 +139,7 @@ El catálogo se lee del backend. Las páginas públicas no necesitan sesión (`G
 ## Datos
 
 Las cuentas de usuario y el catálogo (servicios, categorías y ofertas) están en la base de datos del backend. Los demás datos de partida están en `src/data` y los cambios quedan en localStorage (claves `mascotas`, `solicitudes`, `evaluaciones` y `mensajesContacto`); la sesión (token JWT y datos del usuario) queda en sessionStorage.
+Para volver a los datos iniciales, borrar el almacenamiento del sitio desde las herramientas del navegador (Application → Clear site data).
 
 ## Trabajo en equipo
 
