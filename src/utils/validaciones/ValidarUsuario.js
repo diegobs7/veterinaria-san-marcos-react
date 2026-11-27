@@ -5,6 +5,7 @@ import {
     validarRut,
     validarDireccion,
     validarFechaNacimiento,
+    validarTelefono,
 } from "./ValidarLogin_Registro";
 
 export function validarNombreUsuario(valor) {
@@ -39,6 +40,7 @@ function validarUsuario(valores, esEdicion = false) {
         rut: validarRut(valores.rut),
         nombre: validarNombreUsuario(valores.nombre),
         apellidos: validarApellidos(valores.apellidos),
+        telefono: valores.telefono?.trim() ? validarTelefono(valores.telefono) : "",
         correo: esEdicion ? "" : validarCorreo(valores.correo),
         fechaNacimiento: valores.fechaNacimiento? validarFechaNacimiento(valores.fechaNacimiento):"",
         tipo: valores.tipo ? "" : "Selecciona el tipo de usuario.",

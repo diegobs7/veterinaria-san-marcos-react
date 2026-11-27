@@ -120,7 +120,7 @@ function AdminReportes() {
                     <div className="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
                         <Subtitulo nivel="h3" texto="Perfil del Administrador" clasesExtras="h5 fw-bold mb-3" />
                         <DatoResumen etiqueta="Nombre:" valor={sesion?.nombre || 'Administrador'} />
-                        <DatoResumen etiqueta="Correo:" valor={sesion?.correo || 'admin@duocuc.cl'} />
+                        <DatoResumen etiqueta="Correo:" valor={sesion?.correo || 'Sin sesión'} />
                         <DatoResumen etiqueta="Rol activo:" valor={sesion?.rol || 'Administrador'} />
                         <DatoResumen etiqueta="Usuarios en sistema:" valor={totalUsuarios} />
                         <div className="mt-3">
