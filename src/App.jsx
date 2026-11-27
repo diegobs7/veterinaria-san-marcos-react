@@ -42,6 +42,7 @@ import Footer from "./components/organisms/Footer";
 import Navbar from "./components/organisms/NavBar";
 import LogoTitulo from "./components/molecules/LogoTitulo";
 import { obtenerSesion } from "./utils/sesionAdmin";
+import { useVerificarSesion } from "./Hooks/useVerificarSesion";
 
 function SoloAdmin(props) {
   const usuario = obtenerSesion();
@@ -130,10 +131,15 @@ function SitioPublico() {
     </div>
   );
 }
-
+//Revisa con el backend la sesion en cada pagina publica o de admin
+function VerificadorSesion() {
+  useVerificarSesion();
+  return null;
+}
 function App() {
   return (
     <BrowserRouter>
+      <VerificadorSesion />
       <Routes>
         <Route path="/admin/*" element={<RutasAdmin />} />
         <Route path="/*" element={<SitioPublico />} />
