@@ -59,8 +59,19 @@ function errorDeCampo(campo, mensaje) {
   return error;
 }
 
+// Nombres de los campos en el backend → nombres en el formulario
+const CAMPOS_FORMULARIO = { email: "correo", rol: "tipo", password: "contra" };
+
 function errorDeApi(error) {
   const mensaje = obtenerMensajeError(error);
+
+  // Un 400 de validación del backend llega como "telefono: El teléfono debe..."
+  const validacion = mensaje.match(/^(\w+): (.*)$/);
+  if (error.response?.status === 400 && validacion) {
+    const [, campoBackend, detalle] = validacion;
+    return errorDeCampo(CAMPOS_FORMULARIO[campoBackend] ?? campoBackend, detalle);
+  }
+
   let campo;
   if (mensaje.includes("RUT")) campo = "rut";
   else if (mensaje.includes("rol")) campo = "tipo";
@@ -79,10 +90,9 @@ export async function buscarUsuarioPorId(id) {
   }
 }
 
+// El rol viene del backend (usuarioMapper lo traduce a "Administrador", "Cliente"...)
 export function tipoDeUsuario(usuario) {
-  if (!usuario) return "Cliente";
-  if (usuario.tipo) return usuario.tipo;
-  return usuario.correo?.toLowerCase() === "admin@duocuc.cl" ? "Administrador" : "Cliente";
+  return usuario?.tipo || "Cliente";
 }
 
 export function nombreCompleto(usuario) {

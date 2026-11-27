@@ -138,9 +138,9 @@ function AdminUsuarioListado() {
               <tbody>
                 {usuarios.map((u) => {
                   const rol = tipoDeUsuario(u);
-                  const esAdminPrincipal = u.correo?.toLowerCase() === 'admin@duocuc.cl';
-                  const esMiSesion = sesionActual?.correo?.toLowerCase() === u.correo?.toLowerCase();
-                  const esProtegido = esAdminPrincipal || esMiSesion;
+                  const esAdministrador = rol === 'Administrador';
+                  const esMiSesion = sesionActual?.id === u.id;
+                  const esProtegido = esAdministrador || esMiSesion;
 
                   return (
                     <tr key={u.id}>
@@ -178,7 +178,7 @@ function AdminUsuarioListado() {
                           {esProtegido ? (
                             <span
                               className="badge bg-light text-muted border px-2 py-1 align-self-center"
-                              title="No es posible desactivar ni eliminar el administrador principal ni tu cuenta activa"
+                              title="No es posible desactivar ni eliminar a un Administrador ni tu propia cuenta"
                             >
                               Protegido
                             </span>

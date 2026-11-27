@@ -101,6 +101,23 @@ describe('usuarioService con el backend', () => {
     })
   })
 
+  it('un 400 de validación del backend se muestra en el campo que corresponde', async () => {
+  api.post.mockRejectedValue(errorDelBackend(400, 'telefono: El teléfono debe tener el formato +569xxxxxxxx'))
+
+  await expect(registrarUsuario({ ...FORMULARIO, contra: 'clave12345' })).rejects.toMatchObject({
+    campo: 'telefono',
+    message: 'El teléfono debe tener el formato +569xxxxxxxx',
+    })
+  })
+
+  it('traduce el nombre del campo del backend al del formulario (email → correo)', async () => {
+    api.post.mockRejectedValue(errorDelBackend(400, 'email: debe ser una dirección de correo válida'))
+
+    await expect(registrarUsuario({ ...FORMULARIO, contra: 'clave12345' })).rejects.toMatchObject({
+      campo: 'correo',
+    })
+  })
+
   it('editarUsuario sin cambio de rol solo hace PUT', async () => {
     api.put.mockResolvedValue({ data: CAMILA_BACKEND })
 
