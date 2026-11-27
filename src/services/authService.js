@@ -16,3 +16,7 @@ export async function obtenerPerfil(token) {
   })
   return respuesta.data
 }
+export async function verificarSesion() {
+  const respuesta = await api.get('/auth/me')
+  return respuesta.data
+}
