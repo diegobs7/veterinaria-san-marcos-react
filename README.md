@@ -81,7 +81,7 @@ Para generar la versión de producción: `npm run build`.
 | `npm run test:run` | Ejecuta todas las pruebas una vez |
 | `npm run test:cov` | Ejecuta las pruebas y muestra el reporte de cobertura |
 
-Hoy hay 93 pruebas en 22 archivos: 92 pasan y 1 falla a propósito (`src/utils/categorias.demo.test.js`). Cada archivo `.test.js` o `.test.jsx` está junto al código que prueba.
+Hoy hay 109 pruebas en 25 archivos: 108 pasan y 1 falla a propósito (`src/utils/categorias.demo.test.js`). Cada archivo `.test.js` o `.test.jsx` está junto al código que prueba.
 
 El documento de cobertura está en [`docs/COBERTURA.md`](docs/COBERTURA.md).
 
@@ -114,12 +114,31 @@ Desde `/admin/usuarios` el administrador gestiona las cuentas de la veterinaria 
 
 Roles en la página: Administrador (`ADMINISTRADOR`), Recepcionista (`RECEPCIONISTA`) y Cliente (`DUENO`).
 Los nombres de la página se traducen a los del backend en `src/utils/usuarioMapper.js` y `src/utils/roles.js` (por ejemplo, `correo` ↔ `email` y `tipo` ↔ `rol`).
-Los errores del backend (correo o RUT repetido, rol no permitido) se muestran bajo el campo que corresponde.
+Los errores del backend (correo o RUT repetido, rol no permitido, datos inválidos) se muestran bajo el campo que corresponde.
+Un administrador se reconoce por su **rol**, no por su correo: las cuentas con rol Administrador y la cuenta con la sesión activa no se pueden desactivar ni eliminar desde el listado. Para dar de baja a un administrador, otro administrador primero le cambia el rol.
+
+## Catálogo: servicios, categorías y ofertas
+
+El catálogo se lee del backend. Las páginas públicas no necesitan sesión (`GET` es público); crear, editar y eliminar exige un token de administrador de la veterinaria.
+
+| Acción | Llamada a la API |
+| --- | --- |
+| Listar servicios | `GET /servicios` (opcional `?categoria=vacunacion`) |
+| Ver un servicio | `GET /servicios/{id}` |
+| Crear / editar / eliminar servicio | `POST /servicios`, `PUT /servicios/{id}`, `DELETE /servicios/{id}` |
+| Listar categorías | `GET /categorias` |
+| Ver una categoría | `GET /categorias/{id}` o `GET /categorias/slug/{slug}` |
+| Crear / editar / eliminar categoría | `POST /categorias`, `PUT /categorias/{id}`, `DELETE /categorias/{id}` |
+
+- El **código** del servicio (VA001, CI002…) lo genera el backend según la categoría; la URL del detalle usa el **id** numérico (`/servicios/6`).
+- Las **ofertas** son los servicios que tienen `descuento`; el precio rebajado se calcula en `src/utils/ofertas.js`.
+- Reglas del backend que se muestran en la página: nombre de categoría repetido (409), servicio con el mismo nombre en la categoría (409) y categoría con servicios que no se puede eliminar (409).
+- Los datos se cargan una vez y se comparten con `CategoriasProvider` y `ServiciosProvider` (`src/context`), que se leen con los hooks `useCategorias`, `useServicios` y `useCatalogo`. Mientras cargan, o si el backend no responde, las páginas muestran `EstadoCatalogo` ("Cargando catálogo…" o el error).
+- Los nombres del backend se traducen en `src/utils/servicioMapper.js` y `src/utils/categoriaMapper.js`.
 
 ## Datos
 
-Las cuentas de usuario están en la base de datos del backend. Los demás datos de partida están en `src/data` y los cambios quedan en localStorage (claves `servicios`, `categorias`, `mascotas`, `solicitudes`, `evaluaciones` y `mensajesContacto`); la sesión (token JWT y datos del usuario) queda en sessionStorage.
-Para volver a los datos iniciales, borrar el almacenamiento del sitio desde las herramientas del navegador (Application → Clear site data).
+Las cuentas de usuario y el catálogo (servicios, categorías y ofertas) están en la base de datos del backend. Los demás datos de partida están en `src/data` y los cambios quedan en localStorage (claves `mascotas`, `solicitudes`, `evaluaciones` y `mensajesContacto`); la sesión (token JWT y datos del usuario) queda en sessionStorage.
 
 ## Trabajo en equipo
 

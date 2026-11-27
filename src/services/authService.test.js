@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 vi.mock('./api', () => ({ api: { post: vi.fn(), get: vi.fn() } }))
 
 import { api } from './api'
-import { login, registrar, obtenerPerfil } from './authService'
+import { login, registrar, obtenerPerfil, verificarSesion } from './authService'
 
 describe('authService', () => {
   beforeEach(() => vi.clearAllMocks())
@@ -33,5 +33,12 @@ describe('authService', () => {
   it('si la API rechaza, la promesa se rechaza y el error llega a quien llamó', async () => {
     api.post.mockRejectedValue({ response: { status: 401, data: { message: 'Credenciales incorrectas' } } })
     await expect(login({})).rejects.toMatchObject({ response: { status: 401 } })
+  })
+
+    it('verificarSesion consulta GET /auth/me con el token que agrega el interceptor', async () => {
+    api.get.mockResolvedValue({ data: { id: 1, activo: true } })
+    const perfil = await verificarSesion()
+    expect(api.get).toHaveBeenCalledWith('/auth/me')
+    expect(perfil.activo).toBe(true)
   })
 })
