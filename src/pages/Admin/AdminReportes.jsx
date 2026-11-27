@@ -8,7 +8,7 @@ import Badge from '../../components/atoms/Badge';
 import Enlace from '../../components/atoms/Enlace';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
 import { obtenerTodasLasCitas } from '../../services/citasService';
-import { listarServicios } from '../../services/servicioService';
+import { useServicios } from '../../Hooks/useServicios';
 import { listarUsuarios } from '../../services/usuarioService';
 import { obtenerSesion } from '../../utils/sesionAdmin';
 import { duracionEnMinutos } from '../../utils/duracion';
@@ -19,7 +19,7 @@ function AdminReportes() {
     useTituloPagina('Reportes y Perfil Admin');
 
     const citas = obtenerTodasLasCitas();
-    const servicios = listarServicios();
+    const { servicios } = useServicios();
     
     const [totalUsuarios, setTotalUsuarios] = useState('Cargando...');
 

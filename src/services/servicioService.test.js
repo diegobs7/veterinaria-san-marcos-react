@@ -1,96 +1,134 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-// Mock del generador de códigos para no depender de utils/codigos
-vi.mock('../utils/codigos', () => ({
-  generarCodigo: vi.fn((categoria, lista) => {
-    const n = (lista?.length || 0) + 1
-    return `TS${String(n).padStart(3, '0')}`
-  }),
+// Se simula la API: estas pruebas no necesitan el backend encendido
+vi.mock('./api', () => ({
+  api: { get: vi.fn(), post: vi.fn(), put: vi.fn(), delete: vi.fn() },
 }))
 
-// Mock de los datos iniciales para pruebas controladas
-vi.mock('../data/Servicios.json', () => ({
-  default: [
-    {
-      id: 'sv001',
-      codigo: 'SV001',
-      categoria: 'Consultas',
-      titulo: 'Consulta general',
-      especie: 'Perro / Gato',
-      duracion: '30 min',
-      precio: 15000,
-      descripcion: 'Revisión',
-      incluye: [],
-      observaciones: null,
-    },
-  ],
-}))
-
+import { api } from './api'
 import {
   listarServicios,
   obtenerServicio,
   crearServicio,
   actualizarServicio,
   eliminarServicio,
-  restablecerServicios,
 } from './servicioService'
+
+// Así responde el backend
+const VA001_BACKEND = {
+  id: 6,
+  codigo: 'VA001',
+  titulo: 'Vacuna antirrábica canina',
+  categoriaId: 2,
+  categoria: 'Vacunación',
+  categoriaSlug: 'vacunacion',
+  especie: 'Perro',
+  duracion: '10 min',
+  precio: 12000,
+  descuento: 10,
+  observaciones: 'Obligatoria por ley',
+  descripcion: 'Protege contra la rabia.',
+  incluye: ['Aplicación de la vacuna.'],
+}
+
+// Así llegan los datos desde el formulario del admin (ids como texto)
+const FORMULARIO = {
+  titulo: ' Vacuna de prueba ',
+  categoriaId: '2',
+  especie: 'Perro',
+  duracion: '10 min',
+  precio: '10000',
+  descripcion: 'Servicio de prueba',
+}
+
+function errorHttp(status, message) {
+  return { response: { status, data: { message } } }
+}
 
 describe('servicioService', () => {
   beforeEach(() => {
-    localStorage.clear()
-    restablecerServicios()
+    vi.clearAllMocks()
   })
 
-  it('lista los servicios iniciales cuando no hay datos guardados', () => {
-    const lista = listarServicios()
-    expect(lista.length).toBeGreaterThan(0)
-    expect(lista[0].titulo).toBe('Consulta general')
-  })
+  it('lista los servicios con los nombres que usan las páginas', async () => {
+    api.get.mockResolvedValue({ data: [VA001_BACKEND] })
 
-  it('obtiene un servicio por id', () => {
-    const lista = listarServicios()
-    const primero = lista[0]
-    const encontrado = obtenerServicio(primero.id)
-    expect(encontrado).toEqual(primero)
-    expect(obtenerServicio('no-existe')).toBeNull()
-  })
+    const [servicio] = await listarServicios()
 
-  it('crea un servicio nuevo y lo persiste', () => {
-    const nuevo = crearServicio({
-      titulo: 'Baño medicado',
-      descripcion: 'Higiene especial',
-      categoria: 'Otros',
-      especie: 'Perro',
-      duracion: '45 min',
-      precio: 12000,
+    expect(api.get).toHaveBeenCalledWith('/servicios')
+    expect(servicio).toMatchObject({
+      id: '6',
+      codigo: 'VA001',
+      categoria: 'Vacunación',
+      categoriaId: '2',
+      descuento: 10,
     })
-
-    expect(nuevo.id).toBeTruthy()
-    expect(nuevo.titulo).toBe('Baño medicado')
-    expect(nuevo.categoria).toBe('Otros')
-
-    const lista = listarServicios()
-    expect(lista.some((s) => s.id === nuevo.id)).toBe(true)
   })
 
-  it('actualiza un servicio existente', () => {
-    const lista = listarServicios()
-    const id = lista[0].id
+  it('obtiene un servicio por id', async () => {
+    api.get.mockResolvedValue({ data: VA001_BACKEND })
 
-    const actualizado = actualizarServicio(id, { titulo: 'Consulta actualizada', precio: 20000 })
-    expect(actualizado.titulo).toBe('Consulta actualizada')
-    expect(actualizado.precio).toBe(20000)
-    expect(obtenerServicio(id).titulo).toBe('Consulta actualizada')
+    const servicio = await obtenerServicio('6')
+
+    expect(api.get).toHaveBeenCalledWith('/servicios/6')
+    expect(servicio.titulo).toBe('Vacuna antirrábica canina')
   })
 
-  it('lanza error al actualizar un id inexistente', () => {
-    expect(() => actualizarServicio('id-falso', { titulo: 'X' })).toThrow()
+  it('devuelve null si el servicio no existe (404)', async () => {
+    api.get.mockRejectedValue(errorHttp(404, 'Servicio no encontrado'))
+
+    expect(await obtenerServicio('999')).toBeNull()
   })
 
-  it('elimina un servicio', () => {
-    const lista = listarServicios()
-    const id = lista[0].id
-    eliminarServicio(id)
-    expect(obtenerServicio(id)).toBeNull()
+  it('crea un servicio convirtiendo los textos del formulario a números', async () => {
+    api.post.mockResolvedValue({ data: { ...VA001_BACKEND, id: 32, codigo: 'VA007', descuento: null } })
+
+    const nuevo = await crearServicio(FORMULARIO)
+
+    expect(api.post).toHaveBeenCalledWith('/servicios', {
+      titulo: 'Vacuna de prueba',
+      categoriaId: 2,
+      especie: 'Perro',
+      duracion: '10 min',
+      precio: 10000,
+      descuento: null,
+      observaciones: null,
+      descripcion: 'Servicio de prueba',
+      incluye: [],
+    })
+    expect(nuevo.codigo).toBe('VA007') // el código lo genera el backend
+  })
+
+  it('muestra el mensaje del backend cuando el nombre se repite en la categoría (409)', async () => {
+    api.post.mockRejectedValue(errorHttp(409, 'Ya existe un servicio con ese nombre en la categoría'))
+
+    await expect(crearServicio(FORMULARIO)).rejects.toThrow(
+      'Ya existe un servicio con ese nombre en la categoría',
+    )
+  })
+
+  it('actualiza un servicio enviando también el descuento y lo que incluye', async () => {
+    api.put.mockResolvedValue({ data: { ...VA001_BACKEND, precio: 13000 } })
+
+    await actualizarServicio('6', { ...VA001_BACKEND, categoriaId: '2', precio: 13000 })
+
+    expect(api.put).toHaveBeenCalledWith(
+      '/servicios/6',
+      expect.objectContaining({ precio: 13000, descuento: 10, incluye: ['Aplicación de la vacuna.'] }),
+    )
+  })
+
+  it('elimina un servicio', async () => {
+    api.delete.mockResolvedValue({})
+
+    await eliminarServicio('6')
+
+    expect(api.delete).toHaveBeenCalledWith('/servicios/6')
+  })
+
+  it('avisa cuando el backend no responde', async () => {
+    api.get.mockRejectedValue({ code: 'ECONNABORTED' })
+
+    await expect(listarServicios()).rejects.toThrow('La API tardó demasiado')
   })
 })

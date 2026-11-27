@@ -48,4 +48,19 @@ describe('TarjetaServicio', () => {
       '/servicios/sv002',
     )
   })
+
+    it('muestra el descuento y el precio rebajado si el servicio está en oferta', () => {
+    dibujar({ ...servicio, precio: 12000, descuento: 10 })
+
+    expect(screen.getByText('-10%')).toBeInTheDocument()
+    expect(screen.getByText('$12.000')).toBeInTheDocument() // precio normal, el que aparece tachado
+    expect(screen.getByText('$10.800')).toBeInTheDocument()
+  })
+
+  it('no muestra descuento si el backend lo envía como null', () => {
+    dibujar({ ...servicio, descuento: null })
+
+    expect(screen.queryByText(/-null%/)).not.toBeInTheDocument()
+    expect(screen.getByText('$25.000')).toBeInTheDocument()
+  })
 })

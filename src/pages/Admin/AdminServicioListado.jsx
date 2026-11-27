@@ -1,31 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import TemplateAdmin from '../../components/templates/TemplateAdmin';
 import Enlace from '../../components/atoms/Enlace';
 import Boton from '../../components/atoms/Boton';
 import Parrafo from '../../components/atoms/Parrafo';
 import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin';
 import ModalConfirmacion from '../../components/molecules/ModalConfirmacion';
+import Alerta from '../../components/molecules/Alerta';
+import EstadoCatalogo from '../../components/molecules/EstadoCatalogo';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
+import { useServicios } from '../../Hooks/useServicios';
 import { formatearPrecio } from '../../utils/precios';
-import { listarServicios } from '../../services/servicioService';
-import { useServicios } from '../../context/ServiciosContext';
 
 function AdminServicioListado() {
     useTituloPagina('Listado de servicios');
-    const { eliminar } = useServicios();
+    const { servicios, cargando, error, eliminar } = useServicios();
 
-    const [servicios, setServicios] = useState([]);
+    const [errorEliminar, setErrorEliminar] = useState('');
     const [modalEliminar, setModalEliminar] = useState({ abierto: false, servicio: null });
 
-    const cargarServicios = () => {
-        setServicios(listarServicios());
-    };
-
-    useEffect(() => {
-        cargarServicios();
-    }, []);
-
     const abrirModalEliminar = (servicio) => {
+        setErrorEliminar('');
         setModalEliminar({ abierto: true, servicio });
     };
 
@@ -33,10 +27,14 @@ function AdminServicioListado() {
         setModalEliminar({ abierto: false, servicio: null });
     };
 
-    const confirmarEliminar = () => {
-        if (modalEliminar.servicio) {
-            eliminar(modalEliminar.servicio.id);
-            cargarServicios();
+    const confirmarEliminar = async () => {
+        if (!modalEliminar.servicio) return;
+
+        try {
+            await eliminar(modalEliminar.servicio.id);
+        } catch (err) {
+            setErrorEliminar(err.message || 'No se pudo eliminar el servicio.');
+        } finally {
             cerrarModal();
         }
     };
@@ -57,11 +55,19 @@ function AdminServicioListado() {
                 <span className="text-muted small">Total: {servicios.length} servicios</span>
             </div>
 
-            {servicios.length === 0 ? (
+            <EstadoCatalogo cargando={cargando} error={error} />
+
+            {errorEliminar && (
+                <Alerta variante="warning" titulo="No se eliminó." texto={errorEliminar} clasesExtras="mb-3" />
+            )}
+
+            {!cargando && !error && servicios.length === 0 && (
                 <div className="alert alert-light border text-center py-5 rounded-4 shadow-sm">
                     <Parrafo clasesExtras="text-muted">No hay servicios registrados en el catálogo.</Parrafo>
                 </div>
-            ) : (
+            )}
+
+            {servicios.length > 0 && (
                 <div className="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
                     <div className="table-responsive">
                         <table className="table table-hover align-middle mb-0">
@@ -77,18 +83,14 @@ function AdminServicioListado() {
                             <tbody>
                                 {servicios.map((s) => (
                                     <tr key={s.id}>
-                                        <td className="px-3 fw-semibold text-secondary">
-                                            #{s.codigo || s.id}
-                                        </td>
+                                        <td className="px-3 fw-semibold text-secondary">#{s.codigo}</td>
                                         <td className="fw-medium text-dark">{s.titulo}</td>
                                         <td>
                                             <span className="badge bg-light text-secondary border px-2 py-1">
                                                 {s.categoria}
                                             </span>
                                         </td>
-                                        <td className="fw-bold text-primary">
-                                            {formatearPrecio(s.precio)}
-                                        </td>
+                                        <td className="fw-bold text-primary">{formatearPrecio(s.precio)}</td>
                                         <td className="px-3 text-end">
                                             <div className="d-flex justify-content-end gap-1">
                                                 <Enlace

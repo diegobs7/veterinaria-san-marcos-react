@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import TemplateAdmin from '../../components/templates/TemplateAdmin';
 import Enlace from '../../components/atoms/Enlace';
 import Boton from '../../components/atoms/Boton';
@@ -6,29 +6,21 @@ import Parrafo from '../../components/atoms/Parrafo';
 import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin';
 import ModalConfirmacion from '../../components/molecules/ModalConfirmacion';
 import Alerta from '../../components/molecules/Alerta';
+import EstadoCatalogo from '../../components/molecules/EstadoCatalogo';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
-import {
-  listarCategorias,
-  eliminarCategoria,
-  contarServiciosPorCategoria,
-} from '../../services/categoriaService';
+import { useCategorias } from '../../Hooks/useCategorias';
+import { useServicios } from '../../Hooks/useServicios';
+import { contarServiciosPorCategoria } from '../../utils/categorias';
 
 function AdminCategoriaListado() {
   useTituloPagina('Listado de categorías');
 
-  const [categorias, setCategorias] = useState([]);
-  const [conteo, setConteo] = useState({});
+  const { categorias, cargando, error, eliminar } = useCategorias();
+  const { servicios } = useServicios();
+  const conteo = contarServiciosPorCategoria(servicios);
+
   const [errorEliminar, setErrorEliminar] = useState('');
   const [modalEliminar, setModalEliminar] = useState({ abierto: false, categoria: null });
-
-  const cargar = () => {
-    setCategorias(listarCategorias());
-    setConteo(contarServiciosPorCategoria());
-  };
-
-  useEffect(() => {
-    cargar();
-  }, []);
 
   const abrirModalEliminar = (categoria) => {
     setErrorEliminar('');
@@ -39,16 +31,16 @@ function AdminCategoriaListado() {
     setModalEliminar({ abierto: false, categoria: null });
   };
 
-  const confirmarEliminar = () => {
+  // Si la categoría tiene servicios, el backend responde 409 y se muestra su mensaje
+  const confirmarEliminar = async () => {
     if (!modalEliminar.categoria) return;
 
     try {
-      eliminarCategoria(modalEliminar.categoria.id);
-      cargar();
-      cerrarModal();
+      await eliminar(modalEliminar.categoria.id);
       setErrorEliminar('');
     } catch (err) {
       setErrorEliminar(err.message || 'No se pudo eliminar la categoría.');
+    } finally {
       cerrarModal();
     }
   };
@@ -69,6 +61,8 @@ function AdminCategoriaListado() {
         <span className="text-muted small">Total: {categorias.length} categorías</span>
       </div>
 
+      <EstadoCatalogo cargando={cargando} error={error} />
+
       {errorEliminar && (
         <Alerta
           variante="warning"
@@ -78,13 +72,15 @@ function AdminCategoriaListado() {
         />
       )}
 
-      {categorias.length === 0 ? (
+      {!cargando && !error && categorias.length === 0 && (
         <div className="alert alert-light border text-center py-5 rounded-4 shadow-sm">
           <Parrafo clasesExtras="text-muted mb-0">
             No hay categorías registradas. Crea la primera para empezar a clasificar servicios.
           </Parrafo>
         </div>
-      ) : (
+      )}
+
+      {categorias.length > 0 && (
         <div className="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
           <div className="table-responsive">
             <table className="table table-hover align-middle mb-0">
@@ -98,41 +94,36 @@ function AdminCategoriaListado() {
                 </tr>
               </thead>
               <tbody>
-                {categorias.map((cat) => {
-                  const cantidad = conteo[cat.nombre] || 0;
-                  return (
-                    <tr key={cat.id}>
-                      <td className="px-3 fs-4" aria-hidden="true">
-                        {cat.icono || '🐾'}
-                      </td>
-                      <td className="fw-medium text-dark">{cat.nombre}</td>
-                      <td className="text-muted small">
-                        {cat.descripcion || '—'}
-                      </td>
-                      <td className="text-center">
-                        <span className="badge bg-light text-secondary border px-2 py-1">
-                          {cantidad}
-                        </span>
-                      </td>
-                      <td className="px-3 text-end">
-                        <div className="d-flex justify-content-end gap-1">
-                          <Enlace
-                            to={`/admin/categorias/${cat.id}/editar`}
-                            texto="Editar"
-                            clasesExtras="btn btn-sm btn-outline-primary"
-                          />
-                          <Boton
-                            tipoBoton="button"
-                            variante="outline-danger"
-                            texto="Eliminar"
-                            clasesExtras="btn-sm"
-                            onClick={() => abrirModalEliminar(cat)}
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {categorias.map((cat) => (
+                  <tr key={cat.id}>
+                    <td className="px-3 fs-4" aria-hidden="true">
+                      {cat.icono || '🐾'}
+                    </td>
+                    <td className="fw-medium text-dark">{cat.nombre}</td>
+                    <td className="text-muted small">{cat.descripcion || '—'}</td>
+                    <td className="text-center">
+                      <span className="badge bg-light text-secondary border px-2 py-1">
+                        {conteo[cat.id] || 0}
+                      </span>
+                    </td>
+                    <td className="px-3 text-end">
+                      <div className="d-flex justify-content-end gap-1">
+                        <Enlace
+                          to={`/admin/categorias/${cat.id}/editar`}
+                          texto="Editar"
+                          clasesExtras="btn btn-sm btn-outline-primary"
+                        />
+                        <Boton
+                          tipoBoton="button"
+                          variante="outline-danger"
+                          texto="Eliminar"
+                          clasesExtras="btn-sm"
+                          onClick={() => abrirModalEliminar(cat)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

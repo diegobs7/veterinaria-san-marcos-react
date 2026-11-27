@@ -1,8 +1,7 @@
-import { listarCategorias } from '../services/categoriaService';
 
-export function obtenerOpcionesCategorias() {
-  return listarCategorias().map((c) => ({
-    valor: c.nombre,
+export function obtenerOpcionesCategorias(categorias) {
+  return categorias.map((c) => ({
+    valor: c.id,
     texto: c.nombre,
   }));
 }

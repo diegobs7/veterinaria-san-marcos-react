@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useServicios } from '../context/ServiciosContext'
-import { listarCategorias } from '../services/categoriaService'
 import { listarUsuarios } from '../services/usuarioService'
+import { useCatalogo } from './useCatalogo'
 
 function leerLista(clave) {
   try {
@@ -12,7 +11,13 @@ function leerLista(clave) {
 }
 
 export function useResumenAdmin() {
-  const { servicios } = useServicios()
+  const { servicios, categorias, cargando, error } = useCatalogo()
+
+  const totalCatalogo = (lista) => {
+    if (cargando) return 'Cargando...'
+    if (error) return 'No disponible'
+    return lista.length
+  }
   const [totalUsuarios, setTotalUsuarios] = useState('Cargando...')
 
   useEffect(() => {
@@ -28,8 +33,8 @@ export function useResumenAdmin() {
       pendientes: solicitudes.filter((s) => s.estado === 'Pendiente').length,
     },
     catalogo: {
-      total: servicios.length,
-      categorias: listarCategorias().length,
+      total: totalCatalogo(servicios),
+      categorias: totalCatalogo(categorias),
     },
     usuarios: { total: totalUsuarios },
   }

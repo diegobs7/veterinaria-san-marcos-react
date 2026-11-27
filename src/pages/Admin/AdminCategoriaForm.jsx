@@ -1,18 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import TemplateAdmin from '../../components/templates/TemplateAdmin';
 import Enlace from '../../components/atoms/Enlace';
 import Parrafo from '../../components/atoms/Parrafo';
 import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin';
+import EstadoCatalogo from '../../components/molecules/EstadoCatalogo';
 import FormularioCategoria from '../../components/organisms/FormularioCategoria';
 import { useTituloPagina } from '../../Hooks/useTituloPagina';
-import {
-  obtenerCategoria,
-  crearCategoria,
-  actualizarCategoria,
-} from '../../services/categoriaService';
-import { useServicios } from '../../context/ServiciosContext';
+import { useCategorias } from '../../Hooks/useCategorias';
+import { useServicios } from '../../Hooks/useServicios';
 
 import validarCategoria from '../../utils/validaciones/ValidarCateogria';
 
@@ -33,30 +30,36 @@ function aValores(categoria) {
 function AdminCategoriaForm() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { recargar } = useServicios();
+  const { obtener, crear, actualizar, cargando, error } = useCategorias();
+  const { recargar: recargarServicios } = useServicios();
   const esEdicion = Boolean(id);
-  const categoria = esEdicion ? obtenerCategoria(id) : null;
+  const categoria = esEdicion ? obtener(id) : null;
 
   useTituloPagina(esEdicion ? 'Editar categoría' : 'Nueva categoría');
 
-  const [valores, setValores] = useState(
-    categoria ? aValores(categoria) : VALORES_INICIALES
-  );
+  const [valores, setValores] = useState(VALORES_INICIALES);
   const [errores, setErrores] = useState({});
   const [mensaje, setMensaje] = useState('');
+  const [cargadoDe, setCargadoDe] = useState(null);
 
-  useEffect(() => {
-    if (id) {
-      const encontrada = obtenerCategoria(id);
-      if (encontrada) setValores(aValores(encontrada));
-    } else {
-      setValores(VALORES_INICIALES);
-    }
+  // Llena el formulario cuando la categoría llega del backend o cambia la ruta
+  const clave = id ?? 'nueva';
+  if (cargadoDe !== clave && (!esEdicion || categoria)) {
+    setCargadoDe(clave);
+    setValores(categoria ? aValores(categoria) : VALORES_INICIALES);
     setErrores({});
     setMensaje('');
-  }, [id]);
+  }
 
-  if (id && !categoria) {
+  if (cargando || error) {
+    return (
+      <TemplateAdmin>
+        <EstadoCatalogo cargando={cargando} error={error} />
+      </TemplateAdmin>
+    );
+  }
+
+  if (esEdicion && !categoria) {
     return (
       <TemplateAdmin>
         <Parrafo clasesExtras="mb-3">Categoría no encontrada.</Parrafo>
@@ -71,7 +74,7 @@ function AdminCategoriaForm() {
     setMensaje('');
   };
 
-  const manejarSubmit = (e) => {
+  const manejarSubmit = async (e) => {
     e.preventDefault();
 
     const nuevosErrores = validarCategoria(valores);
@@ -89,12 +92,12 @@ function AdminCategoriaForm() {
     };
 
     try {
-      if (esEdicion && categoria) {
-        actualizarCategoria(categoria.id, datos);
-        recargar();
+      if (esEdicion) {
+        await actualizar(categoria.id, datos);
+        await recargarServicios(); // los servicios muestran el nombre nuevo de su categoría
         setMensaje('Los cambios se guardaron correctamente.');
       } else {
-        crearCategoria(datos);
+        await crear(datos);
         setValores(VALORES_INICIALES);
         setMensaje('La categoría se creó correctamente.');
       }
@@ -103,6 +106,7 @@ function AdminCategoriaForm() {
         navigate('/admin/categorias/listado');
       }, 1200);
     } catch (err) {
+      // Por ejemplo el 409 "Ya existe una categoría con ese nombre"
       setErrores({ nombre: err.message || 'No se pudo guardar la categoría.' });
       setMensaje('');
     }

@@ -12,7 +12,7 @@ import ErrorSolicitud from "../molecules/ErrorSolicitud";
 import DatoResumen from "../molecules/DatoResumen";
 import validarReserva from "../../utils/validaciones/ValidarReserva";
 import { validarSolicitudCita } from "../../utils/solicitudes";
-import { useServicios } from "../../context/ServiciosContext";
+import { useServicios } from "../../Hooks/useServicios";
 import { HORARIOS } from "../../data/OpcionesReserva";
 import { filtrarMascotasCompatibles, crearOpcionesMascotas } from "../../utils/MascotasReserva";
 import { obtenerSesion } from "../../utils/sesionAdmin";

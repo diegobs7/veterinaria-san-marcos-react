@@ -5,15 +5,15 @@ import ListaServicios from '../components/organisms/ListaServicios'
 import SeccionConfianza from '../components/organisms/SeccionConfianza'
 import Subtitulo from '../components/atoms/Subtitulo'
 import Enlace from '../components/atoms/Enlace'
-import { useServicios } from '../context/ServiciosContext'
+import EstadoCatalogo from '../components/molecules/EstadoCatalogo'
+import { useCatalogo } from '../Hooks/useCatalogo'
 import { resumirCategorias } from '../utils/categorias'
 import { obtenerOfertas } from '../utils/ofertas'
-import ofertasIniciales from '../data/ofertas.json'
 
 function Inicio(){
     useTituloPagina('Inicio')
-    const { servicios } = useServicios();
-    const ofertasDestacadas = obtenerOfertas(servicios, ofertasIniciales).slice(0, 3);
+    const { servicios, categorias, cargando, error } = useCatalogo();
+    const ofertasDestacadas = obtenerOfertas(servicios).slice(0, 3);
 
     return(
         <>
@@ -21,7 +21,8 @@ function Inicio(){
 
             <section className="container mt-5">
                 <Subtitulo texto="Nuestros servicios" clasesExtras="h3 mb-3" />
-                <ListaCategorias categorias={resumirCategorias(servicios)} />
+                <EstadoCatalogo cargando={cargando} error={error} />
+                <ListaCategorias categorias={resumirCategorias(servicios, categorias)} />
             </section>
 
             {ofertasDestacadas.length > 0 && (
